@@ -1,0 +1,2495 @@
+{
+  "subjects": [
+    {
+      "specialization": "Computer Science",
+      "phase": 1,
+      "code": "1301106",
+      "name": "Structured Programming",
+      "credits": 3,
+      "prerequisites": [],
+      "description": "Introduces programming fundamentals such as variables, conditions, loops, functions, and step-by-step problem solving using a structured approach.",
+      "skills": [
+        "programming basics",
+        "problem solving",
+        "control flow",
+        "function design"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 1,
+      "code": "1301108",
+      "name": "Object-Oriented Programming (1)",
+      "credits": 3,
+      "prerequisites": [
+        "1301106"
+      ],
+      "description": "Covers object-oriented programming concepts including classes, objects, inheritance, encapsulation, and modular software design.",
+      "skills": [
+        "oop principles",
+        "class design",
+        "code reuse",
+        "software structure"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 1,
+      "code": "1501167",
+      "name": "Discrete Structures (1)",
+      "credits": 3,
+      "prerequisites": [],
+      "description": "Builds the mathematical foundation for computing through logic, sets, relations, functions, counting, and proof techniques.",
+      "skills": [
+        "logical reasoning",
+        "mathematical thinking",
+        "proof basics",
+        "discrete math"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 1,
+      "code": "1501110",
+      "name": "Calculus (1)",
+      "credits": 3,
+      "prerequisites": [],
+      "description": "Introduces limits, derivatives, and core calculus concepts used in scientific and technical problem solving.",
+      "skills": [
+        "mathematical modeling",
+        "derivatives",
+        "analytical thinking",
+        "quantitative reasoning"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 1,
+      "code": "1501212",
+      "name": "Probability and Statistics",
+      "credits": 3,
+      "prerequisites": [
+        "1501110"
+      ],
+      "description": "Covers probability distributions, descriptive statistics, inference, and statistical thinking for data-driven decision making.",
+      "skills": [
+        "statistical reasoning",
+        "probability basics",
+        "data interpretation",
+        "quantitative analysis"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 1,
+      "code": "1501230",
+      "name": "Numerical Analysis",
+      "credits": 3,
+      "prerequisites": [
+        "1501110"
+      ],
+      "description": "Studies computational methods for solving numerical problems such as equations, interpolation, and approximation techniques.",
+      "skills": [
+        "numerical methods",
+        "approximation",
+        "computational thinking",
+        "algorithmic accuracy"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 1,
+      "code": "1401225",
+      "name": "Computing Ethics and Technical Writing",
+      "credits": 2,
+      "prerequisites": [],
+      "description": "Explores professional ethics in computing together with clear technical communication, documentation, and report writing.",
+      "skills": [
+        "technical writing",
+        "professional ethics",
+        "documentation",
+        "communication"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 1,
+      "code": "1401226",
+      "name": "English for IT Students",
+      "credits": 1,
+      "prerequisites": [],
+      "description": "Develops English communication skills needed for technical study, documentation, presentations, and workplace interaction in IT fields.",
+      "skills": [
+        "technical vocabulary",
+        "professional communication",
+        "reading comprehension",
+        "presentation skills"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 1,
+      "code": "1301120",
+      "name": "Digital Systems",
+      "credits": 3,
+      "prerequisites": [
+        "1501167"
+      ],
+      "description": "Introduces digital logic, number systems, Boolean algebra, combinational circuits, and the foundations of digital hardware.",
+      "skills": [
+        "digital logic",
+        "boolean algebra",
+        "hardware basics",
+        "circuit reasoning"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 1,
+      "code": "1301203",
+      "name": "Data Structures and Algorithms",
+      "credits": 3,
+      "prerequisites": [
+        "1301108",
+        "1501167"
+      ],
+      "description": "Covers essential data structures and algorithm design techniques for organizing data and solving computational problems efficiently.",
+      "skills": [
+        "data organization",
+        "algorithmic thinking",
+        "problem solving",
+        "complexity analysis"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 1,
+      "code": "1301222",
+      "name": "Computer Organization and Architecture",
+      "credits": 3,
+      "prerequisites": [
+        "1301120"
+      ],
+      "description": "Explains how computer systems are structured at the hardware level, including processors, memory, instruction execution, and system organization.",
+      "skills": [
+        "computer architecture",
+        "hardware understanding",
+        "system design",
+        "instruction flow"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 1,
+      "code": "1301224",
+      "name": "Microcomputer Systems and Assembly Language",
+      "credits": 3,
+      "prerequisites": [
+        "1301120"
+      ],
+      "description": "Introduces low-level programming, processor instructions, registers, memory handling, and system-level problem solving using assembly language.",
+      "skills": [
+        "assembly programming",
+        "low-level computing",
+        "memory handling",
+        "processor operations"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 1,
+      "code": "1301236",
+      "name": "Web-Based Programming",
+      "credits": 3,
+      "prerequisites": [
+        "1301108"
+      ],
+      "description": "Covers the fundamentals of building web applications, including front-end structure, interactivity, and server-connected web solutions.",
+      "skills": [
+        "web development",
+        "frontend basics",
+        "client-server concepts",
+        "interactive interfaces"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 1,
+      "code": "1301305",
+      "name": "Database and Application of Database",
+      "credits": 3,
+      "prerequisites": [
+        "1301203"
+      ],
+      "description": "Introduces database concepts, relational design, SQL, and practical database usage in software applications.",
+      "skills": [
+        "sql",
+        "database design",
+        "data modeling",
+        "data querying"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 1,
+      "code": "1301304",
+      "name": "Visual Programming",
+      "credits": 3,
+      "prerequisites": [
+        "1301305"
+      ],
+      "description": "Focuses on event-driven and interface-based software development using visual programming tools and frameworks.",
+      "skills": [
+        "gui development",
+        "event-driven programming",
+        "application design",
+        "visual tools"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 1,
+      "code": "1301310",
+      "name": "Design and Analysis of Algorithms",
+      "credits": 3,
+      "prerequisites": [
+        "1301203"
+      ],
+      "description": "Studies advanced algorithm design strategies, correctness, efficiency, and performance analysis for complex computational problems.",
+      "skills": [
+        "algorithm design",
+        "complexity analysis",
+        "optimization thinking",
+        "problem decomposition"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 1,
+      "code": "1301315",
+      "name": "Theory of Computation",
+      "credits": 3,
+      "prerequisites": [
+        "1301203"
+      ],
+      "description": "Introduces formal languages, automata, grammars, and computability concepts that define the theoretical limits of computation.",
+      "skills": [
+        "formal languages",
+        "automata theory",
+        "computational models",
+        "theoretical reasoning"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 1,
+      "code": "1301326",
+      "name": "Operating Systems",
+      "credits": 3,
+      "prerequisites": [
+        "1301203"
+      ],
+      "description": "Explores how operating systems manage processes, memory, files, scheduling, and interaction between hardware and software.",
+      "skills": [
+        "process management",
+        "memory management",
+        "system thinking",
+        "resource scheduling"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 2,
+      "code": "1301386",
+      "name": "Analysis and Design of Information Systems",
+      "credits": 3,
+      "prerequisites": [
+        "1301305"
+      ],
+      "description": "Covers methods for analyzing organizational needs and designing information systems that support processes, data flow, and decision making.",
+      "skills": [
+        "systems analysis",
+        "requirements analysis",
+        "process modeling",
+        "information design"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 2,
+      "code": "1302281",
+      "name": "Introduction to Software Engineering",
+      "credits": 3,
+      "prerequisites": [
+        "1301108"
+      ],
+      "description": "Introduces the software engineering lifecycle, development models, teamwork practices, and disciplined software construction.",
+      "skills": [
+        "software lifecycle",
+        "team development",
+        "requirements basics",
+        "engineering mindset"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 2,
+      "code": "1302338",
+      "name": "Advanced Internet Computing",
+      "credits": 3,
+      "prerequisites": [
+        "1301236",
+        "1301305"
+      ],
+      "description": "Builds advanced skills for internet-based systems, including scalable web solutions, integration, and online application architecture.",
+      "skills": [
+        "advanced web systems",
+        "internet architecture",
+        "backend integration",
+        "scalable applications"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 2,
+      "code": "1305130",
+      "name": "Data Communications and Computer Networks",
+      "credits": 3,
+      "prerequisites": [
+        "1301326"
+      ],
+      "description": "Introduces networking concepts, communication protocols, layered models, routing, and the infrastructure behind connected systems.",
+      "skills": [
+        "network fundamentals",
+        "protocol understanding",
+        "routing concepts",
+        "connectivity basics"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 2,
+      "code": "1305416",
+      "name": "Information Security",
+      "credits": 3,
+      "prerequisites": [
+        "1305130"
+      ],
+      "description": "Introduces core security principles such as confidentiality, integrity, authentication, threats, and defensive mechanisms in information systems.",
+      "skills": [
+        "security fundamentals",
+        "risk awareness",
+        "authentication",
+        "secure thinking"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 2,
+      "code": "1306305",
+      "name": "Artificial Intelligence",
+      "credits": 3,
+      "prerequisites": [
+        "1301203"
+      ],
+      "description": "Introduces the foundations of artificial intelligence, including intelligent agents, search, reasoning, and problem-solving methods.",
+      "skills": [
+        "ai fundamentals",
+        "search techniques",
+        "reasoning",
+        "intelligent systems"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 2,
+      "code": "1301401",
+      "name": "Programming Using Generative AI",
+      "credits": 3,
+      "prerequisites": [
+        "1306305"
+      ],
+      "description": "Explores how generative AI tools can support software development, code generation, automation, and productivity in programming workflows.",
+      "skills": [
+        "ai-assisted coding",
+        "prompting",
+        "automation",
+        "developer productivity"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 2,
+      "code": "1301415",
+      "name": "Programming Language Translation",
+      "credits": 3,
+      "prerequisites": [
+        "1301315"
+      ],
+      "description": "Studies lexical analysis, parsing, translation techniques, and the fundamentals of compilers and interpreters.",
+      "skills": [
+        "compiler basics",
+        "parsing",
+        "language processing",
+        "syntax analysis"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 2,
+      "code": "1301468",
+      "name": "New Trends in Computing",
+      "credits": 1,
+      "prerequisites": [
+        "1301305"
+      ],
+      "description": "Surveys emerging technologies, current innovations, and modern developments shaping the future of computing.",
+      "skills": [
+        "technology awareness",
+        "trend analysis",
+        "innovation literacy",
+        "future-oriented thinking"
+      ]
+    },
+    {
+      "specialization": "Computer Science",
+      "phase": 2,
+      "code": "1307103",
+      "name": "Linear Algebra",
+      "credits": 3,
+      "prerequisites": [
+        "1501110"
+      ],
+      "description": "Introduces vectors, matrices, systems of equations, and linear transformations used across computing, AI, and graphics.",
+      "skills": [
+        "matrix operations",
+        "vector reasoning",
+        "mathematical modeling",
+        "linear systems"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 1,
+      "code": "1301106",
+      "name": "Structured Programming",
+      "credits": 3,
+      "prerequisites": [],
+      "description": "Introduces programming fundamentals such as variables, conditions, loops, functions, and step-by-step problem solving using a structured approach.",
+      "skills": [
+        "programming basics",
+        "problem solving",
+        "control flow",
+        "function design"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 1,
+      "code": "1301108",
+      "name": "Object-Oriented Programming (1)",
+      "credits": 3,
+      "prerequisites": [
+        "1301106"
+      ],
+      "description": "Covers object-oriented programming concepts including classes, objects, inheritance, encapsulation, and modular software design.",
+      "skills": [
+        "oop principles",
+        "class design",
+        "code reuse",
+        "software structure"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 1,
+      "code": "1501167",
+      "name": "Discrete Structures (1)",
+      "credits": 3,
+      "prerequisites": [],
+      "description": "Builds the mathematical foundation for computing through logic, sets, relations, functions, counting, and proof techniques.",
+      "skills": [
+        "logical reasoning",
+        "mathematical thinking",
+        "proof basics",
+        "discrete math"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 1,
+      "code": "1501110",
+      "name": "Calculus (1)",
+      "credits": 3,
+      "prerequisites": [],
+      "description": "Introduces limits, derivatives, and core calculus concepts used in scientific and technical problem solving.",
+      "skills": [
+        "mathematical modeling",
+        "derivatives",
+        "analytical thinking",
+        "quantitative reasoning"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 1,
+      "code": "1501212",
+      "name": "Probability and Statistics",
+      "credits": 3,
+      "prerequisites": [
+        "1501110"
+      ],
+      "description": "Covers probability distributions, descriptive statistics, inference, and statistical thinking for data-driven decision making.",
+      "skills": [
+        "statistical reasoning",
+        "probability basics",
+        "data interpretation",
+        "quantitative analysis"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 1,
+      "code": "1501230",
+      "name": "Numerical Analysis",
+      "credits": 3,
+      "prerequisites": [
+        "1501110"
+      ],
+      "description": "Studies computational methods for solving numerical problems such as equations, interpolation, and approximation techniques.",
+      "skills": [
+        "numerical methods",
+        "approximation",
+        "computational thinking",
+        "algorithmic accuracy"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 1,
+      "code": "1401225",
+      "name": "Computing Ethics and Technical Writing",
+      "credits": 2,
+      "prerequisites": [],
+      "description": "Explores professional ethics in computing together with clear technical communication, documentation, and report writing.",
+      "skills": [
+        "technical writing",
+        "professional ethics",
+        "documentation",
+        "communication"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 1,
+      "code": "1401226",
+      "name": "English for IT Students",
+      "credits": 1,
+      "prerequisites": [],
+      "description": "Develops English communication skills needed for technical study, documentation, presentations, and workplace interaction in IT fields.",
+      "skills": [
+        "technical vocabulary",
+        "professional communication",
+        "reading comprehension",
+        "presentation skills"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 1,
+      "code": "1305101",
+      "name": "Introduction to Cybersecurity",
+      "credits": 3,
+      "prerequisites": [],
+      "description": "Introduces the cybersecurity field, common threats, attack surfaces, defense strategies, and secure computing practices.",
+      "skills": [
+        "cybersecurity basics",
+        "threat awareness",
+        "defensive thinking",
+        "security mindset"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 1,
+      "code": "1305210",
+      "name": "Tools and Fundamentals of Artificial Intelligence",
+      "credits": 3,
+      "prerequisites": [
+        "1305101"
+      ],
+      "description": "Introduces AI concepts together with practical tools and workflows used to build intelligent systems and applications.",
+      "skills": [
+        "ai tools",
+        "practical ai",
+        "intelligent systems",
+        "technical experimentation"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 1,
+      "code": "1301203",
+      "name": "Data Structures and Algorithms",
+      "credits": 3,
+      "prerequisites": [
+        "1301108",
+        "1501167"
+      ],
+      "description": "Covers essential data structures and algorithm design techniques for organizing data and solving computational problems efficiently.",
+      "skills": [
+        "data organization",
+        "algorithmic thinking",
+        "problem solving",
+        "complexity analysis"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 1,
+      "code": "1301236",
+      "name": "Web-Based Programming",
+      "credits": 3,
+      "prerequisites": [
+        "1301108"
+      ],
+      "description": "Covers the fundamentals of building web applications, including front-end structure, interactivity, and server-connected web solutions.",
+      "skills": [
+        "web development",
+        "frontend basics",
+        "client-server concepts",
+        "interactive interfaces"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 1,
+      "code": "1301305",
+      "name": "Database and Application of Database",
+      "credits": 3,
+      "prerequisites": [
+        "1301203"
+      ],
+      "description": "Introduces database concepts, relational design, SQL, and practical database usage in software applications.",
+      "skills": [
+        "sql",
+        "database design",
+        "data modeling",
+        "data querying"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 1,
+      "code": "1305130",
+      "name": "Data Communications and Computer Networks",
+      "credits": 3,
+      "prerequisites": [
+        "1305101"
+      ],
+      "description": "Introduces networking concepts, communication protocols, layered models, routing, and the infrastructure behind connected systems.",
+      "skills": [
+        "network fundamentals",
+        "protocol understanding",
+        "routing concepts",
+        "connectivity basics"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 1,
+      "code": "1305211",
+      "name": "Principles of Cloud Computing",
+      "credits": 3,
+      "prerequisites": [
+        "1305130"
+      ],
+      "description": "Covers the foundations of cloud computing, service models, deployment models, virtualization, and cloud-based architectures.",
+      "skills": [
+        "cloud fundamentals",
+        "service models",
+        "virtualization basics",
+        "cloud architecture"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 1,
+      "code": "1305212",
+      "name": "Network Security",
+      "credits": 3,
+      "prerequisites": [
+        "1305130"
+      ],
+      "description": "Focuses on protecting networks through secure design, monitoring, access control, and defense against common attacks.",
+      "skills": [
+        "network defense",
+        "secure configuration",
+        "traffic protection",
+        "security monitoring"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 1,
+      "code": "1305226",
+      "name": "Operating Systems for Cybersecurity",
+      "credits": 3,
+      "prerequisites": [
+        "1301203"
+      ],
+      "description": "Studies operating system concepts with emphasis on security, system hardening, permissions, and secure administration practices.",
+      "skills": [
+        "system hardening",
+        "os security",
+        "permissions management",
+        "secure administration"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 1,
+      "code": "1305246",
+      "name": "Cybersecurity Programming",
+      "credits": 3,
+      "prerequisites": [
+        "1301203"
+      ],
+      "description": "Applies programming techniques to cybersecurity tasks such as automation, security tooling, analysis, and defensive scripting.",
+      "skills": [
+        "security scripting",
+        "automation",
+        "defensive coding",
+        "technical analysis"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 2,
+      "code": "1305301",
+      "name": "Secure Communication Protocols",
+      "credits": 3,
+      "prerequisites": [
+        "1305212"
+      ],
+      "description": "Explores secure communication methods, protocol design, encryption usage, and trusted data exchange across networks.",
+      "skills": [
+        "secure protocols",
+        "trusted communication",
+        "protocol analysis",
+        "network protection"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 2,
+      "code": "1305311",
+      "name": "Infrastructure Security Using Linux",
+      "credits": 3,
+      "prerequisites": [
+        "1305226"
+      ],
+      "description": "Covers Linux-based infrastructure security including hardening, monitoring, access control, and secure server administration.",
+      "skills": [
+        "linux administration",
+        "infrastructure hardening",
+        "server security",
+        "system monitoring"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 2,
+      "code": "1305314",
+      "name": "Ethical Hacking",
+      "credits": 3,
+      "prerequisites": [
+        "1305311",
+        "1305246"
+      ],
+      "description": "Introduces penetration testing concepts, vulnerability discovery, security assessment methods, and ethical offensive security practice.",
+      "skills": [
+        "penetration testing",
+        "vulnerability assessment",
+        "ethical security testing",
+        "attack simulation"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 2,
+      "code": "1305315",
+      "name": "Cloud Computing Security",
+      "credits": 3,
+      "prerequisites": [
+        "1305211"
+      ],
+      "description": "Focuses on securing cloud environments through identity control, configuration management, monitoring, and risk reduction.",
+      "skills": [
+        "cloud security",
+        "identity management",
+        "secure configuration",
+        "risk reduction"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 2,
+      "code": "1305320",
+      "name": "Data and Software Security",
+      "credits": 3,
+      "prerequisites": [
+        "1305246"
+      ],
+      "description": "Covers techniques for protecting software systems and data assets against misuse, tampering, and unauthorized access.",
+      "skills": [
+        "application security",
+        "data protection",
+        "secure software",
+        "threat mitigation"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 2,
+      "code": "1305323",
+      "name": "Encryption Theory and Data Authentication",
+      "credits": 3,
+      "prerequisites": [
+        "1305130"
+      ],
+      "description": "Introduces cryptographic principles, encryption methods, digital authentication, and the protection of data integrity and privacy.",
+      "skills": [
+        "cryptography",
+        "authentication",
+        "data integrity",
+        "secure communication"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 2,
+      "code": "1305325",
+      "name": "Cloud Computing Development",
+      "credits": 3,
+      "prerequisites": [
+        "1305211"
+      ],
+      "description": "Builds practical skills for developing cloud-based applications, services, and deployment workflows.",
+      "skills": [
+        "cloud development",
+        "service deployment",
+        "distributed applications",
+        "scalable design"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 2,
+      "code": "1305403",
+      "name": "Data Analytics in Cybersecurity and Cloud Computing",
+      "credits": 3,
+      "prerequisites": [
+        "1305211",
+        "1305212"
+      ],
+      "description": "Applies data analytics techniques to security events, cloud environments, and operational monitoring for smarter decision making.",
+      "skills": [
+        "security analytics",
+        "cloud analytics",
+        "data interpretation",
+        "operational insight"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 2,
+      "code": "1305404",
+      "name": "Digital Forensic",
+      "credits": 3,
+      "prerequisites": [
+        "1305311"
+      ],
+      "description": "Introduces digital forensics processes for collecting, preserving, analyzing, and reporting digital evidence.",
+      "skills": [
+        "digital investigation",
+        "evidence handling",
+        "forensic analysis",
+        "incident response"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 2,
+      "code": "1305417",
+      "name": "Cloud Computing and Virtualization Technology",
+      "credits": 3,
+      "prerequisites": [
+        "1305211"
+      ],
+      "description": "Explores virtualization platforms and technologies that enable cloud infrastructure, scalability, and efficient resource usage.",
+      "skills": [
+        "virtualization",
+        "cloud infrastructure",
+        "resource management",
+        "platform understanding"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 2,
+      "code": "1305419",
+      "name": "Risk Management and Vulnerability Analysis",
+      "credits": 3,
+      "prerequisites": [
+        "1305314"
+      ],
+      "description": "Covers methods for identifying risks, analyzing vulnerabilities, evaluating impact, and planning security controls.",
+      "skills": [
+        "risk assessment",
+        "vulnerability analysis",
+        "security planning",
+        "threat prioritization"
+      ]
+    },
+    {
+      "specialization": "Cybersecurity & Cloud Computing",
+      "phase": 2,
+      "code": "1305455",
+      "name": "Cloud Computing Engineering",
+      "credits": 3,
+      "prerequisites": [
+        "1305325"
+      ],
+      "description": "Focuses on engineering robust cloud systems through architecture, deployment, optimization, and operational reliability.",
+      "skills": [
+        "cloud engineering",
+        "system reliability",
+        "deployment strategy",
+        "infrastructure design"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 1,
+      "code": "1301106",
+      "name": "Structured Programming",
+      "credits": 3,
+      "prerequisites": [],
+      "description": "Introduces programming fundamentals such as variables, conditions, loops, functions, and step-by-step problem solving using a structured approach.",
+      "skills": [
+        "programming basics",
+        "problem solving",
+        "control flow",
+        "function design"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 1,
+      "code": "1301108",
+      "name": "Object-Oriented Programming (1)",
+      "credits": 3,
+      "prerequisites": [
+        "1301106"
+      ],
+      "description": "Covers object-oriented programming concepts including classes, objects, inheritance, encapsulation, and modular software design.",
+      "skills": [
+        "oop principles",
+        "class design",
+        "code reuse",
+        "software structure"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 1,
+      "code": "1501167",
+      "name": "Discrete Structures (1)",
+      "credits": 3,
+      "prerequisites": [],
+      "description": "Builds the mathematical foundation for computing through logic, sets, relations, functions, counting, and proof techniques.",
+      "skills": [
+        "logical reasoning",
+        "mathematical thinking",
+        "proof basics",
+        "discrete math"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 1,
+      "code": "1501110",
+      "name": "Calculus (1)",
+      "credits": 3,
+      "prerequisites": [],
+      "description": "Introduces limits, derivatives, and core calculus concepts used in scientific and technical problem solving.",
+      "skills": [
+        "mathematical modeling",
+        "derivatives",
+        "analytical thinking",
+        "quantitative reasoning"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 1,
+      "code": "1501212",
+      "name": "Probability and Statistics",
+      "credits": 3,
+      "prerequisites": [
+        "1501110"
+      ],
+      "description": "Covers probability distributions, descriptive statistics, inference, and statistical thinking for data-driven decision making.",
+      "skills": [
+        "statistical reasoning",
+        "probability basics",
+        "data interpretation",
+        "quantitative analysis"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 1,
+      "code": "1501230",
+      "name": "Numerical Analysis",
+      "credits": 3,
+      "prerequisites": [
+        "1501110"
+      ],
+      "description": "Studies computational methods for solving numerical problems such as equations, interpolation, and approximation techniques.",
+      "skills": [
+        "numerical methods",
+        "approximation",
+        "computational thinking",
+        "algorithmic accuracy"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 1,
+      "code": "1401225",
+      "name": "Computing Ethics and Technical Writing",
+      "credits": 2,
+      "prerequisites": [],
+      "description": "Explores professional ethics in computing together with clear technical communication, documentation, and report writing.",
+      "skills": [
+        "technical writing",
+        "professional ethics",
+        "documentation",
+        "communication"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 1,
+      "code": "1401226",
+      "name": "English for IT Students",
+      "credits": 1,
+      "prerequisites": [],
+      "description": "Develops English communication skills needed for technical study, documentation, presentations, and workplace interaction in IT fields.",
+      "skills": [
+        "technical vocabulary",
+        "professional communication",
+        "reading comprehension",
+        "presentation skills"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 1,
+      "code": "1307103",
+      "name": "Linear Algebra",
+      "credits": 3,
+      "prerequisites": [
+        "1501110"
+      ],
+      "description": "Introduces vectors, matrices, systems of equations, and linear transformations used across computing, AI, and graphics.",
+      "skills": [
+        "matrix operations",
+        "vector reasoning",
+        "mathematical modeling",
+        "linear systems"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 1,
+      "code": "1301203",
+      "name": "Data Structures and Algorithms",
+      "credits": 3,
+      "prerequisites": [
+        "1301108",
+        "1501167"
+      ],
+      "description": "Covers essential data structures and algorithm design techniques for organizing data and solving computational problems efficiently.",
+      "skills": [
+        "data organization",
+        "algorithmic thinking",
+        "problem solving",
+        "complexity analysis"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 1,
+      "code": "1306102",
+      "name": "Fundamentals of Data Science and AI",
+      "credits": 3,
+      "prerequisites": [
+        "1301106"
+      ],
+      "description": "Introduces the foundations of data science and artificial intelligence, including data workflows, model thinking, and intelligent analysis.",
+      "skills": [
+        "data science basics",
+        "ai foundations",
+        "analytical thinking",
+        "data workflows"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 1,
+      "code": "1306207",
+      "name": "Data Engineering and Analytics",
+      "credits": 3,
+      "prerequisites": [
+        "1306102"
+      ],
+      "description": "Covers data pipelines, preparation, storage, transformation, and analytical workflows for extracting useful insights.",
+      "skills": [
+        "data pipelines",
+        "data preparation",
+        "analytics workflows",
+        "data processing"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 1,
+      "code": "1306291",
+      "name": "AI Programming",
+      "credits": 3,
+      "prerequisites": [
+        "1306102"
+      ],
+      "description": "Builds programming skills for implementing AI-related solutions, data processing workflows, and intelligent application logic.",
+      "skills": [
+        "ai programming",
+        "technical implementation",
+        "data handling",
+        "model integration"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 1,
+      "code": "1301305",
+      "name": "Database and Application of Database",
+      "credits": 3,
+      "prerequisites": [
+        "1301203"
+      ],
+      "description": "Introduces database concepts, relational design, SQL, and practical database usage in software applications.",
+      "skills": [
+        "sql",
+        "database design",
+        "data modeling",
+        "data querying"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 1,
+      "code": "1301310",
+      "name": "Design and Analysis of Algorithms",
+      "credits": 3,
+      "prerequisites": [
+        "1301203"
+      ],
+      "description": "Studies advanced algorithm design strategies, correctness, efficiency, and performance analysis for complex computational problems.",
+      "skills": [
+        "algorithm design",
+        "complexity analysis",
+        "optimization thinking",
+        "problem decomposition"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 1,
+      "code": "1301326",
+      "name": "Operating Systems",
+      "credits": 3,
+      "prerequisites": [
+        "1301203"
+      ],
+      "description": "Explores how operating systems manage processes, memory, files, scheduling, and interaction between hardware and software.",
+      "skills": [
+        "process management",
+        "memory management",
+        "system thinking",
+        "resource scheduling"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 1,
+      "code": "1306290",
+      "name": "Programming for Data Science",
+      "credits": 3,
+      "prerequisites": [
+        "1306207"
+      ],
+      "description": "Focuses on practical programming techniques for data analysis, preprocessing, experimentation, and data-driven applications.",
+      "skills": [
+        "data programming",
+        "analysis scripting",
+        "data preprocessing",
+        "computational analysis"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 1,
+      "code": "1306292",
+      "name": "Data Modeling and Simulation",
+      "credits": 3,
+      "prerequisites": [
+        "1301203",
+        "1501212"
+      ],
+      "description": "Introduces methods for modeling data-driven systems and simulating behaviors to study outcomes and support analysis.",
+      "skills": [
+        "modeling",
+        "simulation",
+        "analytical thinking",
+        "system representation"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 1,
+      "code": "1301236",
+      "name": "Web-Based Programming",
+      "credits": 3,
+      "prerequisites": [
+        "1301108"
+      ],
+      "description": "Covers the fundamentals of building web applications, including front-end structure, interactivity, and server-connected web solutions.",
+      "skills": [
+        "web development",
+        "frontend basics",
+        "client-server concepts",
+        "interactive interfaces"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 1,
+      "code": "1301304",
+      "name": "Visual Programming",
+      "credits": 3,
+      "prerequisites": [
+        "1301305"
+      ],
+      "description": "Focuses on event-driven and interface-based software development using visual programming tools and frameworks.",
+      "skills": [
+        "gui development",
+        "event-driven programming",
+        "application design",
+        "visual tools"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 2,
+      "code": "1306294",
+      "name": "Knowledge Representation and Reasoning",
+      "credits": 3,
+      "prerequisites": [
+        "1306102"
+      ],
+      "description": "Explores how knowledge can be structured formally and used by intelligent systems for inference and reasoning.",
+      "skills": [
+        "knowledge modeling",
+        "logical inference",
+        "reasoning systems",
+        "symbolic ai"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 2,
+      "code": "1306293",
+      "name": "Principles of Information Retrieval",
+      "credits": 3,
+      "prerequisites": [
+        "1301305",
+        "1301310"
+      ],
+      "description": "Covers the core concepts behind search systems, indexing, ranking, relevance, and retrieving useful information efficiently.",
+      "skills": [
+        "search systems",
+        "indexing",
+        "ranking",
+        "retrieval concepts"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 2,
+      "code": "1306296",
+      "name": "Data Security",
+      "credits": 3,
+      "prerequisites": [
+        "1301310"
+      ],
+      "description": "Focuses on securing data assets through protection methods, access control, privacy thinking, and safe data handling.",
+      "skills": [
+        "data protection",
+        "privacy awareness",
+        "access control",
+        "secure handling"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 2,
+      "code": "1306314",
+      "name": "Analysis and Design of Intelligent Software Systems",
+      "credits": 3,
+      "prerequisites": [],
+      "description": "Covers the design of software systems that incorporate intelligent behavior, adaptive logic, and AI-aware architecture.",
+      "skills": [
+        "intelligent systems design",
+        "software analysis",
+        "ai integration",
+        "solution architecture"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 2,
+      "code": "1306329",
+      "name": "Big Data Analytics",
+      "credits": 3,
+      "prerequisites": [
+        "1306290"
+      ],
+      "description": "Introduces large-scale data processing and analytical techniques for extracting insights from complex and high-volume datasets.",
+      "skills": [
+        "big data thinking",
+        "large-scale analysis",
+        "data processing",
+        "insight generation"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 2,
+      "code": "1306330",
+      "name": "Machine Learning",
+      "credits": 3,
+      "prerequisites": [
+        "1306291",
+        "1306290"
+      ],
+      "description": "Introduces machine learning concepts, model training, evaluation, and predictive analysis using data-driven techniques.",
+      "skills": [
+        "model training",
+        "prediction",
+        "feature thinking",
+        "machine learning basics"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 2,
+      "code": "1306406",
+      "name": "Data Visualization",
+      "credits": 3,
+      "prerequisites": [
+        "1306329"
+      ],
+      "description": "Focuses on presenting data clearly through charts, dashboards, and visual techniques that support understanding and decisions.",
+      "skills": [
+        "data storytelling",
+        "visual analysis",
+        "dashboard thinking",
+        "communication through visuals"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 2,
+      "code": "1306403",
+      "name": "Neural Networks and Deep Learning",
+      "credits": 3,
+      "prerequisites": [
+        "1306330"
+      ],
+      "description": "Introduces neural network architectures and deep learning methods for solving complex pattern recognition problems.",
+      "skills": [
+        "deep learning",
+        "neural networks",
+        "pattern recognition",
+        "model tuning"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 2,
+      "code": "1306404",
+      "name": "Natural Language Processing",
+      "credits": 3,
+      "prerequisites": [
+        "1306403"
+      ],
+      "description": "Explores computational methods for understanding, processing, and generating human language in intelligent systems.",
+      "skills": [
+        "text processing",
+        "language analysis",
+        "nlp basics",
+        "semantic understanding"
+      ]
+    },
+    {
+      "specialization": "Data Science & Artificial Intelligence",
+      "phase": 2,
+      "code": "1306422",
+      "name": "Business Intelligence",
+      "credits": 3,
+      "prerequisites": [
+        "1306406"
+      ],
+      "description": "Covers data-driven business analysis, reporting, dashboards, and decision-support tools for organizational insight.",
+      "skills": [
+        "business analytics",
+        "reporting",
+        "dashboard design",
+        "decision support"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1301106",
+      "name": "Structured Programming",
+      "credits": 3,
+      "prerequisites": [],
+      "description": "Introduces programming fundamentals such as variables, conditions, loops, functions, and step-by-step problem solving using a structured approach.",
+      "skills": [
+        "programming basics",
+        "problem solving",
+        "control flow",
+        "function design"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1301108",
+      "name": "Object-Oriented Programming (1)",
+      "credits": 3,
+      "prerequisites": [
+        "1301106"
+      ],
+      "description": "Covers object-oriented programming concepts including classes, objects, inheritance, encapsulation, and modular software design.",
+      "skills": [
+        "oop principles",
+        "class design",
+        "code reuse",
+        "software structure"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1501167",
+      "name": "Discrete Structures (1)",
+      "credits": 3,
+      "prerequisites": [],
+      "description": "Builds the mathematical foundation for computing through logic, sets, relations, functions, counting, and proof techniques.",
+      "skills": [
+        "logical reasoning",
+        "mathematical thinking",
+        "proof basics",
+        "discrete math"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1501110",
+      "name": "Calculus (1)",
+      "credits": 3,
+      "prerequisites": [],
+      "description": "Introduces limits, derivatives, and core calculus concepts used in scientific and technical problem solving.",
+      "skills": [
+        "mathematical modeling",
+        "derivatives",
+        "analytical thinking",
+        "quantitative reasoning"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1501212",
+      "name": "Probability and Statistics",
+      "credits": 3,
+      "prerequisites": [
+        "1501110"
+      ],
+      "description": "Covers probability distributions, descriptive statistics, inference, and statistical thinking for data-driven decision making.",
+      "skills": [
+        "statistical reasoning",
+        "probability basics",
+        "data interpretation",
+        "quantitative analysis"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1501230",
+      "name": "Numerical Analysis",
+      "credits": 3,
+      "prerequisites": [
+        "1501110"
+      ],
+      "description": "Studies computational methods for solving numerical problems such as equations, interpolation, and approximation techniques.",
+      "skills": [
+        "numerical methods",
+        "approximation",
+        "computational thinking",
+        "algorithmic accuracy"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1401225",
+      "name": "Computing Ethics and Technical Writing",
+      "credits": 2,
+      "prerequisites": [],
+      "description": "Explores professional ethics in computing together with clear technical communication, documentation, and report writing.",
+      "skills": [
+        "technical writing",
+        "professional ethics",
+        "documentation",
+        "communication"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1401226",
+      "name": "English for IT Students",
+      "credits": 1,
+      "prerequisites": [],
+      "description": "Develops English communication skills needed for technical study, documentation, presentations, and workplace interaction in IT fields.",
+      "skills": [
+        "technical vocabulary",
+        "professional communication",
+        "reading comprehension",
+        "presentation skills"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1301120",
+      "name": "Digital Systems",
+      "credits": 3,
+      "prerequisites": [
+        "1501167"
+      ],
+      "description": "Introduces digital logic, number systems, Boolean algebra, combinational circuits, and the foundations of digital hardware.",
+      "skills": [
+        "digital logic",
+        "boolean algebra",
+        "hardware basics",
+        "circuit reasoning"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1301203",
+      "name": "Data Structures and Algorithms",
+      "credits": 3,
+      "prerequisites": [
+        "1301108",
+        "1501167"
+      ],
+      "description": "Covers essential data structures and algorithm design techniques for organizing data and solving computational problems efficiently.",
+      "skills": [
+        "data organization",
+        "algorithmic thinking",
+        "problem solving",
+        "complexity analysis"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1301222",
+      "name": "Computer Organization and Architecture",
+      "credits": 3,
+      "prerequisites": [
+        "1301120"
+      ],
+      "description": "Explains how computer systems are structured at the hardware level, including processors, memory, instruction execution, and system organization.",
+      "skills": [
+        "computer architecture",
+        "hardware understanding",
+        "system design",
+        "instruction flow"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1301224",
+      "name": "Microcomputer Systems and Assembly Language",
+      "credits": 3,
+      "prerequisites": [
+        "1301120"
+      ],
+      "description": "Introduces low-level programming, processor instructions, registers, memory handling, and system-level problem solving using assembly language.",
+      "skills": [
+        "assembly programming",
+        "low-level computing",
+        "memory handling",
+        "processor operations"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1301236",
+      "name": "Web-Based Programming",
+      "credits": 3,
+      "prerequisites": [
+        "1301108"
+      ],
+      "description": "Covers the fundamentals of building web applications, including front-end structure, interactivity, and server-connected web solutions.",
+      "skills": [
+        "web development",
+        "frontend basics",
+        "client-server concepts",
+        "interactive interfaces"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1301305",
+      "name": "Database and Application of Database",
+      "credits": 3,
+      "prerequisites": [
+        "1301203"
+      ],
+      "description": "Introduces database concepts, relational design, SQL, and practical database usage in software applications.",
+      "skills": [
+        "sql",
+        "database design",
+        "data modeling",
+        "data querying"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1301304",
+      "name": "Visual Programming",
+      "credits": 3,
+      "prerequisites": [
+        "1301305"
+      ],
+      "description": "Focuses on event-driven and interface-based software development using visual programming tools and frameworks.",
+      "skills": [
+        "gui development",
+        "event-driven programming",
+        "application design",
+        "visual tools"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1301310",
+      "name": "Design and Analysis of Algorithms",
+      "credits": 3,
+      "prerequisites": [
+        "1301203"
+      ],
+      "description": "Studies advanced algorithm design strategies, correctness, efficiency, and performance analysis for complex computational problems.",
+      "skills": [
+        "algorithm design",
+        "complexity analysis",
+        "optimization thinking",
+        "problem decomposition"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1301326",
+      "name": "Operating Systems",
+      "credits": 3,
+      "prerequisites": [
+        "1301203"
+      ],
+      "description": "Explores how operating systems manage processes, memory, files, scheduling, and interaction between hardware and software.",
+      "skills": [
+        "process management",
+        "memory management",
+        "system thinking",
+        "resource scheduling"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1301350",
+      "name": "Multimedia Systems",
+      "credits": 3,
+      "prerequisites": [
+        "1301236"
+      ],
+      "description": "Introduces the design and handling of multimedia content such as audio, video, graphics, and interactive media systems.",
+      "skills": [
+        "multimedia concepts",
+        "media processing",
+        "interactive content",
+        "digital content design"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1307101",
+      "name": "Principles of Digital Reality and Game Development",
+      "credits": 3,
+      "prerequisites": [],
+      "description": "Introduces the foundations of digital reality and game development, including immersive concepts, platforms, and design thinking.",
+      "skills": [
+        "xr foundations",
+        "game development basics",
+        "immersive design",
+        "interactive media"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1307102",
+      "name": "Principles of Computer Graphics",
+      "credits": 3,
+      "prerequisites": [
+        "1307101"
+      ],
+      "description": "Covers the fundamentals of computer graphics, visual representation, rendering concepts, and graphical transformations.",
+      "skills": [
+        "computer graphics",
+        "visual rendering",
+        "geometric thinking",
+        "graphics fundamentals"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1307103",
+      "name": "Linear Algebra",
+      "credits": 3,
+      "prerequisites": [
+        "1501110"
+      ],
+      "description": "Introduces vectors, matrices, systems of equations, and linear transformations used across computing, AI, and graphics.",
+      "skills": [
+        "matrix operations",
+        "vector reasoning",
+        "mathematical modeling",
+        "linear systems"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1307104",
+      "name": "Game Design Theories",
+      "credits": 3,
+      "prerequisites": [
+        "1307101"
+      ],
+      "description": "Explores game design principles, mechanics, player experience, and methods for building engaging gameplay systems.",
+      "skills": [
+        "game mechanics",
+        "player experience",
+        "game systems",
+        "design thinking"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 1,
+      "code": "1307203",
+      "name": "Human-Computer Interaction",
+      "credits": 3,
+      "prerequisites": [
+        "1307102"
+      ],
+      "description": "Introduces principles for designing usable, accessible, and user-centered interactive systems and experiences.",
+      "skills": [
+        "user-centered design",
+        "usability",
+        "interaction design",
+        "interface evaluation"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 2,
+      "code": "1307201",
+      "name": "2D and 3D Model Design",
+      "credits": 3,
+      "prerequisites": [
+        "1307102"
+      ],
+      "description": "Builds skills in creating two-dimensional and three-dimensional digital models for interactive and immersive applications.",
+      "skills": [
+        "3d modeling",
+        "asset creation",
+        "digital design",
+        "spatial visualization"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 2,
+      "code": "1307202",
+      "name": "2D and 3D Model Animation",
+      "credits": 3,
+      "prerequisites": [
+        "1307201"
+      ],
+      "description": "Covers techniques for animating 2D and 3D digital models to create motion, interaction, and visual storytelling.",
+      "skills": [
+        "animation basics",
+        "motion design",
+        "asset animation",
+        "visual storytelling"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 2,
+      "code": "1307204",
+      "name": "Game Theory Applications",
+      "credits": 3,
+      "prerequisites": [
+        "1307104"
+      ],
+      "description": "Applies theoretical game concepts and mechanics to practical game systems, balancing, and strategic design.",
+      "skills": [
+        "game balancing",
+        "system design",
+        "strategy modeling",
+        "applied game theory"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 2,
+      "code": "1307303",
+      "name": "Electronic Game Development",
+      "credits": 3,
+      "prerequisites": [
+        "1307202",
+        "1301305"
+      ],
+      "description": "Focuses on building digital games by combining programming, assets, interaction logic, and gameplay implementation.",
+      "skills": [
+        "game programming",
+        "interactive systems",
+        "game production",
+        "technical design"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 2,
+      "code": "1307304",
+      "name": "Game Storyboard Design",
+      "credits": 3,
+      "prerequisites": [
+        "1307202",
+        "1301350"
+      ],
+      "description": "Develops skills for planning game narratives, scene flow, progression, and visual storytelling through structured storyboards.",
+      "skills": [
+        "storyboarding",
+        "narrative design",
+        "visual planning",
+        "creative communication"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 2,
+      "code": "1307403",
+      "name": "Game AI Programming",
+      "credits": 3,
+      "prerequisites": [
+        "1307303"
+      ],
+      "description": "Explores AI techniques for games, including agent behavior, decision systems, pathfinding, and adaptive gameplay logic.",
+      "skills": [
+        "game ai",
+        "agent behavior",
+        "pathfinding",
+        "interactive intelligence"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 2,
+      "code": "1307410",
+      "name": "Virtual Reality Systems Design and Development",
+      "credits": 3,
+      "prerequisites": [
+        "1307202"
+      ],
+      "description": "Covers the design and development of virtual reality systems, immersive experiences, and interaction workflows in VR environments.",
+      "skills": [
+        "vr development",
+        "immersive interaction",
+        "virtual environments",
+        "experience design"
+      ]
+    },
+    {
+      "specialization": "Extended Reality & Games Development",
+      "phase": 2,
+      "code": "1307411",
+      "name": "Augmented Reality Systems Design and Development",
+      "credits": 3,
+      "prerequisites": [
+        "1307410"
+      ],
+      "description": "Focuses on building augmented reality systems that blend digital content with the physical world through interactive experiences.",
+      "skills": [
+        "ar development",
+        "mixed reality",
+        "spatial interaction",
+        "immersive applications"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 1,
+      "code": "1301106",
+      "name": "Structured Programming",
+      "credits": 3,
+      "prerequisites": [],
+      "description": "Introduces programming fundamentals such as variables, conditions, loops, functions, and step-by-step problem solving using a structured approach.",
+      "skills": [
+        "programming basics",
+        "problem solving",
+        "control flow",
+        "function design"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 1,
+      "code": "1301108",
+      "name": "Object-Oriented Programming (1)",
+      "credits": 3,
+      "prerequisites": [
+        "1301106"
+      ],
+      "description": "Covers object-oriented programming concepts including classes, objects, inheritance, encapsulation, and modular software design.",
+      "skills": [
+        "oop principles",
+        "class design",
+        "code reuse",
+        "software structure"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 1,
+      "code": "1501167",
+      "name": "Discrete Structures (1)",
+      "credits": 3,
+      "prerequisites": [],
+      "description": "Builds the mathematical foundation for computing through logic, sets, relations, functions, counting, and proof techniques.",
+      "skills": [
+        "logical reasoning",
+        "mathematical thinking",
+        "proof basics",
+        "discrete math"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 1,
+      "code": "1501110",
+      "name": "Calculus (1)",
+      "credits": 3,
+      "prerequisites": [],
+      "description": "Introduces limits, derivatives, and core calculus concepts used in scientific and technical problem solving.",
+      "skills": [
+        "mathematical modeling",
+        "derivatives",
+        "analytical thinking",
+        "quantitative reasoning"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 1,
+      "code": "1501212",
+      "name": "Probability and Statistics",
+      "credits": 3,
+      "prerequisites": [
+        "1501110"
+      ],
+      "description": "Covers probability distributions, descriptive statistics, inference, and statistical thinking for data-driven decision making.",
+      "skills": [
+        "statistical reasoning",
+        "probability basics",
+        "data interpretation",
+        "quantitative analysis"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 1,
+      "code": "1501230",
+      "name": "Numerical Analysis",
+      "credits": 3,
+      "prerequisites": [
+        "1501110"
+      ],
+      "description": "Studies computational methods for solving numerical problems such as equations, interpolation, and approximation techniques.",
+      "skills": [
+        "numerical methods",
+        "approximation",
+        "computational thinking",
+        "algorithmic accuracy"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 1,
+      "code": "1401225",
+      "name": "Computing Ethics and Technical Writing",
+      "credits": 2,
+      "prerequisites": [],
+      "description": "Explores professional ethics in computing together with clear technical communication, documentation, and report writing.",
+      "skills": [
+        "technical writing",
+        "professional ethics",
+        "documentation",
+        "communication"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 1,
+      "code": "1401226",
+      "name": "English for IT Students",
+      "credits": 1,
+      "prerequisites": [],
+      "description": "Develops English communication skills needed for technical study, documentation, presentations, and workplace interaction in IT fields.",
+      "skills": [
+        "technical vocabulary",
+        "professional communication",
+        "reading comprehension",
+        "presentation skills"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 1,
+      "code": "1301120",
+      "name": "Digital Systems",
+      "credits": 3,
+      "prerequisites": [
+        "1501167"
+      ],
+      "description": "Introduces digital logic, number systems, Boolean algebra, combinational circuits, and the foundations of digital hardware.",
+      "skills": [
+        "digital logic",
+        "boolean algebra",
+        "hardware basics",
+        "circuit reasoning"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 1,
+      "code": "1307103",
+      "name": "Linear Algebra",
+      "credits": 3,
+      "prerequisites": [
+        "1501110"
+      ],
+      "description": "Introduces vectors, matrices, systems of equations, and linear transformations used across computing, AI, and graphics.",
+      "skills": [
+        "matrix operations",
+        "vector reasoning",
+        "mathematical modeling",
+        "linear systems"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 1,
+      "code": "1301203",
+      "name": "Data Structures and Algorithms",
+      "credits": 3,
+      "prerequisites": [
+        "1301108",
+        "1501167"
+      ],
+      "description": "Covers essential data structures and algorithm design techniques for organizing data and solving computational problems efficiently.",
+      "skills": [
+        "data organization",
+        "algorithmic thinking",
+        "problem solving",
+        "complexity analysis"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 1,
+      "code": "1301222",
+      "name": "Computer Organization and Architecture",
+      "credits": 3,
+      "prerequisites": [
+        "1301120"
+      ],
+      "description": "Explains how computer systems are structured at the hardware level, including processors, memory, instruction execution, and system organization.",
+      "skills": [
+        "computer architecture",
+        "hardware understanding",
+        "system design",
+        "instruction flow"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 1,
+      "code": "1301236",
+      "name": "Web-Based Programming",
+      "credits": 3,
+      "prerequisites": [
+        "1301108"
+      ],
+      "description": "Covers the fundamentals of building web applications, including front-end structure, interactivity, and server-connected web solutions.",
+      "skills": [
+        "web development",
+        "frontend basics",
+        "client-server concepts",
+        "interactive interfaces"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 1,
+      "code": "1301305",
+      "name": "Database and Application of Database",
+      "credits": 3,
+      "prerequisites": [
+        "1301203"
+      ],
+      "description": "Introduces database concepts, relational design, SQL, and practical database usage in software applications.",
+      "skills": [
+        "sql",
+        "database design",
+        "data modeling",
+        "data querying"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 1,
+      "code": "1301304",
+      "name": "Visual Programming",
+      "credits": 3,
+      "prerequisites": [
+        "1301305"
+      ],
+      "description": "Focuses on event-driven and interface-based software development using visual programming tools and frameworks.",
+      "skills": [
+        "gui development",
+        "event-driven programming",
+        "application design",
+        "visual tools"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 1,
+      "code": "1301310",
+      "name": "Design and Analysis of Algorithms",
+      "credits": 3,
+      "prerequisites": [
+        "1301203"
+      ],
+      "description": "Studies advanced algorithm design strategies, correctness, efficiency, and performance analysis for complex computational problems.",
+      "skills": [
+        "algorithm design",
+        "complexity analysis",
+        "optimization thinking",
+        "problem decomposition"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 1,
+      "code": "1301326",
+      "name": "Operating Systems",
+      "credits": 3,
+      "prerequisites": [
+        "1301203"
+      ],
+      "description": "Explores how operating systems manage processes, memory, files, scheduling, and interaction between hardware and software.",
+      "skills": [
+        "process management",
+        "memory management",
+        "system thinking",
+        "resource scheduling"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 1,
+      "code": "1305130",
+      "name": "Data Communications and Computer Networks",
+      "credits": 3,
+      "prerequisites": [
+        "1301326"
+      ],
+      "description": "Introduces networking concepts, communication protocols, layered models, routing, and the infrastructure behind connected systems.",
+      "skills": [
+        "network fundamentals",
+        "protocol understanding",
+        "routing concepts",
+        "connectivity basics"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 1,
+      "code": "1302281",
+      "name": "Introduction to Software Engineering",
+      "credits": 3,
+      "prerequisites": [
+        "1301108"
+      ],
+      "description": "Introduces the software engineering lifecycle, development models, teamwork practices, and disciplined software construction.",
+      "skills": [
+        "software lifecycle",
+        "team development",
+        "requirements basics",
+        "engineering mindset"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 1,
+      "code": "1302282",
+      "name": "Requirements Engineering",
+      "credits": 3,
+      "prerequisites": [
+        "1302281"
+      ],
+      "description": "Covers techniques for eliciting, documenting, validating, and managing software requirements throughout development.",
+      "skills": [
+        "requirements analysis",
+        "stakeholder communication",
+        "documentation",
+        "specification writing"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 2,
+      "code": "1302338",
+      "name": "Advanced Internet Computing",
+      "credits": 3,
+      "prerequisites": [
+        "1301236",
+        "1301305"
+      ],
+      "description": "Builds advanced skills for internet-based systems, including scalable web solutions, integration, and online application architecture.",
+      "skills": [
+        "advanced web systems",
+        "internet architecture",
+        "backend integration",
+        "scalable applications"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 2,
+      "code": "1302360",
+      "name": "Database Management Systems",
+      "credits": 3,
+      "prerequisites": [
+        "1301305"
+      ],
+      "description": "Builds deeper understanding of database management, optimization, administration, and reliable data handling at scale.",
+      "skills": [
+        "database administration",
+        "query optimization",
+        "data reliability",
+        "database systems"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 2,
+      "code": "1302370",
+      "name": "Software Project Management",
+      "credits": 3,
+      "prerequisites": [
+        "1302282"
+      ],
+      "description": "Introduces planning, scheduling, teamwork, risk management, and coordination practices for successful software projects.",
+      "skills": [
+        "project planning",
+        "team coordination",
+        "risk management",
+        "software delivery"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 2,
+      "code": "1302371",
+      "name": "Software Design",
+      "credits": 3,
+      "prerequisites": [
+        "1302282"
+      ],
+      "description": "Focuses on designing software solutions using structured design principles, modeling, and maintainable architecture choices.",
+      "skills": [
+        "software modeling",
+        "design principles",
+        "maintainability",
+        "structured thinking"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 2,
+      "code": "1302285",
+      "name": "User Experience Design in Software Engineering",
+      "credits": 3,
+      "prerequisites": [
+        "1301236"
+      ],
+      "description": "Explores user experience methods within software engineering, including usability, interface planning, and design evaluation.",
+      "skills": [
+        "ux design",
+        "usability evaluation",
+        "user research",
+        "interface planning"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 2,
+      "code": "1302390",
+      "name": "Software Architecture",
+      "credits": 3,
+      "prerequisites": [
+        "1302371"
+      ],
+      "description": "Covers high-level software structure, architectural patterns, component relationships, and system quality trade-offs.",
+      "skills": [
+        "architecture patterns",
+        "system structure",
+        "quality attributes",
+        "technical planning"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 2,
+      "code": "1302497",
+      "name": "Component-Based and Distributed Software Engineering",
+      "credits": 3,
+      "prerequisites": [
+        "1302390"
+      ],
+      "description": "Studies how software can be built from reusable components and distributed across multiple systems and services.",
+      "skills": [
+        "distributed systems",
+        "component design",
+        "software integration",
+        "system modularity"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 2,
+      "code": "1302391",
+      "name": "Software Testing and Quality Assurance",
+      "credits": 3,
+      "prerequisites": [
+        "1302371"
+      ],
+      "description": "Introduces testing strategies, validation methods, defect detection, and quality assurance processes in software development.",
+      "skills": [
+        "software testing",
+        "quality assurance",
+        "validation",
+        "defect analysis"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 2,
+      "code": "1302470",
+      "name": "Software Construction and Documentation",
+      "credits": 3,
+      "prerequisites": [
+        "1302390"
+      ],
+      "description": "Focuses on disciplined implementation practices, maintainable code construction, and clear technical documentation.",
+      "skills": [
+        "clean coding",
+        "implementation discipline",
+        "technical documentation",
+        "software maintainability"
+      ]
+    },
+    {
+      "specialization": "Software Engineering",
+      "phase": 2,
+      "code": "1302286",
+      "name": "Artificial Intelligence in Software Engineering",
+      "credits": 3,
+      "prerequisites": [
+        "1301203"
+      ],
+      "description": "Explores how AI techniques can support software engineering activities such as automation, analysis, and intelligent development workflows.",
+      "skills": [
+        "ai in software engineering",
+        "development automation",
+        "intelligent tooling",
+        "process improvement"
+      ]
+    }
+  ]
+}
