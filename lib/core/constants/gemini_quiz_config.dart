@@ -2,7 +2,7 @@ class GeminiQuizConfig {
   const GeminiQuizConfig._();
 
   // Move this out of the client before production release.
-  static const String apiKey = 'AIzaSyDcQFwIsR_pkwL-09SfmNc639ZcMGRJr5Q';
+  static const String apiKey = '<Your-api-Key>';
   static const String model = 'gemini-2.5-flash';
 
   static String get endpoint =>
