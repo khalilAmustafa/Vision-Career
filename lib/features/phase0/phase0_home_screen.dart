@@ -1,5 +1,6 @@
-
 import 'package:flutter/material.dart';
+
+import '../common/widgets/app_drawer.dart';
 import 'fit_questions_screen.dart';
 import 'know_what_i_want_screen.dart';
 
@@ -13,6 +14,7 @@ class Phase0HomeScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFF08111F),
+      drawer: const AppDrawer(),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -31,17 +33,32 @@ class Phase0HomeScreen extends StatelessWidget {
               return SingleChildScrollView(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
                 child: ConstrainedBox(
-                  constraints: BoxConstraints(minHeight: constraints.maxHeight - 40),
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight - 40,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Builder(
+                        builder: (context) => IconButton(
+                          onPressed: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                          icon: const Icon(
+                            Icons.menu,
+                            color: Colors.white,
+                            size: 28,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 6),
                       const _HeaderSection(),
                       const SizedBox(height: 18),
                       _FlowCard(
                         icon: Icons.ads_click_rounded,
                         title: 'I Know What I Want',
                         subtitle:
-                            'Describe what you want to study, build, or become. The AI will suggest specialties that already exist in the app.',
+                        'Describe what you want to study, build, or become. The AI will suggest specialties that already exist in the app.',
                         accentColor: const Color(0xFF57D6FF),
                         onTap: () {
                           Navigator.push(
@@ -57,12 +74,14 @@ class Phase0HomeScreen extends StatelessWidget {
                         icon: Icons.psychology_alt_rounded,
                         title: "I Don't Know Where I Fit",
                         subtitle:
-                            'Interest questions, guided AI chat, and a soft aptitude quiz to help you choose the right specialty.',
+                        'Interest questions, guided AI chat, and a soft aptitude quiz to help you choose the right specialty.',
                         accentColor: const Color(0xFFFFD98A),
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const FitQuestionsScreen()),
+                            MaterialPageRoute(
+                              builder: (_) => const FitQuestionsScreen(),
+                            ),
                           );
                         },
                         isComingSoon: true,
@@ -92,7 +111,7 @@ class Phase0HomeScreen extends StatelessWidget {
                             SizedBox(height: 10),
                             Text(
                               'The AI only recommends specialties that already exist in Vision Career. '
-                              'The app still controls the real path, mapping, and tree opening.',
+                                  'The app still controls the real path, mapping, and tree opening.',
                               style: TextStyle(
                                 color: Colors.white70,
                                 height: 1.45,

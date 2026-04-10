@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../features/auth/auth_gate.dart';
 import 'routes.dart';
 import 'theme.dart';
 
@@ -24,7 +25,7 @@ class _VisionCareerAppState extends State<VisionCareerApp> {
       debugShowCheckedModeBanner: false,
       title: 'Vision Career',
       theme: AppThemes.getTheme(currentTheme),
-      initialRoute: AppRoutes.phase0Home,
+      home: const AuthGate(),
       routes: AppRoutes.routes(changeTheme, currentTheme),
     );
   }
