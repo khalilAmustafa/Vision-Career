@@ -1,0 +1,20 @@
+{
+  "welcomeBack": "Welcome Back",
+  "email": "Email",
+  "password": "Password",
+  "login": "Login",
+  "createAccount": "Create account",
+  "fillFields": "Please fill in all fields.",
+  "loginFailed": "Login failed: {error}",
+  "username": "Username",
+  "age": "Age",
+  "confirmPassword": "Confirm Password",
+  "register": "Register",
+  "alreadyHaveAccount": "Already have an account? Login",
+  "invalidAge": "Enter a valid age.",
+  "passwordTooShort": "Password must be at least 6 characters.",
+  "passwordsDoNotMatch": "Passwords do not match.",
+  "accountCreated": "Account created successfully.",
+  "registerFailed": "Register failed: {error}",
+  "joinVisionCareer": "Join Vision Career"
+}

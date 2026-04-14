@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/services/auth_service.dart';
 import '../../core/services/user_profile_service.dart';
+import '../../l10n/app_localizations.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -33,6 +34,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Future<void> register() async {
     FocusScope.of(context).unfocus();
 
+    final loc = AppLocalizations.of(context)!;
+
     final username = usernameController.text.trim();
     final ageText = ageController.text.trim();
     final email = emailController.text.trim();
@@ -45,7 +48,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         password.isEmpty ||
         confirmPassword.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all fields.')),
+        SnackBar(content: Text(loc.fillFields)),
       );
       return;
     }
@@ -53,23 +56,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final age = int.tryParse(ageText);
     if (age == null || age < 13 || age > 100) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Enter a valid age.')),
+        SnackBar(content: Text(loc.invalidAge)),
       );
       return;
     }
 
     if (password.length < 6) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Password must be at least 6 characters.'),
-        ),
+        SnackBar(content: Text(loc.passwordTooShort)),
       );
       return;
     }
 
     if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Passwords do not match.')),
+        SnackBar(content: Text(loc.passwordsDoNotMatch)),
       );
       return;
     }
@@ -93,15 +94,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
       Navigator.pop(context);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Account created successfully.'),
-        ),
+        SnackBar(content: Text(loc.accountCreated)),
       );
     } catch (e) {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Register failed: $e')),
+        SnackBar(content: Text(loc.registerFailed(e.toString()))),
       );
     } finally {
       if (mounted) {
@@ -141,12 +140,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: const Color(0xFF08111F),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text('Create Account'),
+        title: Text(loc.createAccount),
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -176,9 +177,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text(
-                      'Join Vision Career',
-                      style: TextStyle(
+                    Text(
+                      loc.joinVisionCareer,
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -190,7 +191,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     TextField(
                       controller: usernameController,
                       style: const TextStyle(color: Colors.white),
-                      decoration: _fieldDecoration('Username'),
+                      decoration: _fieldDecoration(loc.username),
                     ),
 
                     const SizedBox(height: 12),
@@ -199,7 +200,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       controller: ageController,
                       keyboardType: TextInputType.number,
                       style: const TextStyle(color: Colors.white),
-                      decoration: _fieldDecoration('Age'),
+                      decoration: _fieldDecoration(loc.age),
                     ),
 
                     const SizedBox(height: 12),
@@ -208,7 +209,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       controller: emailController,
                       keyboardType: TextInputType.emailAddress,
                       style: const TextStyle(color: Colors.white),
-                      decoration: _fieldDecoration('Email'),
+                      decoration: _fieldDecoration(loc.email),
                     ),
 
                     const SizedBox(height: 12),
@@ -218,7 +219,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       obscureText: obscurePassword,
                       style: const TextStyle(color: Colors.white),
                       decoration: _fieldDecoration(
-                        'Password',
+                        loc.password,
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
@@ -242,7 +243,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       obscureText: obscureConfirmPassword,
                       style: const TextStyle(color: Colors.white),
                       decoration: _fieldDecoration(
-                        'Confirm Password',
+                        loc.confirmPassword,
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
@@ -275,7 +276,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             strokeWidth: 2,
                           ),
                         )
-                            : const Text('Register'),
+                            : Text(loc.register),
                       ),
                     ),
 
@@ -285,9 +286,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: const Text(
-                        'Already have an account? Login',
-                      ),
+                      child: Text(loc.alreadyHaveAccount),
                     ),
                   ],
                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/services/auth_service.dart';
+import '../../l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,12 +26,14 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> login() async {
     FocusScope.of(context).unfocus();
 
+    final loc = AppLocalizations.of(context)!;
+
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
 
     if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all fields.')),
+        SnackBar(content: Text(loc.fillFields)),
       );
       return;
     }
@@ -43,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login failed: $e')),
+        SnackBar(content: Text(loc.loginFailed(e.toString()))),
       );
     } finally {
       if (mounted) {
@@ -83,6 +86,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: const Color(0xFF08111F),
       body: Container(
@@ -113,9 +118,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text(
-                      'Welcome Back',
-                      style: TextStyle(
+                    Text(
+                      loc.welcomeBack,
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -127,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: emailController,
                       keyboardType: TextInputType.emailAddress,
                       style: const TextStyle(color: Colors.white),
-                      decoration: _fieldDecoration('Email'),
+                      decoration: _fieldDecoration(loc.email),
                     ),
 
                     const SizedBox(height: 12),
@@ -137,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       obscureText: obscurePassword,
                       style: const TextStyle(color: Colors.white),
                       decoration: _fieldDecoration(
-                        'Password',
+                        loc.password,
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
@@ -169,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             strokeWidth: 2,
                           ),
                         )
-                            : const Text('Login'),
+                            : Text(loc.login),
                       ),
                     ),
 
@@ -179,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () {
                         Navigator.pushNamed(context, '/register');
                       },
-                      child: const Text('Create account'),
+                      child: Text(loc.createAccount),
                     ),
                   ],
                 ),
