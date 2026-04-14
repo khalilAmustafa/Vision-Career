@@ -18,6 +18,9 @@ dependencies:
   firebase_core: ^3.6.0
   firebase_auth: ^5.3.0
   cloud_firestore: ^5.4.4
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:
@@ -26,6 +29,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
 
   assets:
     - assets/data/vision_career_phase1_phase2_master_dataset_rebuilt.json
@@ -33,3 +37,4 @@ flutter:
     - assets/icons/
     - assets/json/
     - assets/json/it_subject_graph.xlsx
+
