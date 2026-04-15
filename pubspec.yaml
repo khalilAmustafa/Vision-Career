@@ -47,4 +47,5 @@ flutter:
     - assets/icons/
     - assets/json/
     - assets/json/it_subject_graph.xlsx
+    - .env
 
