@@ -65,4 +65,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get joinVisionCareer => 'انضم إلى Vision Career';
+
+  @override
+  String get loginSubtitle => 'سجل الدخول للمتابعة';
+
+  @override
+  String get continueAsGuest => 'المتابعة كضيف';
+
+  @override
+  String get or => 'أو';
+
+  @override
+  String get appName => 'مسار';
 }

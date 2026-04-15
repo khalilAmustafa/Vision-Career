@@ -65,4 +65,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get joinVisionCareer => 'Join Vision Career';
+
+  @override
+  String get loginSubtitle => 'Log in to continue';
+
+  @override
+  String get continueAsGuest => 'Continue as guest';
+
+  @override
+  String get or => 'or';
+
+  @override
+  String get appName => 'Masar';
 }

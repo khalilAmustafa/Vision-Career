@@ -202,6 +202,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Join Vision Career'**
   String get joinVisionCareer;
+
+  /// No description provided for @loginSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in to continue'**
+  String get loginSubtitle;
+
+  /// No description provided for @continueAsGuest.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue as guest'**
+  String get continueAsGuest;
+
+  /// No description provided for @or.
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get or;
+
+  /// No description provided for @appName.
+  ///
+  /// In en, this message translates to:
+  /// **'Masar'**
+  String get appName;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
