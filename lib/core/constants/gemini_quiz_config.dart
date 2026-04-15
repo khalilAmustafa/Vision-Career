@@ -1,8 +1,11 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class GeminiQuizConfig {
   const GeminiQuizConfig._();
 
-  // Move this out of the client before production release.
-  static const String apiKey = 'Your api key';
+  // ⚠️ Move this to backend in production
+  static String get apiKey => dotenv.env['GEMINI_API_KEY']!;
+
   static const String model = 'gemini-2.5-flash';
 
   static String get endpoint =>

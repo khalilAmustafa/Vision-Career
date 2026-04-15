@@ -1,32 +1,42 @@
 import 'package:flutter/material.dart';
+import '../core/theme/app_theme.dart';
 import '../features/auth/auth_gate.dart';
 import 'routes.dart';
-import 'theme.dart';
 
-class VisionCareerApp extends StatefulWidget {
+import '../l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+class VisionCareerApp extends StatelessWidget {
   const VisionCareerApp({super.key});
-
-  @override
-  State<VisionCareerApp> createState() => _VisionCareerAppState();
-}
-
-class _VisionCareerAppState extends State<VisionCareerApp> {
-  AppThemePreset currentTheme = AppThemePreset.dark;
-
-  void changeTheme(AppThemePreset theme) {
-    setState(() {
-      currentTheme = theme;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Vision Career',
-      theme: AppThemes.getTheme(currentTheme),
+
+      // 🔹 CHANGE THIS LATER (for switching language)
+      locale: const Locale('en'),
+
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.dark,
+
+      // 🔹 THIS is enough for RTL/LTR
+      supportedLocales: const [
+        Locale('en'),
+        Locale('ar'),
+      ],
+
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+
       home: const AuthGate(),
-      routes: AppRoutes.routes(changeTheme, currentTheme),
+      routes: AppRoutes.routes(),
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../common/widgets/app_drawer.dart';
+import '../../core/widgets/app_drawer.dart';
 import 'fit_questions_screen.dart';
 import 'know_what_i_want_screen.dart';
 

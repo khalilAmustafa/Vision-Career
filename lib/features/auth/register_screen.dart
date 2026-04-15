@@ -1,6 +1,11 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../core/services/auth_service.dart';
 import '../../core/services/user_profile_service.dart';
+import '../../l10n/app_localizations.dart';
+import '../../core/widgets/app_text_field.dart';
+import '../../core/widgets/app_button.dart';
+import '../../core/widgets/app_section_title.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -32,6 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> register() async {
     FocusScope.of(context).unfocus();
+    final loc = AppLocalizations.of(context)!;
 
     final username = usernameController.text.trim();
     final ageText = ageController.text.trim();
@@ -45,7 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         password.isEmpty ||
         confirmPassword.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all fields.')),
+        SnackBar(content: Text(loc.fillFields)),
       );
       return;
     }
@@ -53,23 +59,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final age = int.tryParse(ageText);
     if (age == null || age < 13 || age > 100) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Enter a valid age.')),
+        SnackBar(content: Text(loc.invalidAge)),
       );
       return;
     }
 
     if (password.length < 6) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Password must be at least 6 characters.'),
-        ),
+        SnackBar(content: Text(loc.passwordTooShort)),
       );
       return;
     }
 
     if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Passwords do not match.')),
+        SnackBar(content: Text(loc.passwordsDoNotMatch)),
       );
       return;
     }
@@ -93,15 +97,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
       Navigator.pop(context);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Account created successfully.'),
-        ),
+        SnackBar(content: Text(loc.accountCreated)),
       );
     } catch (e) {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Register failed: $e')),
+        SnackBar(content: Text(loc.registerFailed(e.toString()))),
       );
     } finally {
       if (mounted) {
@@ -110,188 +112,143 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  InputDecoration _fieldDecoration(
-      String hint, {
-        Widget? suffixIcon,
-      }) {
-    return InputDecoration(
-      hintText: hint,
-      hintStyle: const TextStyle(color: Colors.white38),
-      filled: true,
-      fillColor: Colors.white.withOpacity(0.05),
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 18,
-      ),
-      suffixIcon: suffixIcon,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(18),
-        borderSide: BorderSide(
-          color: Colors.white.withOpacity(0.08),
-        ),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(18),
-        borderSide: BorderSide(
-          color: Colors.white.withOpacity(0.08),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: const Color(0xFF08111F),
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
+        title: Text(loc.createAccount),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text('Create Account'),
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFF091321),
-              Color(0xFF0D1A2D),
-              Color(0xFF06101B),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
-              child: Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.05),
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(
-                    color: Colors.white.withOpacity(0.08),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: SizedBox(
+            width: double.infinity,
+            child: Column(
+              children: [
+                const SizedBox(height: 30),
+
+                // 🔥 Header (NO BRAND)
+                AppSectionTitle(
+                  title: loc.createAccount,
+                  subtitle: loc.joinVisionCareer,
+                  showBrand: false, // 🔥 removed Masar
+                ),
+
+                const SizedBox(height: 30),
+
+                // 🔥 THEME-BASED GLASS CARD
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(26),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                    child: Container(
+                      padding: const EdgeInsets.all(22),
+                      decoration: BoxDecoration(
+                        color: theme.cardColor.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(26),
+                        border: Border.all(
+                          color: theme.dividerColor.withOpacity(0.2),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(
+                              theme.brightness == Brightness.dark ? 0.3 : 0.05,
+                            ),
+                            blurRadius: 20,
+                            offset: const Offset(0, 10),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          AppTextField(
+                            controller: usernameController,
+                            hint: loc.username,
+                          ),
+                          const SizedBox(height: 14),
+
+                          AppTextField(
+                            controller: ageController,
+                            hint: loc.age,
+                            keyboardType: TextInputType.number,
+                          ),
+                          const SizedBox(height: 14),
+
+                          AppTextField(
+                            controller: emailController,
+                            hint: loc.email,
+                            keyboardType: TextInputType.emailAddress,
+                          ),
+                          const SizedBox(height: 14),
+
+                          AppTextField(
+                            controller: passwordController,
+                            hint: loc.password,
+                            obscureText: obscurePassword,
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  obscurePassword = !obscurePassword;
+                                });
+                              },
+                              icon: Icon(
+                                obscurePassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 14),
+
+                          AppTextField(
+                            controller: confirmPasswordController,
+                            hint: loc.confirmPassword,
+                            obscureText: obscureConfirmPassword,
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  obscureConfirmPassword =
+                                  !obscureConfirmPassword;
+                                });
+                              },
+                              icon: Icon(
+                                obscureConfirmPassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          AppButton(
+                            text: loc.register,
+                            onPressed: register,
+                            isLoading: isLoading,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text(
-                      'Join Vision Career',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
 
-                    const SizedBox(height: 20),
+                const SizedBox(height: 18),
 
-                    TextField(
-                      controller: usernameController,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: _fieldDecoration('Username'),
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    TextField(
-                      controller: ageController,
-                      keyboardType: TextInputType.number,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: _fieldDecoration('Age'),
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    TextField(
-                      controller: emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: _fieldDecoration('Email'),
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    TextField(
-                      controller: passwordController,
-                      obscureText: obscurePassword,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: _fieldDecoration(
-                        'Password',
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              obscurePassword = !obscurePassword;
-                            });
-                          },
-                          icon: Icon(
-                            obscurePassword
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                            color: Colors.white54,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    TextField(
-                      controller: confirmPasswordController,
-                      obscureText: obscureConfirmPassword,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: _fieldDecoration(
-                        'Confirm Password',
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              obscureConfirmPassword =
-                              !obscureConfirmPassword;
-                            });
-                          },
-                          icon: Icon(
-                            obscureConfirmPassword
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                            color: Colors.white54,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: FilledButton(
-                        onPressed: isLoading ? null : register,
-                        child: isLoading
-                            ? const SizedBox(
-                          width: 22,
-                          height: 22,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ),
-                        )
-                            : const Text('Register'),
-                      ),
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text(
-                        'Already have an account? Login',
-                      ),
-                    ),
-                  ],
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(loc.alreadyHaveAccount),
                 ),
-              ),
+
+                const SizedBox(height: 40),
+              ],
             ),
           ),
         ),

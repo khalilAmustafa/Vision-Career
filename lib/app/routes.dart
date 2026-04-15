@@ -4,7 +4,6 @@ import '../features/college_selection/college_selection_screen.dart';
 import '../features/specialization_selection/specialization_selection_screen.dart';
 import '../features/auth/login_screen.dart';
 import '../features/auth/register_screen.dart';
-import 'theme.dart';
 
 class AppRoutes {
   static const String phase0Home = '/';
@@ -13,20 +12,12 @@ class AppRoutes {
   static const String login = '/login';
   static const String register = '/register';
 
-  static Map<String, WidgetBuilder> routes(
-    void Function(AppThemePreset) onThemeChanged,
-    AppThemePreset currentTheme,
-  ) {
+  static Map<String, WidgetBuilder> routes() {
     return {
-
-      collegeSelection: (_) => CollegeSelectionScreen(
-            currentTheme: currentTheme,
-            onThemeChanged: onThemeChanged,
-          ),
+      collegeSelection: (_) => const CollegeSelectionScreen(),
       specializationSelection: (_) => const SpecializationSelectionScreen(),
-
-      login: (_) => LoginScreen(),
-      register: (_) => RegisterScreen(),
+      login: (_) => const LoginScreen(),
+      register: (_) => const RegisterScreen(),
     };
   }
 }

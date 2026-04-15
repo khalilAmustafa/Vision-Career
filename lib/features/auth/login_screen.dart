@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../core/services/auth_service.dart';
+import '../../l10n/app_localizations.dart';
+import '../../core/widgets/app_text_field.dart';
+import '../../core/widgets/app_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,12 +28,14 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> login() async {
     FocusScope.of(context).unfocus();
 
+    final loc = AppLocalizations.of(context)!;
+
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
 
     if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all fields.')),
+        SnackBar(content: Text(loc.fillFields)),
       );
       return;
     }
@@ -43,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login failed: $e')),
+        SnackBar(content: Text(loc.loginFailed(e.toString()))),
       );
     } finally {
       if (mounted) {
@@ -52,138 +57,144 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  InputDecoration _fieldDecoration(
-      String hint, {
-        Widget? suffixIcon,
-      }) {
-    return InputDecoration(
-      hintText: hint,
-      hintStyle: const TextStyle(color: Colors.white38),
-      filled: true,
-      fillColor: Colors.white.withOpacity(0.05),
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 18,
-      ),
-      suffixIcon: suffixIcon,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(18),
-        borderSide: BorderSide(
-          color: Colors.white.withOpacity(0.08),
-        ),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(18),
-        borderSide: BorderSide(
-          color: Colors.white.withOpacity(0.08),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final isRTL = Directionality.of(context) == TextDirection.rtl;
+
     return Scaffold(
-      backgroundColor: const Color(0xFF08111F),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFF091321),
-              Color(0xFF0D1A2D),
-              Color(0xFF06101B),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
-              child: Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.05),
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(
-                    color: Colors.white.withOpacity(0.08),
-                  ),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text(
-                      'Welcome Back',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: SizedBox(
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment:
+              isRTL ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              children: [
+                const Spacer(),
 
-                    TextField(
-                      controller: emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: _fieldDecoration('Email'),
-                    ),
-
-                    const SizedBox(height: 12),
-
-                    TextField(
-                      controller: passwordController,
-                      obscureText: obscurePassword,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: _fieldDecoration(
-                        'Password',
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              obscurePassword = !obscurePassword;
-                            });
-                          },
-                          icon: Icon(
-                            obscurePassword
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                            color: Colors.white54,
-                          ),
+                // 🔹 Title
+                Align(
+                  alignment:
+                  isRTL ? Alignment.centerRight : Alignment.centerLeft,
+                  child: Column(
+                    crossAxisAlignment:
+                    isRTL ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        loc.welcomeBack,
+                        textAlign:
+                        isRTL ? TextAlign.right : TextAlign.left,
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
+                      const SizedBox(height: 6),
+                      Text(
+                        loc.loginSubtitle ?? "",
+                        textAlign:
+                        isRTL ? TextAlign.right : TextAlign.left,
+                        style: theme.textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 32),
+
+                // 🔹 Email
+                AppTextField(
+                  controller: emailController,
+                  hint: loc.email,
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
+                ),
+
+                const SizedBox(height: 16),
+
+                // 🔹 Password
+                AppTextField(
+                  controller: passwordController,
+                  hint: loc.password,
+                  obscureText: obscurePassword,
+                  textInputAction: TextInputAction.done,
+                  onSubmitted: (_) => login(),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        obscurePassword = !obscurePassword;
+                      });
+                    },
+                    icon: Icon(
+                      obscurePassword
+                          ? Icons.visibility_off
+                          : Icons.visibility,
                     ),
+                  ),
+                ),
 
-                    const SizedBox(height: 20),
+                const SizedBox(height: 24),
 
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: FilledButton(
-                        onPressed: isLoading ? null : login,
-                        child: isLoading
-                            ? const SizedBox(
-                          width: 22,
-                          height: 22,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ),
-                        )
-                            : const Text('Login'),
+                // 🔹 Login Button
+                AppButton(
+                  text: loc.login,
+                  onPressed: login,
+                  isLoading: isLoading,
+                ),
+
+                const SizedBox(height: 20),
+
+                // 🔹 Divider
+                Row(
+                  children: [
+                    const Expanded(child: Divider()),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(
+                        loc.or ?? "or",
+                        style: theme.textTheme.bodySmall,
                       ),
                     ),
-
-                    const SizedBox(height: 12),
-
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/register');
-                      },
-                      child: const Text('Create account'),
-                    ),
+                    const Expanded(child: Divider()),
                   ],
                 ),
-              ),
+
+                const SizedBox(height: 20),
+
+                // 🔹 Guest Button
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    onPressed: () {},
+                    child: Text(
+                      loc.continueAsGuest ?? "Continue as Guest",
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 12),
+
+                // 🔹 Register
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/register');
+                    },
+                    child: Text(loc.createAccount),
+                  ),
+                ),
+
+                const Spacer(),
+              ],
             ),
           ),
         ),
