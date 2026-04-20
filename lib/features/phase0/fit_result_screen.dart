@@ -121,3 +121,4 @@ class _FitResultScreenState extends State<FitResultScreen> {
     );
   }
 }
+

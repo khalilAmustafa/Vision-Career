@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 
-import '../constants/gemini_quiz_config.dart';
 import 'phase0_mapping_service.dart';
 
 class Phase0SpecialtyRecommendation {
@@ -29,7 +27,6 @@ class Phase0SpecialtyRecommendation {
       confidence: _parseConfidence(json['confidence']),
     );
   }
-
   Map<String, dynamic> toJson() {
     return {
       'specialty_key': specialtyKey,
@@ -39,7 +36,6 @@ class Phase0SpecialtyRecommendation {
       'confidence': confidence,
     };
   }
-
   static double _parseConfidence(dynamic value) {
     if (value is num) {
       return value.toDouble().clamp(0.0, 1.0);
@@ -50,6 +46,10 @@ class Phase0SpecialtyRecommendation {
 
 class Phase0GeminiService {
   const Phase0GeminiService();
+
+  // ─────────────────────────────────────────────
+  // PUBLIC METHODS
+  // ─────────────────────────────────────────────
 
   Future<List<Phase0SpecialtyRecommendation>> recommendFromFreeText({
     required String userDescription,
@@ -74,8 +74,7 @@ class Phase0GeminiService {
       responseLanguage: _normalizeResponseLanguage(language),
     );
 
-    final text = await _sendPrompt(prompt);
-    final decoded = jsonDecode(_normalizeJson(text)) as Map<String, dynamic>;
+    final decoded = await _requestJson(prompt);
 
     return _extractRecommendations(
       decoded,
@@ -96,13 +95,13 @@ class Phase0GeminiService {
       responseLanguage: _normalizeResponseLanguage(language),
     );
 
-    final text = await _sendPrompt(prompt);
-    final decoded = jsonDecode(_normalizeJson(text)) as Map<String, dynamic>;
+    final decoded = await _requestJson(prompt);
+
     final rawQuestions = decoded['questions'] as List<dynamic>? ?? const [];
 
     final questions = rawQuestions
-        .map((item) => item.toString().trim())
-        .where((item) => item.isNotEmpty)
+        .map((q) => q.toString().trim())
+        .where((q) => q.isNotEmpty)
         .take(6)
         .toList(growable: false);
 
@@ -124,8 +123,8 @@ class Phase0GeminiService {
       responseLanguage: _normalizeResponseLanguage(language),
     );
 
-    final text = await _sendPrompt(prompt);
-    final decoded = jsonDecode(_normalizeJson(text)) as Map<String, dynamic>;
+    final decoded = await _requestJson(prompt);
+
     final summary = (decoded['summary'] ?? '').toString().trim();
 
     if (summary.isEmpty) {
@@ -150,8 +149,7 @@ class Phase0GeminiService {
       responseLanguage: _normalizeResponseLanguage(language),
     );
 
-    final text = await _sendPrompt(prompt);
-    final decoded = jsonDecode(_normalizeJson(text)) as Map<String, dynamic>;
+    final decoded = await _requestJson(prompt);
 
     return _extractRecommendations(
       decoded,
@@ -161,79 +159,84 @@ class Phase0GeminiService {
     );
   }
 
+  // ─────────────────────────────────────────────
+  // CORE NETWORK LAYER
+  // ─────────────────────────────────────────────
+
+  Future<Map<String, dynamic>> _requestJson(String prompt) async {
+    final response = await http.post(
+      Uri.parse('https://vision-career.onrender.com/recommend'),
+      headers: const {'Content-Type': 'application/json'},
+      body: jsonEncode({"prompt": prompt}),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception(
+        'Backend request failed (${response.statusCode}): ${response.body}',
+      );
+    }
+
+    final body = jsonDecode(response.body);
+
+    if (body['success'] != true) {
+      throw Exception('AI failed: ${body['error']}');
+    }
+
+    final data = body['data'];
+
+    if (data == null) {
+      throw const FormatException('Backend returned empty data.');
+    }
+
+    // Debug (keep this while testing)
+    // ignore: avoid_print
+    print("AI RAW RESPONSE: $data");
+
+    return Map<String, dynamic>.from(data);
+  }
+
+  // ─────────────────────────────────────────────
+  // DATA PROCESSING
+  // ─────────────────────────────────────────────
+
   List<Phase0SpecialtyRecommendation> _extractRecommendations(
-    Map<String, dynamic> decoded,
-    List<Phase0SpecialtyOption> allowedSpecialties, {
-    required int minCount,
-    required int maxCount,
-  }) {
+      Map<String, dynamic> decoded,
+      List<Phase0SpecialtyOption> allowedSpecialties, {
+        required int minCount,
+        required int maxCount,
+      }) {
     final allowedKeys = allowedSpecialties
-        .map((item) => item.specialtyKey.trim().toLowerCase())
-        .where((item) => item.isNotEmpty)
+        .map((e) => e.specialtyKey.trim().toLowerCase())
+        .where((e) => e.isNotEmpty)
         .toSet();
 
-    final rawItems = decoded['suggested_specialties'] as List<dynamic>? ?? const [];
+    final rawItems =
+        decoded['suggested_specialties'] as List<dynamic>? ?? const [];
 
     final recommendations = rawItems
         .whereType<Map<String, dynamic>>()
         .map(Phase0SpecialtyRecommendation.fromJson)
-        .where(
-          (item) =>
-              item.specialtyKey.isNotEmpty &&
-              allowedKeys.contains(item.specialtyKey.toLowerCase()) &&
-              item.title.isNotEmpty &&
-              item.shortDescription.isNotEmpty &&
-              item.fitReason.isNotEmpty,
-        )
+        .where((item) =>
+    item.specialtyKey.isNotEmpty &&
+        allowedKeys.contains(item.specialtyKey.toLowerCase()) &&
+        item.title.isNotEmpty &&
+        item.shortDescription.isNotEmpty &&
+        item.fitReason.isNotEmpty)
         .take(maxCount)
         .toList(growable: false);
 
     if (recommendations.length < minCount) {
       throw const FormatException(
-        'Phase 0 Gemini returned no valid specialties after local validation.',
+        'Phase 0 Gemini returned no valid specialties after validation.',
       );
     }
 
     return recommendations;
   }
 
-  Future<String> _sendPrompt(String prompt) async {
-    final payload = {
-      'contents': [
-        {
-          'parts': [
-            {'text': prompt},
-          ],
-        },
-      ],
-      'generationConfig': {
-        'responseMimeType': 'application/json',
-        'temperature': 0.35,
-        'topP': 0.9,
-      },
-    };
-
-    final response = await http.post(
-      Uri.parse(GeminiQuizConfig.endpoint),
-      headers: const {'Content-Type': 'application/json'},
-      body: jsonEncode(payload),
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception(
-        'Phase 0 Gemini request failed (${response.statusCode}): ${response.body}',
-      );
-    }
-
-    final body = jsonDecode(response.body) as Map<String, dynamic>;
-    final text = _extractText(body);
-
-    if (text.isEmpty) {
-      throw const FormatException('Phase 0 Gemini returned an empty payload.');
-    }
-
-    return text;
-  }
+  // ─────────────────────────────────────────────
+  // PROMPTS (UNCHANGED)
+  // ─────────────────────────────────────────────
 
   String _buildDescriptionPrompt({
     required String userDescription,
@@ -385,38 +388,9 @@ Return ONLY valid JSON in this exact shape:
 ''';
   }
 
-  String _extractText(Map<String, dynamic> json) {
-    final candidates = json['candidates'] as List<dynamic>? ?? const [];
-    if (candidates.isEmpty) return '';
-
-    final firstCandidate = candidates.first as Map<String, dynamic>;
-    final content = firstCandidate['content'] as Map<String, dynamic>? ?? const {};
-    final parts = content['parts'] as List<dynamic>? ?? const [];
-    if (parts.isEmpty) return '';
-
-    final firstPart = parts.first as Map<String, dynamic>;
-    return (firstPart['text'] ?? '').toString().trim();
-  }
-
-  String _normalizeJson(String input) {
-    var output = input.trim();
-
-    if (output.startsWith('```')) {
-      output = output
-          .replaceFirst(RegExp(r'^```json\s*'), '')
-          .replaceFirst(RegExp(r'^```\s*'), '')
-          .replaceFirst(RegExp(r'\s*```$'), '');
-    }
-
-    final startIndex = output.indexOf('{');
-    final endIndex = output.lastIndexOf('}');
-
-    if (startIndex != -1 && endIndex != -1 && endIndex > startIndex) {
-      output = output.substring(startIndex, endIndex + 1);
-    }
-
-    return output.trim();
-  }
+  // ─────────────────────────────────────────────
+  // HELPERS
+  // ─────────────────────────────────────────────
 
   String _normalizeResponseLanguage(String language) {
     final normalized = language.trim().toLowerCase();
