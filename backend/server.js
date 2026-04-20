@@ -46,8 +46,8 @@ app.post("/recommend", async (req, res) => {
   try {
     const body = buildGeminiBody(req.body);
 
-   const response = await fetch(
-     `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`,
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`,
       {
         method: "POST",
         headers: {
@@ -59,21 +59,53 @@ app.post("/recommend", async (req, res) => {
 
     const data = await response.json();
 
-    // ✅ Fail loudly if Gemini error
+    // ❌ Gemini failed
     if (!response.ok) {
       console.error("Gemini error:", data);
-      return res.status(500).json(data);
+      return res.status(500).json({
+        success: false,
+        error: data,
+      });
     }
 
-    // ✅ Extract clean text response
-    const text =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text ?? null;
+    // ✅ Extract text
+    let text =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
+    if (!text) {
+      return res.status(500).json({
+        success: false,
+        error: "Empty response from AI",
+      });
+    }
+
+    // 🔥 Remove markdown ```json blocks
+    text = text
+      .replace(/```json/gi, "")
+      .replace(/```/g, "")
+      .trim();
+
+    let parsed;
+
+    try {
+      parsed = JSON.parse(text);
+    } catch (e) {
+      console.error("❌ JSON parse failed");
+      console.error("RAW TEXT:", text);
+
+      return res.status(500).json({
+        success: false,
+        error: "Invalid JSON from AI",
+        raw: text,
+      });
+    }
+
+    // ✅ FINAL CLEAN RESPONSE
     res.json({
       success: true,
-      text,
-      raw: data, // keep for debugging
+      data: parsed,
     });
+
   } catch (error) {
     console.error("Server error:", error);
     res.status(500).json({
@@ -82,7 +114,6 @@ app.post("/recommend", async (req, res) => {
     });
   }
 });
-
 app.get("/", (req, res) => {
   res.send("Backend is running 🚀");
 });
