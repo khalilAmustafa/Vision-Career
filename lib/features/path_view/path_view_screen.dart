@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 
 import '../../data/models/subject_model.dart';
 import '../../core/widgets/app_drawer.dart';
+import '../../core/services/phase0_mapping_service.dart';
 import '../../core/services/progress_service.dart';
+import '../../l10n/app_localizations.dart';
 
 import '../career/career_selection_screen.dart';
 import '../subject_details/subject_details_screen.dart';
@@ -32,6 +34,8 @@ class PathViewScreen extends StatefulWidget {
 
 class _PathViewScreenState extends State<PathViewScreen> {
   late final PathViewController _controller;
+  String? _collegeAr;
+  String? _specializationAr;
 
   @override
   void initState() {
@@ -41,6 +45,20 @@ class _PathViewScreenState extends State<PathViewScreen> {
       specialization: widget.specialization,
     );
     _controller.loadPath();
+    _loadArNames();
+  }
+
+  Future<void> _loadArNames() async {
+    final mapping = await Phase0MappingService().mapCollegeAndSpecialization(
+      college: widget.college,
+      specialization: widget.specialization,
+    );
+    if (mounted) {
+      setState(() {
+        _collegeAr = mapping?.collegeTitleAr;
+        _specializationAr = mapping?.datasetSpecializationAr;
+      });
+    }
   }
 
   @override
@@ -50,10 +68,6 @@ class _PathViewScreenState extends State<PathViewScreen> {
   }
 
   // ───────────────────────── helpers ─────────────────────────
-
-  bool _isArabic(BuildContext context) {
-    return Localizations.localeOf(context).languageCode == 'ar';
-  }
 
   Future<void> _selectTrack() async {
     await ProgressService().selectTrack(
@@ -65,11 +79,7 @@ class _PathViewScreenState extends State<PathViewScreen> {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
-          _isArabic(context)
-              ? 'تم اختيار المسار بنجاح'
-              : 'Track selected successfully',
-        ),
+        content: Text(AppLocalizations.of(context)!.trackSelectedSuccess),
       ),
     );
   }
@@ -101,8 +111,11 @@ class _PathViewScreenState extends State<PathViewScreen> {
   }
 
   Future<void> _handleNodeLongPress(Subject subject) async {
+    final l10n = AppLocalizations.of(context)!;
+    final subjectName = subject.localizedName(context);
+
     if (_controller.completedSubjects.contains(subject.code)) {
-      _showSnackBar('${subject.name} is already completed.');
+      _showSnackBar(l10n.alreadyCompleted(subjectName));
       return;
     }
 
@@ -111,7 +124,7 @@ class _PathViewScreenState extends State<PathViewScreen> {
           .missingPrerequisitesFor(subject)
           .map((s) => s.localizedName(context))
           .join(', ');
-      _showSnackBar('Complete these first: $missing');
+      _showSnackBar(l10n.completeFirstMessage(missing));
       return;
     }
 
@@ -126,19 +139,19 @@ class _PathViewScreenState extends State<PathViewScreen> {
 
     if (!result.passed) {
       final msg = result.integrityPassed
-          ? 'Score ${result.scorePercent.toStringAsFixed(1)}%. Need 60%.'
-          : 'Integrity violation.';
+          ? l10n.quizScoreNeedMore(result.scorePercent.toStringAsFixed(1))
+          : l10n.integrityViolation;
       _showSnackBar(msg);
       return;
     }
 
     await _controller.markCompleted(subject);
-    _showSnackBar('${subject.name} completed.');
+    if (mounted) _showSnackBar(l10n.subjectCompleted(subjectName));
   }
 
   Future<void> _handleFinalPhaseTap() async {
     if (!_controller.phase1And2Completed) {
-      _showSnackBar('Complete all Phase 1 & 2 first.');
+      _showSnackBar(AppLocalizations.of(context)!.completePhasesFirst);
       return;
     }
 
@@ -171,7 +184,9 @@ class _PathViewScreenState extends State<PathViewScreen> {
 
         if (_controller.errorMessage != null) {
           return Scaffold(
-            appBar: AppBar(title: const Text('Learning Path')),
+            appBar: AppBar(
+              title: Text(AppLocalizations.of(context)!.learningPath),
+            ),
             body: Center(child: Text(_controller.errorMessage!)),
           );
         }
@@ -208,7 +223,7 @@ class _PathViewScreenState extends State<PathViewScreen> {
             ),
           ),
           child: Text(
-            _isArabic(context) ? 'اختيار المسار' : 'Choose Track',
+            AppLocalizations.of(context)!.chooseTrack,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -225,7 +240,7 @@ class _PathViewScreenState extends State<PathViewScreen> {
             ]
                 : [
               theme.colorScheme.surface,
-              theme.colorScheme.surfaceVariant.withOpacity(0.5)
+              theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5)
             ],
           ),
         ),
@@ -240,6 +255,8 @@ class _PathViewScreenState extends State<PathViewScreen> {
                     child: PathHeader(
                       college: widget.college,
                       specialization: widget.specialization,
+                      collegeAr: _collegeAr,
+                      specializationAr: _specializationAr,
                       progress: _controller.progressPercent,
                     ),
                   ),

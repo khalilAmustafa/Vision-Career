@@ -170,5 +170,19 @@
         "browseTracks": "Browse Tracks",
         "searchSpecialty": "Search specialty...",
 
-        "retry": "Retry"
+        "retry": "Retry",
+        "pathHeaderHint": "Tap a node to inspect it. Hold a node to attempt quiz completion. Swipe to explore the full tree.",
+        "chooseTrack": "Choose Track",
+        "trackSelectedSuccess": "Track selected successfully",
+        "alreadyCompleted": "{name} is already completed.",
+        "@alreadyCompleted": { "placeholders": { "name": { "type": "String" } } },
+        "completeFirstMessage": "Complete these first: {subjects}",
+        "@completeFirstMessage": { "placeholders": { "subjects": { "type": "String" } } },
+        "quizScoreNeedMore": "Score {score}%. Need 60%.",
+        "@quizScoreNeedMore": { "placeholders": { "score": { "type": "String" } } },
+        "integrityViolation": "Integrity violation.",
+        "subjectCompleted": "{name} completed.",
+        "@subjectCompleted": { "placeholders": { "name": { "type": "String" } } },
+        "completePhasesFirst": "Complete all Phase 1 & 2 first.",
+        "learningPath": "Learning Path"
 }

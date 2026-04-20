@@ -1030,6 +1030,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose Your Specialty'**
   String get specialtyTitle;
+
+  String get pathHeaderHint;
+
+  String get chooseTrack;
+
+  String get trackSelectedSuccess;
+
+  String alreadyCompleted(Object name);
+
+  String completeFirstMessage(Object subjects);
+
+  String quizScoreNeedMore(Object score);
+
+  String get integrityViolation;
+
+  String subjectCompleted(Object name);
+
+  String get completePhasesFirst;
+
+  String get learningPath;
+
+  String get fitQuestionsTitle;
+
+  String get fitQuestionsHeader;
+
+  String get fitQuestionsSubtitle;
+
+  String fitQuestionsAnswered(Object current, Object total);
+
+  String fitQuestionsContinue(Object current, Object total);
+
+  String get answerAllFirst;
+
+  String fitQuestionsSaveError(Object error);
+
+  String questionLabel(Object index);
+
+  String get fitQuizTitle;
+
+  String get fitQuizHeader;
+
+  String get fitQuizSubtitle;
+
+  String get fitQuizFinishButton;
+
+  String get answerAllQuizFirst;
+
+  String fitQuizSaveError(Object error);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

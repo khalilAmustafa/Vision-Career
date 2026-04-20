@@ -23,9 +23,12 @@ class Phase0HomeScreen extends StatefulWidget {
 
 class _Phase0HomeScreenState extends State<Phase0HomeScreen> {
   final ProgressService _progressService = ProgressService();
+  final Phase0MappingService _mappingService = Phase0MappingService();
 
   String? _college;
   String? _specialization;
+  String? _collegeAr;
+  String? _specializationAr;
   double _progress = 0;
   bool _loading = true;
 
@@ -48,18 +51,25 @@ class _Phase0HomeScreenState extends State<Phase0HomeScreen> {
       specialization: track.specialization,
     );
 
-    await controller.loadPath();
+    final results = await Future.wait([
+      controller.loadPath(),
+      _mappingService.mapCollegeAndSpecialization(
+        college: track.college,
+        specialization: track.specialization,
+      ),
+    ]);
+
+    final mapping = results[1] as Phase0MappedSpecialty?;
 
     setState(() {
       _college = track.college;
       _specialization = track.specialization;
+      _collegeAr = mapping?.collegeTitleAr;
+      _specializationAr = mapping?.datasetSpecializationAr;
       _progress = controller.progressPercent * 100;
       _loading = false;
     });
   }
-
-  bool _isArabic() =>
-      Localizations.localeOf(context).languageCode == 'ar';
 
   Future<void> _openContinue() async {
     if (_college == null || _specialization == null) return;
@@ -130,9 +140,10 @@ class _Phase0HomeScreenState extends State<Phase0HomeScreen> {
                     _HomeProgressCard(
                       college: _college,
                       specialization: _specialization,
+                      collegeAr: _collegeAr,
+                      specializationAr: _specializationAr,
                       progress: _progress,
                       isLoading: _loading,
-                      isArabic: _isArabic(),
                       onContinue: _openContinue,
                       l10n: l10n,
                     ),
@@ -150,18 +161,20 @@ class _Phase0HomeScreenState extends State<Phase0HomeScreen> {
 class _HomeProgressCard extends StatelessWidget {
   final String? college;
   final String? specialization;
+  final String? collegeAr;
+  final String? specializationAr;
   final double progress;
   final bool isLoading;
-  final bool isArabic; // optional, can remove later
   final VoidCallback onContinue;
   final AppLocalizations l10n;
 
   const _HomeProgressCard({
     required this.college,
     required this.specialization,
+    this.collegeAr,
+    this.specializationAr,
     required this.progress,
     required this.isLoading,
-    required this.isArabic,
     required this.onContinue,
     required this.l10n,
   });
@@ -170,6 +183,7 @@ class _HomeProgressCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isRTL = Directionality.of(context) == TextDirection.rtl;
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
 
     if (isLoading) {
       return const Center(child: CircularProgressIndicator());
@@ -190,6 +204,11 @@ class _HomeProgressCard extends StatelessWidget {
       );
     }
 
+    final displaySpecialization =
+        isArabic ? (specializationAr ?? specialization!) : specialization!;
+    final displayCollege =
+        isArabic ? (collegeAr ?? college!) : college!;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -199,34 +218,29 @@ class _HomeProgressCard extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment:
-        isRTL ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            isRTL ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Text(
-            specialization!,
+            displaySpecialization,
             style: theme.textTheme.titleMedium,
             textAlign: isRTL ? TextAlign.right : TextAlign.left,
           ),
           const SizedBox(height: 4),
           Text(
-            college!,
+            displayCollege,
             style: theme.textTheme.bodySmall,
             textAlign: isRTL ? TextAlign.right : TextAlign.left,
           ),
           const SizedBox(height: 12),
-
           LinearProgressIndicator(
             value: (progress / 100).clamp(0.0, 1.0),
           ),
-
           const SizedBox(height: 8),
-
           Text(
             '${l10n.progressLabel}: ${progress.toStringAsFixed(1)}%',
             textAlign: isRTL ? TextAlign.right : TextAlign.left,
           ),
-
           const SizedBox(height: 12),
-
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(

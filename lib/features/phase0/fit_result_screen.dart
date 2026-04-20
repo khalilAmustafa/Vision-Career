@@ -82,19 +82,14 @@ class _FitResultScreenState extends State<FitResultScreen> {
 
     if (_isLoading) {
       return const Scaffold(
-        backgroundColor: Color(0xFF08111F),
         body: Center(child: CircularProgressIndicator()),
       );
     }
 
     if (_errorMessage != null) {
+      final theme = Theme.of(context);
       return Scaffold(
-        backgroundColor: const Color(0xFF08111F),
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          title: Text(l10n.fitResultTitle),
-        ),
+        appBar: AppBar(title: Text(l10n.fitResultTitle)),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(24),
@@ -104,8 +99,7 @@ class _FitResultScreenState extends State<FitResultScreen> {
                 Text(
                   _errorMessage!,
                   textAlign: TextAlign.center,
-                  style:
-                  const TextStyle(color: Colors.white70, height: 1.5),
+                  style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
                 ),
                 const SizedBox(height: 16),
                 FilledButton(

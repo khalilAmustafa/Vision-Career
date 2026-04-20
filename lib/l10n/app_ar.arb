@@ -168,5 +168,15 @@
        "collegeLabel": "الكلية",
        "browseTracks": "تصفح التخصصات",
        "searchSpecialty": "ابحث عن تخصص...",
-       "retry": "إعادة المحاولة"
+       "retry": "إعادة المحاولة",
+       "pathHeaderHint": "اضغط على عقدة لفحصها. اضغط مطولاً لمحاولة إتمام الاختبار. اسحب لاستكشاف الشجرة.",
+       "chooseTrack": "اختيار المسار",
+       "trackSelectedSuccess": "تم اختيار المسار بنجاح",
+       "alreadyCompleted": "{name} مكتمل بالفعل.",
+       "completeFirstMessage": "أكمل هذه أولاً: {subjects}",
+       "quizScoreNeedMore": "النتيجة {score}٪. المطلوب 60٪.",
+       "integrityViolation": "انتهاك سلامة الاختبار.",
+       "subjectCompleted": "تم إكمال {name}.",
+       "completePhasesFirst": "أكمل جميع المراحل 1 و 2 أولاً.",
+       "learningPath": "مسار التعلم"
 }

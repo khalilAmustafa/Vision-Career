@@ -1,22 +1,34 @@
 import 'package:flutter/material.dart';
+import '../../../l10n/app_localizations.dart';
 
 class PathHeader extends StatelessWidget {
   final String college;
   final String specialization;
+  final String? collegeAr;
+  final String? specializationAr;
   final double progress;
 
   const PathHeader({
     super.key,
     required this.college,
     required this.specialization,
+    this.collegeAr,
+    this.specializationAr,
     required this.progress,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final isDark = theme.brightness == Brightness.dark;
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
     final progressPercent = (progress * 100).round();
+
+    final displayCollege =
+        isArabic ? (collegeAr ?? college) : college;
+    final displaySpecialization =
+        isArabic ? (specializationAr ?? specialization) : specialization;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(18, 14, 18, 14),
@@ -28,20 +40,21 @@ class PathHeader extends StatelessWidget {
             colors: isDark
                 ? [const Color(0xFF162338), const Color(0xFF0E1C2F)]
                 : [
-                    theme.colorScheme.surfaceVariant,
-                    theme.colorScheme.surfaceVariant.withOpacity(0.7),
+                    theme.colorScheme.surfaceContainerHighest,
+                    theme.colorScheme.surfaceContainerHighest
+                        .withValues(alpha: 0.7),
                   ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           border: Border.all(
             color: isDark
-                ? const Color(0xFF57D6FF).withOpacity(0.18)
-                : theme.colorScheme.outline.withOpacity(0.1),
+                ? const Color(0xFF57D6FF).withValues(alpha: 0.18)
+                : theme.colorScheme.outline.withValues(alpha: 0.1),
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(isDark ? 0.28 : 0.05),
+              color: Colors.black.withValues(alpha: isDark ? 0.28 : 0.05),
               blurRadius: 18,
               offset: const Offset(0, 10),
             ),
@@ -51,7 +64,7 @@ class PathHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              college,
+              displayCollege,
               style: TextStyle(
                 color: isDark
                     ? const Color(0xFF8EDFFF)
@@ -63,7 +76,7 @@ class PathHeader extends StatelessWidget {
             ),
             const SizedBox(height: 6),
             Text(
-              specialization,
+              displaySpecialization,
               style: TextStyle(
                 color: isDark ? Colors.white : theme.colorScheme.onSurface,
                 fontSize: 26,
@@ -73,7 +86,7 @@ class PathHeader extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              'Tap a node to inspect it. Hold a node to try marking it complete through the quiz gate. Swipe left or right to view the full tree.',
+              l10n.pathHeaderHint,
               style: TextStyle(
                 color: isDark
                     ? Colors.white70
@@ -88,8 +101,8 @@ class PathHeader extends StatelessWidget {
                 value: progress,
                 minHeight: 10,
                 backgroundColor: isDark
-                    ? Colors.white.withOpacity(0.08)
-                    : Colors.black.withOpacity(0.05),
+                    ? Colors.white.withValues(alpha: 0.08)
+                    : Colors.black.withValues(alpha: 0.05),
                 valueColor: AlwaysStoppedAnimation(
                   isDark
                       ? const Color(0xFFFFD54F)
@@ -99,7 +112,7 @@ class PathHeader extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Progress: $progressPercent%',
+              '${l10n.progressLabel}: $progressPercent%',
               style: TextStyle(
                 color: isDark
                     ? Colors.white70

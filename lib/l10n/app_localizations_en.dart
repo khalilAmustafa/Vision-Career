@@ -517,4 +517,76 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get specialtyTitle => 'Choose Your Specialty';
+
+  @override
+  String get pathHeaderHint => 'Tap a node to inspect it. Hold a node to attempt quiz completion. Swipe to explore the full tree.';
+
+  @override
+  String get chooseTrack => 'Choose Track';
+
+  @override
+  String get trackSelectedSuccess => 'Track selected successfully';
+
+  @override
+  String alreadyCompleted(Object name) => '$name is already completed.';
+
+  @override
+  String completeFirstMessage(Object subjects) => 'Complete these first: $subjects';
+
+  @override
+  String quizScoreNeedMore(Object score) => 'Score $score%. Need 60%.';
+
+  @override
+  String get integrityViolation => 'Integrity violation.';
+
+  @override
+  String subjectCompleted(Object name) => '$name completed.';
+
+  @override
+  String get completePhasesFirst => 'Complete all Phase 1 & 2 first.';
+
+  @override
+  String get learningPath => 'Learning Path';
+
+  @override
+  String get fitQuestionsTitle => 'Find Your Fit • Stage 1';
+
+  @override
+  String get fitQuestionsHeader => 'Preference Questions';
+
+  @override
+  String get fitQuestionsSubtitle => 'Answer the scenario questions honestly. This stage is only trying to understand your natural direction before the AI chat and fundamentals quiz.';
+
+  @override
+  String fitQuestionsAnswered(Object current, Object total) => '$current/$total answered';
+
+  @override
+  String fitQuestionsContinue(Object current, Object total) => 'Continue to AI Chat ($current/$total)';
+
+  @override
+  String get answerAllFirst => 'Answer all questions first.';
+
+  @override
+  String fitQuestionsSaveError(Object error) => 'Could not save your answers: $error';
+
+  @override
+  String questionLabel(Object index) => 'Question $index';
+
+  @override
+  String get fitQuizTitle => 'Find Your Fit • Stage 3';
+
+  @override
+  String get fitQuizHeader => 'Academic Readiness Quiz';
+
+  @override
+  String get fitQuizSubtitle => 'This quiz focuses on finance, mathematics, physics, and chemistry signals to strengthen your profile.';
+
+  @override
+  String get fitQuizFinishButton => 'See My Specialty Suggestions';
+
+  @override
+  String get answerAllQuizFirst => 'Answer all quiz questions first.';
+
+  @override
+  String fitQuizSaveError(Object error) => 'Could not save quiz results: $error';
 }

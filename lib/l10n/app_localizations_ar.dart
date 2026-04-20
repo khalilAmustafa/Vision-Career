@@ -517,4 +517,76 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get specialtyTitle => 'اختر تخصصك';
+
+  @override
+  String get pathHeaderHint => 'اضغط على عقدة لفحصها. اضغط مطولاً لمحاولة إتمام الاختبار. اسحب لاستكشاف الشجرة.';
+
+  @override
+  String get chooseTrack => 'اختيار المسار';
+
+  @override
+  String get trackSelectedSuccess => 'تم اختيار المسار بنجاح';
+
+  @override
+  String alreadyCompleted(Object name) => '$name مكتمل بالفعل.';
+
+  @override
+  String completeFirstMessage(Object subjects) => 'أكمل هذه أولاً: $subjects';
+
+  @override
+  String quizScoreNeedMore(Object score) => 'النتيجة $score٪. المطلوب 60٪.';
+
+  @override
+  String get integrityViolation => 'انتهاك سلامة الاختبار.';
+
+  @override
+  String subjectCompleted(Object name) => 'تم إكمال $name.';
+
+  @override
+  String get completePhasesFirst => 'أكمل جميع المراحل 1 و 2 أولاً.';
+
+  @override
+  String get learningPath => 'مسار التعلم';
+
+  @override
+  String get fitQuestionsTitle => 'اكتشف مسارك • المرحلة 1';
+
+  @override
+  String get fitQuestionsHeader => 'أسئلة التفضيلات';
+
+  @override
+  String get fitQuestionsSubtitle => 'أجب على أسئلة السيناريوهات بصدق. تهدف هذه المرحلة إلى فهم اتجاهك الطبيعي قبل محادثة الذكاء الاصطناعي واختبار الأساسيات.';
+
+  @override
+  String fitQuestionsAnswered(Object current, Object total) => '$current/$total تم الإجابة عليها';
+
+  @override
+  String fitQuestionsContinue(Object current, Object total) => 'المتابعة إلى محادثة الذكاء الاصطناعي ($current/$total)';
+
+  @override
+  String get answerAllFirst => 'أجب على جميع الأسئلة أولاً.';
+
+  @override
+  String fitQuestionsSaveError(Object error) => 'تعذر حفظ إجاباتك: $error';
+
+  @override
+  String questionLabel(Object index) => 'السؤال $index';
+
+  @override
+  String get fitQuizTitle => 'اكتشف مسارك • المرحلة 3';
+
+  @override
+  String get fitQuizHeader => 'اختبار الاستعداد الأكاديمي';
+
+  @override
+  String get fitQuizSubtitle => 'يركز هذا الاختبار على إشارات المالية والرياضيات والفيزياء والكيمياء لتقوية ملفك الشخصي.';
+
+  @override
+  String get fitQuizFinishButton => 'اعرض اقتراحات تخصصي';
+
+  @override
+  String get answerAllQuizFirst => 'أجب على جميع أسئلة الاختبار أولاً.';
+
+  @override
+  String fitQuizSaveError(Object error) => 'تعذر حفظ نتائج الاختبار: $error';
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../core/services/phase0_mapping_service.dart';
 import '../../core/services/progress_service.dart';
 import '../../core/services/user_profile_service.dart';
 import '../../core/widgets/app_drawer.dart';
@@ -18,9 +19,12 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final ProgressService _progressService = ProgressService();
+  final Phase0MappingService _mappingService = Phase0MappingService();
 
   String? _college;
   String? _specialization;
+  String? _collegeAr;
+  String? _specializationAr;
   double _progress = 0;
 
   bool _loadingProgress = true;
@@ -44,11 +48,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
       specialization: track.specialization,
     );
 
-    await controller.loadPath();
+    final results = await Future.wait([
+      controller.loadPath(),
+      _mappingService.mapCollegeAndSpecialization(
+        college: track.college,
+        specialization: track.specialization,
+      ),
+    ]);
+
+    final mapping = results[1] as Phase0MappedSpecialty?;
 
     setState(() {
       _college = track.college;
       _specialization = track.specialization;
+      _collegeAr = mapping?.collegeTitleAr;
+      _specializationAr = mapping?.datasetSpecializationAr;
       _progress = controller.progressPercent * 100;
       _loadingProgress = false;
     });
@@ -95,7 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ]
                 : [
               theme.colorScheme.surface,
-              theme.colorScheme.surfaceVariant.withOpacity(0.5),
+              theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -160,8 +174,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(28),
-        color: theme.colorScheme.surfaceVariant.withOpacity(0.2),
-        border: Border.all(color: theme.dividerColor.withOpacity(0.1)),
+        color: theme.cardColor,
+        border: Border.all(color: theme.dividerColor),
       ),
       child: Column(
         children: [
@@ -192,41 +206,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (_college == null) {
       return Text(
-        l10n.noTrackSelected ,
+        l10n.noTrackSelected,
         style: theme.textTheme.bodyMedium,
       );
     }
+
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    final displaySpecialization =
+        isArabic ? (_specializationAr ?? _specialization!) : _specialization!;
+    final displayCollege =
+        isArabic ? (_collegeAr ?? _college!) : _college!;
 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceVariant.withOpacity(0.2),
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: theme.dividerColor),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            _specialization!,
+            displaySpecialization,
             style: theme.textTheme.titleMedium
                 ?.copyWith(fontWeight: FontWeight.bold),
           ),
           Text(
-            _college!,
+            displayCollege,
             style: theme.textTheme.bodyMedium
                 ?.copyWith(color: theme.hintColor),
           ),
           const SizedBox(height: 12),
-
           LinearProgressIndicator(
             value: (_progress / 100).clamp(0.0, 1.0),
           ),
-
           const SizedBox(height: 8),
-
           Text(
-            '${l10n.progress }: ${_progress.toStringAsFixed(1)}%',
+            '${l10n.progress}: ${_progress.toStringAsFixed(1)}%',
             style: theme.textTheme.bodySmall,
           ),
         ],
@@ -277,8 +295,9 @@ class _InfoCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceVariant.withOpacity(0.2),
+        color: theme.cardColor,
         borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: theme.dividerColor),
       ),
       child: Row(
         children: [
