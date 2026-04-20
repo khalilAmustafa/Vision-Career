@@ -15,124 +15,109 @@ if (!GEMINI_KEY) {
   console.error("❌ GEMINI_API_KEY is missing");
 }
 
-// ─────────────────────────────────────────────
-// Helper: Build Gemini Request
-// ─────────────────────────────────────────────
-function buildGeminiBody(input) {
-  const promptText = input.prompt
-    ? input.prompt
-    : JSON.stringify(input);
-
-  return {
-    contents: [
-      {
-        parts: [{ text: promptText }],
-      },
-    ],
-    generationConfig: {
-      responseMimeType: "application/json", // 🔥 FORCE JSON OUTPUT
-      temperature: 0.4,
-      topP: 0.9,
-    },
-  };
-}
+const GEMINI_URL =
+  `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`;
 
 // ─────────────────────────────────────────────
-// Helper: Extract JSON safely
+// Helper: extract first valid JSON object from text
 // ─────────────────────────────────────────────
 function extractJson(text) {
   if (!text) return null;
 
-  try {
-    return JSON.parse(text);
-  } catch {
-    // fallback: try to extract JSON block
-    const start = text.indexOf("{");
-    const end = text.lastIndexOf("}");
+  // strip markdown fences
+  let cleaned = text
+    .replace(/^```json\s*/i, "")
+    .replace(/^```\s*/i, "")
+    .replace(/\s*```$/i, "")
+    .trim();
 
-    if (start !== -1 && end !== -1) {
+  // try direct parse first
+  try {
+    return JSON.parse(cleaned);
+  } catch {
+    // fall back to extracting the outermost { ... } block
+    const start = cleaned.indexOf("{");
+    const end = cleaned.lastIndexOf("}");
+    if (start !== -1 && end !== -1 && end > start) {
       try {
-        return JSON.parse(text.substring(start, end + 1));
+        return JSON.parse(cleaned.substring(start, end + 1));
       } catch {
         return null;
       }
     }
-
     return null;
   }
 }
 
 // ─────────────────────────────────────────────
-// MAIN ROUTE
+// POST /recommend
 // ─────────────────────────────────────────────
 app.post("/recommend", async (req, res) => {
   try {
-    const body = buildGeminiBody(req.body);
+    const promptText = req.body.prompt
+      ? req.body.prompt
+      : JSON.stringify(req.body);
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${GEMINI_KEY}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    const geminiBody = {
+      contents: [
+        {
+          parts: [{ text: promptText }],
         },
-        body: JSON.stringify(body),
-      }
-    );
+      ],
+      generationConfig: {
+        temperature: 0.4,
+        topP: 0.9,
+      },
+    };
 
-    const data = await response.json();
+    const geminiRes = await fetch(GEMINI_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(geminiBody),
+    });
 
-    if (!response.ok) {
-      console.error("❌ Gemini error:", data);
-      return res.status(500).json({
+    const geminiData = await geminiRes.json();
+
+    if (!geminiRes.ok) {
+      console.error("❌ Gemini API failure:", JSON.stringify(geminiData));
+      return res.status(502).json({
         success: false,
         error: "Gemini API error",
-        details: data,
+        details: geminiData,
       });
     }
 
     const text =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+      geminiData?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
 
     const parsed = extractJson(text);
 
     if (!parsed) {
-      console.error("❌ Invalid JSON from AI:", text);
-      return res.status(500).json({
+      console.error("❌ JSON parsing failure. Raw text:", text);
+      return res.status(422).json({
         success: false,
         error: "Invalid JSON from AI",
         raw: text,
       });
     }
 
-    // ✅ FINAL RESPONSE (what your Flutter expects)
-    res.json({
-      success: true,
-      data: parsed,
-    });
+    return res.json({ success: true, data: parsed });
 
   } catch (error) {
     console.error("❌ Server error:", error);
-
-    res.status(500).json({
-      success: false,
-      error: error.message,
-    });
+    return res.status(500).json({ success: false, error: error.message });
   }
 });
 
 // ─────────────────────────────────────────────
-// HEALTH CHECK
+// Health check
 // ─────────────────────────────────────────────
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
   res.send("Backend is running 🚀");
 });
 
 // ─────────────────────────────────────────────
-// START SERVER
+// Start
 // ─────────────────────────────────────────────
 const PORT = process.env.PORT || 10000;
-
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
