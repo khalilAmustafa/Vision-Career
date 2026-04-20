@@ -56,3 +56,27 @@ ios/Flutter/flutter_export_environment.sh
 ios/Flutter/Generated.xcconfig
 android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
 .env
+# Flutter
+.build/
+.dart_tool/
+.packages
+pubspec.lock
+
+# Node
+node_modules/
+backend/node_modules/
+
+# Firebase (we are not using functions now)
+functions/
+
+# AI junk
+.agents/
+.claude/
+skills-lock.json
+
+# Env
+.env
+
+# OS
+.DS_Store
+Thumbs.db
