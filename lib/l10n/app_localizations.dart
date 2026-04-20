@@ -209,12 +209,6 @@ abstract class AppLocalizations {
   /// **'Log in to continue'**
   String get loginSubtitle;
 
-  /// No description provided for @continueAsGuest.
-  ///
-  /// In en, this message translates to:
-  /// **'Continue as guest'**
-  String get continueAsGuest;
-
   /// No description provided for @or.
   ///
   /// In en, this message translates to:
