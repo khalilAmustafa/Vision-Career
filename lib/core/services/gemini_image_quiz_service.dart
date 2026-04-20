@@ -45,47 +45,36 @@ class GeminiImageQuizService {
       responseLanguage: _normalizeResponseLanguage(language),
     );
 
-    final payload = {
-      'contents': [
-        {
-          'parts': [
-            {'text': prompt},
-            {
-              'inlineData': {
-                'mimeType': mimeType,
-                'data': base64Encode(bytes),
-              }
-            },
-          ],
-        },
-      ],
-      'generationConfig': {
-        'responseMimeType': 'application/json',
-        'temperature': 0.2,
-        'topP': 0.9,
-      },
-    };
-
     final response = await http.post(
-      Uri.parse(GeminiQuizConfig.endpoint),
+      Uri.parse(GeminiQuizConfig.backendUrl),
       headers: const {'Content-Type': 'application/json'},
-      body: jsonEncode(payload),
+      body: jsonEncode({
+        'prompt': prompt,
+        'image': base64Encode(bytes),
+        'mimeType': mimeType,
+      }),
     );
 
     if (response.statusCode != 200) {
       throw HttpException(
-        'Gemini image grading failed (${response.statusCode}): ${response.body}',
+        'Image grading backend request failed (${response.statusCode}): ${response.body}',
       );
     }
 
     final body = jsonDecode(response.body) as Map<String, dynamic>;
-    final text = _extractText(body);
-    if (text.isEmpty) {
-      throw const FormatException('Gemini image grading returned empty text.');
+
+    if (body['success'] != true) {
+      throw Exception('AI failed: ${body['error']}');
     }
 
-    final normalized = _normalizeJson(text);
-    final decoded = jsonDecode(normalized) as Map<String, dynamic>;
+    final data = body['data'];
+    if (data == null) {
+      throw const FormatException('Image grading backend returned empty data.');
+    }
+
+    final decoded = Map<String, dynamic>.from(data as Map);
+    print("AI RESPONSE: $decoded");
+
     final evaluation = ImageQuizEvaluation.fromJson(decoded);
 
     if (evaluation.feedback.isEmpty) {
@@ -156,39 +145,6 @@ Evaluate the uploaded image and return ONLY this JSON shape:
   "rubric_checks": ["item", "item"]
 }
 ''';
-  }
-
-  String _extractText(Map<String, dynamic> json) {
-    final candidates = json['candidates'] as List<dynamic>? ?? const [];
-    if (candidates.isEmpty) return '';
-
-    final firstCandidate = candidates.first as Map<String, dynamic>;
-    final content = firstCandidate['content'] as Map<String, dynamic>? ?? const {};
-    final parts = content['parts'] as List<dynamic>? ?? const [];
-    if (parts.isEmpty) return '';
-
-    final firstPart = parts.first as Map<String, dynamic>;
-    return (firstPart['text'] ?? '').toString().trim();
-  }
-
-  String _normalizeJson(String input) {
-    var output = input.trim();
-
-    if (output.startsWith('```')) {
-      output = output
-          .replaceFirst(RegExp(r'^```json\s*'), '')
-          .replaceFirst(RegExp(r'^```\s*'), '')
-          .replaceFirst(RegExp(r'\s*```$'), '');
-    }
-
-    final startIndex = output.indexOf('{');
-    final endIndex = output.lastIndexOf('}');
-
-    if (startIndex == -1 || endIndex == -1 || endIndex <= startIndex) {
-      throw const FormatException('Could not isolate JSON object from Gemini image grading response.');
-    }
-
-    return output.substring(startIndex, endIndex + 1).trim();
   }
 
   String _normalizeResponseLanguage(String language) {

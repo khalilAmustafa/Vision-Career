@@ -89,8 +89,7 @@ class CareerLlmService {
       responseLanguage: _normalizeResponseLanguage(language),
     );
 
-    final text = await _sendPrompt(prompt);
-    final decoded = jsonDecode(_normalizeJson(text)) as Map<String, dynamic>;
+    final decoded = await _requestJson(prompt);
     final rawJobs = decoded['jobs'] as List<dynamic>? ?? const [];
 
     final jobs = rawJobs
@@ -126,8 +125,7 @@ class CareerLlmService {
       responseLanguage: _normalizeResponseLanguage(language),
     );
 
-    final text = await _sendPrompt(prompt);
-    final decoded = jsonDecode(_normalizeJson(text)) as Map<String, dynamic>;
+    final decoded = await _requestJson(prompt);
     final rawTopics = decoded['topics'] as List<dynamic>? ?? const [];
 
     final topics = rawTopics
@@ -148,44 +146,32 @@ class CareerLlmService {
     return topics;
   }
 
-  Future<String> _sendPrompt(String prompt) async {
-    final payload = {
-      'contents': [
-        {
-          'parts': [
-            {'text': prompt},
-          ],
-        },
-      ],
-      'generationConfig': {
-        'responseMimeType': 'application/json',
-        'temperature': 0.4,
-        'topP': 0.9,
-      },
-    };
-
+  Future<Map<String, dynamic>> _requestJson(String prompt) async {
     final response = await http.post(
-      Uri.parse(GeminiQuizConfig.endpoint),
-      headers: const {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(payload),
+      Uri.parse(GeminiQuizConfig.backendUrl),
+      headers: const {'Content-Type': 'application/json'},
+      body: jsonEncode({'prompt': prompt}),
     );
 
     if (response.statusCode != 200) {
       throw Exception(
-        'Career LLM request failed (${response.statusCode}): ${response.body}',
+        'Career LLM backend request failed (${response.statusCode}): ${response.body}',
       );
     }
 
     final body = jsonDecode(response.body) as Map<String, dynamic>;
-    final text = _extractText(body);
 
-    if (text.isEmpty) {
-      throw const FormatException('Career LLM returned an empty payload.');
+    if (body['success'] != true) {
+      throw Exception('AI failed: ${body['error']}');
     }
 
-    return text;
+    final data = body['data'];
+
+    if (data == null) {
+      throw const FormatException('Career LLM backend returned empty data.');
+    }
+
+    return Map<String, dynamic>.from(data as Map);
   }
 
   String _buildJobSuggestionPrompt({
@@ -280,40 +266,6 @@ Return ONLY valid JSON in this exact shape:
   ]
 }
 ''';
-  }
-
-  String _extractText(Map<String, dynamic> json) {
-    final candidates = json['candidates'] as List<dynamic>? ?? const [];
-    if (candidates.isEmpty) return '';
-
-    final firstCandidate = candidates.first as Map<String, dynamic>;
-    final content =
-        firstCandidate['content'] as Map<String, dynamic>? ?? const {};
-    final parts = content['parts'] as List<dynamic>? ?? const [];
-    if (parts.isEmpty) return '';
-
-    final firstPart = parts.first as Map<String, dynamic>;
-    return (firstPart['text'] ?? '').toString().trim();
-  }
-
-  String _normalizeJson(String input) {
-    var output = input.trim();
-
-    if (output.startsWith('```')) {
-      output = output
-          .replaceFirst(RegExp(r'^```json\s*'), '')
-          .replaceFirst(RegExp(r'^```\s*'), '')
-          .replaceFirst(RegExp(r'\s*```$'), '');
-    }
-
-    final startIndex = output.indexOf('{');
-    final endIndex = output.lastIndexOf('}');
-
-    if (startIndex != -1 && endIndex != -1 && endIndex > startIndex) {
-      output = output.substring(startIndex, endIndex + 1);
-    }
-
-    return output.trim();
   }
 
   String _normalizeResponseLanguage(String language) {

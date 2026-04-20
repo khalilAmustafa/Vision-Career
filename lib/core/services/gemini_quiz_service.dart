@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../constants/gemini_quiz_config.dart';
@@ -25,46 +26,31 @@ class GeminiQuizService {
       );
 
       final response = await http.post(
-        Uri.parse(GeminiQuizConfig.endpoint),
+        Uri.parse(GeminiQuizConfig.backendUrl),
         headers: const {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'contents': [
-            {
-              'parts': [
-                {'text': prompt},
-              ],
-            }
-          ],
-          'generationConfig': {
-            'responseMimeType': 'application/json',
-            'temperature': 0.2,
-            'topP': 0.85,
-          },
-        }),
+        body: jsonEncode({'prompt': prompt}),
       );
 
       if (response.statusCode != 200) {
         throw Exception(
-          'Gemini quiz request failed (${response.statusCode}): ${response.body}',
+          'Quiz backend request failed (${response.statusCode}): ${response.body}',
         );
       }
 
-      final decoded = jsonDecode(response.body) as Map<String, dynamic>;
-      final text = _extractText(decoded);
+      final body = jsonDecode(response.body) as Map<String, dynamic>;
 
-      if (text.isEmpty) {
-        throw const FormatException('Gemini returned empty quiz payload.');
+      if (body['success'] != true) {
+        throw Exception('AI failed: ${body['error']}');
       }
 
-      final normalized = _normalizeJson(text);
-      final jsonData = jsonDecode(normalized) as Map<String, dynamic>;
+      final jsonData = Map<String, dynamic>.from(body['data'] as Map);
       final quiz = _parseGeneratedQuiz(jsonData);
 
       _validateQuiz(quiz);
 
       return quiz;
     } catch (e) {
-      print('QUIZ ERROR: $e');
+      debugPrint('QUIZ ERROR: $e');
       return _fallbackQuiz(subject: subject, college: college);
     }
   }
@@ -133,13 +119,13 @@ QUIZ SELECTION RULES:
 
 OUTPUT RULES:
 - Return EXACTLY ONE quiz
-- Return ONLY valid JSON
-- No markdown
-- No code fences
-- No explanation outside JSON
+- You MUST return ONLY valid JSON
+- Your entire response MUST be a single JSON object
+- Do NOT include any text before or after the JSON
+- Do NOT include markdown or ```json blocks
+- Do NOT include explanations
 - Never return empty required fields
-- Write all user-facing text content in $responseLanguage
-- Keep JSON keys, quiz_type values, and difficulty_tag values exactly as specified in English
+- If you cannot follow the format exactly, return {}
 
 JSON FORMAT:
 {
@@ -206,39 +192,6 @@ Now generate the quiz.
   bool _isEngineeringCollege(String normalizedCollege) {
     return normalizedCollege.contains('engineering') ||
         normalizedCollege.contains('engineer');
-  }
-
-  String _extractText(Map<String, dynamic> json) {
-    final candidates = json['candidates'] as List<dynamic>? ?? const [];
-    if (candidates.isEmpty) return '';
-
-    final firstCandidate = candidates.first as Map<String, dynamic>;
-    final content = firstCandidate['content'] as Map<String, dynamic>? ?? {};
-    final parts = content['parts'] as List<dynamic>? ?? const [];
-    if (parts.isEmpty) return '';
-
-    final firstPart = parts.first as Map<String, dynamic>;
-    return (firstPart['text'] ?? '').toString().trim();
-  }
-
-  String _normalizeJson(String input) {
-    var output = input.trim();
-
-    if (output.startsWith('```')) {
-      output = output
-          .replaceFirst(RegExp(r'^```json\s*'), '')
-          .replaceFirst(RegExp(r'^```\s*'), '')
-          .replaceFirst(RegExp(r'\s*```$'), '');
-    }
-
-    final start = output.indexOf('{');
-    final end = output.lastIndexOf('}');
-
-    if (start == -1 || end == -1 || end <= start) {
-      throw const FormatException('Could not isolate JSON object from Gemini quiz response.');
-    }
-
-    return output.substring(start, end + 1).trim();
   }
 
   GeneratedQuiz _parseGeneratedQuiz(Map<String, dynamic> json) {

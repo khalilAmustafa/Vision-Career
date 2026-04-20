@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
+import '../constants/gemini_quiz_config.dart';
 import 'phase0_mapping_service.dart';
 
 class Phase0SpecialtyRecommendation {
@@ -165,7 +167,7 @@ class Phase0GeminiService {
 
   Future<Map<String, dynamic>> _requestJson(String prompt) async {
     final response = await http.post(
-      Uri.parse('https://vision-career.onrender.com/recommend'),
+      Uri.parse(GeminiQuizConfig.backendUrl),
       headers: const {'Content-Type': 'application/json'},
       body: jsonEncode({"prompt": prompt}),
     );
@@ -188,9 +190,7 @@ class Phase0GeminiService {
       throw const FormatException('Backend returned empty data.');
     }
 
-    // Debug (keep this while testing)
-    // ignore: avoid_print
-    print("AI RAW RESPONSE: $data");
+    debugPrint("AI RAW RESPONSE: $data");
 
     return Map<String, dynamic>.from(data);
   }
