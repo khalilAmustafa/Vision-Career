@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
 
 import '../../data/datasources/subject_local_datasource.dart';
 import '../../data/repositories/subject_repository.dart';
+import '../../core/widgets/app_drawer.dart';
 import '../specialization_selection/specialization_selection_screen.dart';
 
 class CollegeSelectionScreen extends StatefulWidget {
@@ -35,8 +37,9 @@ class _CollegeSelectionScreenState extends State<CollegeSelectionScreen> {
         _isLoading = false;
       });
     } catch (error) {
+      final l10n = AppLocalizations.of(context)!;
       setState(() {
-        _errorMessage = 'Could not load colleges.';
+        _errorMessage = l10n.college_load_error;
         _isLoading = false;
       });
       debugPrint('CollegeSelectionScreen error: $error');
@@ -60,30 +63,49 @@ class _CollegeSelectionScreenState extends State<CollegeSelectionScreen> {
     }
   }
 
-  String _subtitleForCollege(String college) {
+  String _localizedCollegeName(String college, AppLocalizations l10n) {
     switch (college.toLowerCase()) {
       case 'it':
       case 'information technology':
-        return 'Software, AI, Cybersecurity';
+        return l10n.college_it;
       case 'engineering':
-        return 'Civil, robotics, communications';
+        return l10n.college_engineering;
       case 'finance':
       case 'business':
-        return 'Accounting, MIS, marketing';
+        return l10n.college_business;
       case 'science':
-        return 'Math, physics, biology';
+        return l10n.college_science;
       default:
-        return 'Available specializations';
+        return college;
+    }
+  }
+
+  String _subtitleForCollege(String college, AppLocalizations l10n) {
+    switch (college.toLowerCase()) {
+      case 'it':
+      case 'information technology':
+        return l10n.college_it_subtitle;
+      case 'engineering':
+        return l10n.college_engineering_subtitle;
+      case 'finance':
+      case 'business':
+        return l10n.college_business_subtitle;
+      case 'science':
+        return l10n.college_science_subtitle;
+      default:
+        return l10n.college_default_subtitle;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
+      drawer: const AppDrawer(),
       appBar: AppBar(
-        title: const Text('Choose Your Path'),
+        title: Text(l10n.college_title),
         centerTitle: true,
       ),
       body: Padding(
@@ -102,16 +124,15 @@ class _CollegeSelectionScreenState extends State<CollegeSelectionScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Select a college',
+              l10n.college_select_title,
               style: theme.textTheme.titleLarge,
             ),
             const SizedBox(height: 8),
             Text(
-              'Start by choosing your general direction.',
+              l10n.college_select_subtitle,
               style: theme.textTheme.bodyMedium,
             ),
             const SizedBox(height: 20),
-
             Expanded(
               child: GridView.builder(
                 itemCount: _colleges.length,
@@ -126,8 +147,9 @@ class _CollegeSelectionScreenState extends State<CollegeSelectionScreen> {
                   final college = _colleges[index];
 
                   return _CollegeCard(
-                    title: college,
-                    subtitle: _subtitleForCollege(college),
+                    title: _localizedCollegeName(college, l10n),
+                    subtitle:
+                    _subtitleForCollege(college, l10n),
                     icon: _iconForCollege(college),
                     onTap: () {
                       Navigator.push(

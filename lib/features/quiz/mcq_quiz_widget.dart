@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
 
 import '../../data/models/quiz_question_model.dart';
 
@@ -27,8 +28,17 @@ class _McqQuizWidgetState extends State<McqQuizWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    final isArabic =
+        Localizations.localeOf(context).languageCode == 'ar';
+
     if (widget.questions.isEmpty) {
-      return const Center(child: Text('No questions available.'));
+      return Center(
+        child: Text(
+          l.noQuestionsAvailable,
+          textAlign: TextAlign.center,
+        ),
+      );
     }
 
     return ListView.separated(
@@ -36,11 +46,15 @@ class _McqQuizWidgetState extends State<McqQuizWidget> {
       separatorBuilder: (_, _) => const SizedBox(height: 20),
       itemBuilder: (context, index) {
         final question = widget.questions[index];
+
         return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment:
+          isArabic ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
             Text(
               '${index + 1}. ${question.question}',
+              textAlign:
+              isArabic ? TextAlign.right : TextAlign.left,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 10),
@@ -49,11 +63,21 @@ class _McqQuizWidgetState extends State<McqQuizWidget> {
                 value: choiceIndex,
                 groupValue: _answers[index],
                 contentPadding: EdgeInsets.zero,
-                title: Text(question.choices[choiceIndex]),
+                controlAffinity: isArabic
+                    ? ListTileControlAffinity.trailing
+                    : ListTileControlAffinity.leading,
+                title: Text(
+                  question.choices[choiceIndex],
+                  textAlign:
+                  isArabic ? TextAlign.right : TextAlign.left,
+                ),
                 onChanged: (value) {
                   if (value == null) return;
+
                   setState(() => _answers[index] = value);
-                  widget.onAnswersChanged?.call(List<int?>.from(_answers));
+
+                  widget.onAnswersChanged
+                      ?.call(List<int?>.from(_answers));
                 },
               );
             }),

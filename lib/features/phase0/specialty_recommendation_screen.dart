@@ -151,33 +151,33 @@ class _SpecialtyRecommendationScreenState
               Expanded(
                 child: widget.recommendations.isEmpty
                     ? Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 24),
-                          child: Text(
-                            widget.emptyMessage ??
-                                'No valid specialties were found. Go back and try again.',
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              color: Colors.white70,
-                              height: 1.5,
-                            ),
-                          ),
-                        ),
-                      )
-                    : ListView.separated(
-                        padding: const EdgeInsets.fromLTRB(18, 0, 18, 24),
-                        itemCount: widget.recommendations.length,
-                        separatorBuilder: (_, _) => const SizedBox(height: 12),
-                        itemBuilder: (context, index) {
-                          final item = widget.recommendations[index];
-                          return _RecommendationCard(
-                            recommendation: item,
-                            mapping: _mappingCache[item.specialtyKey],
-                            isBusy: _isOpening,
-                            onTap: () => _openTree(item),
-                          );
-                        },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Text(
+                      widget.emptyMessage ??
+                          'No valid specialties were found. Go back and try again.',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        height: 1.5,
                       ),
+                    ),
+                  ),
+                )
+                    : ListView.separated(
+                  padding: const EdgeInsets.fromLTRB(18, 0, 18, 24),
+                  itemCount: widget.recommendations.length,
+                  separatorBuilder: (_, _) => const SizedBox(height: 12),
+                  itemBuilder: (context, index) {
+                    final item = widget.recommendations[index];
+                    return _RecommendationCard(
+                      recommendation: item,
+                      mapping: _mappingCache[item.specialtyKey],
+                      isBusy: _isOpening,
+                      onTap: () => _openTree(item),
+                    );
+                  },
+                ),
               ),
             ],
           ),

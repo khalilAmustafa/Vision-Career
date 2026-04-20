@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import '../../../l10n/app_localizations.dart';
 
 import '../../../core/services/gemini_quiz_service.dart';
 import '../../../data/models/quiz_attempt_result_model.dart';
@@ -59,7 +60,11 @@ class _SubjectCompletionQuizSheetState
   int _currentIndex = 0;
   List<int?> _answers = [];
 
-  final TextEditingController _writingController = TextEditingController();
+  final TextEditingController _writingController =
+  TextEditingController();
+
+  String get _language =>
+      Localizations.localeOf(context).languageCode;
 
   @override
   void initState() {
@@ -79,6 +84,7 @@ class _SubjectCompletionQuizSheetState
       college: widget.college,
       specialization: widget.specialization,
       achievementsSummary: widget.achievementsSummary,
+
     );
 
     if (!mounted) return;
@@ -88,10 +94,8 @@ class _SubjectCompletionQuizSheetState
       _loading = false;
 
       if (quiz.type == QuizType.mcq) {
-        _answers = List<int?>.filled(
-          quiz.mcqQuestions?.length ?? 0,
-          null,
-        );
+        _answers =
+        List<int?>.filled(quiz.mcqQuestions?.length ?? 0, null);
       }
     });
   }
@@ -101,8 +105,9 @@ class _SubjectCompletionQuizSheetState
     required int correctAnswers,
     required int totalQuestions,
   }) {
-    final scorePercent =
-        totalQuestions == 0 ? 0.0 : (correctAnswers / totalQuestions) * 100.0;
+    final scorePercent = totalQuestions == 0
+        ? 0.0
+        : (correctAnswers / totalQuestions) * 100.0;
 
     Navigator.pop(
       context,
@@ -126,9 +131,8 @@ class _SubjectCompletionQuizSheetState
         height: height,
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(24),
-          ),
+          borderRadius:
+          const BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: _loading
             ? const Center(child: CircularProgressIndicator())
@@ -148,7 +152,11 @@ class _SubjectCompletionQuizSheetState
     }
   }
 
+  // ========================= MCQ =========================
+
   Widget _buildMCQ() {
+    final l = AppLocalizations.of(context)!;
+
     final questions = _quiz!.mcqQuestions!
         .map((q) => QuizQuestion.fromJson(q))
         .toList();
@@ -158,7 +166,6 @@ class _SubjectCompletionQuizSheetState
     return Column(
       children: [
         _buildHeader(),
-
         Expanded(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
@@ -166,76 +173,60 @@ class _SubjectCompletionQuizSheetState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Question ${_currentIndex + 1}/${questions.length}',
+                  l.quizQuestionProgress(
+                      _currentIndex + 1, questions.length),
                   style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+                      fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-
                 const SizedBox(height: 20),
-
-                Text(
-                  q.question,
-                  style: const TextStyle(fontSize: 17),
-                ),
-
+                Text(q.question),
                 const SizedBox(height: 24),
-
                 ...List.generate(q.choices.length, (i) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: RadioListTile<int>(
-                      value: i,
-                      groupValue: _answers[_currentIndex],
-                      onChanged: (v) {
-                        setState(() {
-                          _answers[_currentIndex] = v;
-                        });
-                      },
-                      title: Text(q.choices[i]),
-                    ),
+                  return RadioListTile<int>(
+                    value: i,
+                    groupValue: _answers[_currentIndex],
+                    onChanged: (v) {
+                      setState(() {
+                        _answers[_currentIndex] = v;
+                      });
+                    },
+                    title: Text(q.choices[i]),
                   );
                 }),
               ],
             ),
           ),
         ),
-
         Padding(
           padding: const EdgeInsets.all(16),
-          child: SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                if (_answers[_currentIndex] == null) return;
+          child: ElevatedButton(
+            onPressed: () {
+              if (_answers[_currentIndex] == null) return;
 
-                if (_currentIndex < questions.length - 1) {
-                  setState(() => _currentIndex++);
-                  return;
+              if (_currentIndex < questions.length - 1) {
+                setState(() => _currentIndex++);
+                return;
+              }
+
+              int correct = 0;
+              for (int i = 0; i < questions.length; i++) {
+                if (_answers[i] ==
+                    questions[i].correctAnswerIndex) {
+                  correct++;
                 }
+              }
 
-                int correct = 0;
-                for (int i = 0; i < questions.length; i++) {
-                  if (_answers[i] == questions[i].correctAnswerIndex) {
-                    correct++;
-                  }
-                }
-
-                final passed =
-                    correct >= (questions.length * 0.6).ceil();
-
-                _finish(
-                  passed: passed,
-                  correctAnswers: correct,
-                  totalQuestions: questions.length,
-                );
-              },
-              child: Text(
-                _currentIndex == questions.length - 1
-                    ? 'Finish'
-                    : 'Next',
-              ),
+              _finish(
+                passed:
+                correct >= (questions.length * 0.6).ceil(),
+                correctAnswers: correct,
+                totalQuestions: questions.length,
+              );
+            },
+            child: Text(
+              _currentIndex == questions.length - 1
+                  ? l.quizFinish
+                  : l.quizNext,
             ),
           ),
         ),
@@ -243,56 +234,66 @@ class _SubjectCompletionQuizSheetState
     );
   }
 
+  // ========================= WRITING =========================
+
   Widget _buildWriting() {
+    final l = AppLocalizations.of(context)!;
+
     return Column(
       children: [
         _buildHeader(),
-
         Expanded(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  _quiz!.writingPrompt ?? '',
-                  style: const TextStyle(fontSize: 16),
-                ),
-                const SizedBox(height: 20),
-                TextField(
-                  controller: _writingController,
-                  maxLines: 12,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Write your answer here...',
-                  ),
-                ),
-              ],
-            ),
+            child: Text(_quiz!.writingPrompt ?? ''),
           ),
         ),
-
         Padding(
-          padding: const EdgeInsets.all(16),
-          child: SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                _finish(
-                  passed: _writingController.text.trim().isNotEmpty,
-                  correctAnswers: 1,
-                  totalQuestions: 1,
-                );
-              },
-              child: const Text('Submit'),
-            ),
+          padding: EdgeInsets.fromLTRB(
+            16,
+            8,
+            16,
+            MediaQuery.of(context).viewInsets.bottom + 16,
+          ),
+          child: Column(
+            children: [
+              TextField(
+                controller: _writingController,
+                minLines: 4,
+                maxLines: 6,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: l.quizWriteHint,
+                ),
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    _finish(
+                      passed: _writingController.text
+                          .trim()
+                          .isNotEmpty,
+                      correctAnswers: 1,
+                      totalQuestions: 1,
+                    );
+                  },
+                  child: Text(l.quizSubmit),
+                ),
+              ),
+            ],
           ),
         ),
       ],
     );
   }
 
+  // ========================= IMAGE =========================
+
   Widget _buildImage() {
+    final l = AppLocalizations.of(context)!;
+
     return StatefulBuilder(
       builder: (context, setLocalState) {
         bool isSubmitting = false;
@@ -300,66 +301,53 @@ class _SubjectCompletionQuizSheetState
         return Column(
           children: [
             _buildHeader(),
-
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: ImageQuizWidget(
-                  task: _quiz!.imageTask ?? '',
-                  instructions: _quiz!.instructions,
-                  isSubmitting: isSubmitting,
-                  onSubmit: (File imageFile) async {
-                    setLocalState(() => isSubmitting = true);
+              child: ImageQuizWidget(
+                task: _quiz!.imageTask ?? '',
+                instructions: _quiz!.instructions,
+                isSubmitting: isSubmitting,
+                onSubmit: (imageFile) async {
+                  setLocalState(() => isSubmitting = true);
 
-                    try {
-                      final evaluation =
-                          await GeminiImageQuizService()
-                              .evaluateImageSubmission(
-                        subject: widget.subject,
-                        college: widget.college,
-                        specialization: widget.specialization,
-                        achievementsSummary:
-                            widget.achievementsSummary,
-                        instructions: _quiz!.instructions,
-                        imageTask: _quiz!.imageTask ?? '',
-                        rubric: _quiz!.imageRubric,
-                        passingScore: _quiz!.passingScore,
-                        imageFile: imageFile,
-                      );
+                  try {
+                    final evaluation =
+                    await GeminiImageQuizService()
+                        .evaluateImageSubmission(
+                      subject: widget.subject,
+                      college: widget.college,
+                      specialization:
+                      widget.specialization,
+                      achievementsSummary:
+                      widget.achievementsSummary,
+                      instructions: _quiz!.instructions,
+                      imageTask: _quiz!.imageTask ?? '',
+                      rubric: _quiz!.imageRubric,
+                      passingScore: _quiz!.passingScore,
+                      imageFile: imageFile,
 
-                      if (!mounted) return;
+                    );
 
-                      _finish(
-                        passed: evaluation.passed,
-                        correctAnswers:
-                            evaluation.passed ? 1 : 0,
-                        totalQuestions: 1,
-                      );
+                    _finish(
+                      passed: evaluation.passed,
+                      correctAnswers:
+                      evaluation.passed ? 1 : 0,
+                      totalQuestions: 1,
+                    );
 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            evaluation.feedback,
-                          ),
-                        ),
-                      );
-                    } catch (e) {
-                      if (!mounted) return;
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'Image grading failed: $e',
-                          ),
-                        ),
-                      );
-                    } finally {
-                      if (mounted) {
-                        setLocalState(() => isSubmitting = false);
-                      }
-                    }
-                  },
-                ),
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(evaluation.feedback)),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content:
+                        Text(l.imageGradingFailed(e.toString())),
+                      ),
+                    );
+                  } finally {
+                    setLocalState(() => isSubmitting = false);
+                  }
+                },
               ),
             ),
           ],
@@ -368,8 +356,9 @@ class _SubjectCompletionQuizSheetState
     );
   }
 
+  // ========================= HEADER =========================
 
- Widget _buildHeader() {
+  Widget _buildHeader() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 12, 8, 8),
       child: Row(

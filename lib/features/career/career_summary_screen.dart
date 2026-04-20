@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
 
 import '../../core/services/career_llm_service.dart';
 import '../../core/services/career_storage_service.dart';
@@ -101,20 +102,24 @@ class _CareerSummaryScreenState extends State<CareerSummaryScreen> {
     return output;
   }
 
+  // ✅ Arabic hardcoded CV text
   String get _cvReadyText {
     final jobs = _selectedJobs.map((job) => job.title).join(', ');
     final coreSkills = _finalSkills.take(12).join(', ');
-    final phase3Topics = _completedPhase3Nodes.map((node) => node.name).join(', ');
+    final phase3Topics =
+    _completedPhase3Nodes.map((node) => node.name).join(', ');
 
-    return 'University candidate in ${widget.specialization} (${widget.college}) with completed '
-        'academic path and final career-readiness training aligned to $jobs. '
-        'Built knowledge across ${_completedBaseSubjects.length} completed subjects '
-        'and strengthened applied readiness through Phase 3 topics including '
-        '$phase3Topics. Key strengths include $coreSkills.';
+    return 'مرشح جامعي في تخصص ${widget.specialization} (${widget.college}) '
+        'أتم المسار الأكاديمي بالكامل، واكتسب جاهزية مهنية تتوافق مع الوظائف التالية: $jobs. '
+        'أنجز ${_completedBaseSubjects.length} مادة دراسية، '
+        'وعزز مهاراته التطبيقية من خلال مواضيع المرحلة الثالثة مثل: $phase3Topics. '
+        'من أبرز مهاراته: $coreSkills.';
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     if (_isLoading) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
@@ -123,7 +128,7 @@ class _CareerSummaryScreenState extends State<CareerSummaryScreen> {
 
     if (_errorMessage != null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Career Summary')),
+        appBar: AppBar(title: Text(l10n.careerSummaryTitle)),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(20),
@@ -135,7 +140,7 @@ class _CareerSummaryScreenState extends State<CareerSummaryScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Career Summary'),
+        title: Text(l10n.careerSummaryTitle),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -148,19 +153,19 @@ class _CareerSummaryScreenState extends State<CareerSummaryScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Selected Jobs',
-                      style: TextStyle(
+                    Text(
+                      l10n.careerSelectedJobs,
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 12),
                     if (_selectedJobs.isEmpty)
-                      const Text('No selected jobs found.')
+                      Text(l10n.careerNoJobs)
                     else
                       ..._selectedJobs.map(
-                        (job) => Padding(
+                            (job) => Padding(
                           padding: const EdgeInsets.only(bottom: 10),
                           child: ListTile(
                             contentPadding: EdgeInsets.zero,
@@ -180,29 +185,19 @@ class _CareerSummaryScreenState extends State<CareerSummaryScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Completed Subjects',
-                      style: TextStyle(
+                    Text(
+                      l10n.careerCompletedSubjects,
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 12),
-                    Text('Academic subjects completed: ${_completedBaseSubjects.length}'),
+                    Text(l10n.careerAcademicCompleted(
+                        _completedBaseSubjects.length)),
                     const SizedBox(height: 8),
-                    Text('Phase 3 nodes completed: ${_completedPhase3Nodes.length}'),
-                    const SizedBox(height: 12),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: [
-                        ..._completedBaseSubjects
-                            .take(20)
-                            .map((subject) => Chip(label: Text(subject.name))),
-                        ..._completedPhase3Nodes
-                            .map((subject) => Chip(label: Text(subject.name))),
-                      ],
-                    ),
+                    Text(l10n.careerPhase3Completed(
+                        _completedPhase3Nodes.length)),
                   ],
                 ),
               ),
@@ -214,9 +209,9 @@ class _CareerSummaryScreenState extends State<CareerSummaryScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Final Skills Summary',
-                      style: TextStyle(
+                    Text(
+                      l10n.careerFinalSkills,
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -240,9 +235,9 @@ class _CareerSummaryScreenState extends State<CareerSummaryScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'CV-Ready Text',
-                      style: TextStyle(
+                    Text(
+                      l10n.careerCvReady,
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),

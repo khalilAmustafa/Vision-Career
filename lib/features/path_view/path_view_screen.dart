@@ -8,6 +8,7 @@ import '../../data/datasources/subject_local_datasource.dart';
 import '../../data/models/quiz_attempt_result_model.dart';
 import '../../data/models/subject_model.dart';
 import '../../data/repositories/subject_repository.dart';
+import '../../core/widgets/app_drawer.dart';
 import '../career/career_selection_screen.dart';
 import '../quiz/widgets/subject_completion_quiz_sheet.dart';
 import '../subject_details/subject_details_screen.dart';
@@ -306,6 +307,7 @@ class _PathViewScreenState extends State<PathViewScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFF08111F),
+      drawer: const AppDrawer(),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -384,6 +386,19 @@ class _PathViewScreenState extends State<PathViewScreen> {
                     child: SizedBox(height: 32),
                   ),
                 ],
+              ),
+              Positioned(
+                top: 16,
+                left: 16,
+                child: Builder(
+                  builder: (context) => IconButton(
+                    onPressed: () => Scaffold.of(context).openDrawer(),
+                    icon: const Icon(Icons.menu, color: Colors.white),
+                    style: IconButton.styleFrom(
+                      backgroundColor: Colors.black26,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),

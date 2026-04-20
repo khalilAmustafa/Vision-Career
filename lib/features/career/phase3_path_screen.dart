@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
 
 import '../../core/services/career_storage_service.dart';
 import '../../core/services/progress_service.dart';
@@ -87,9 +88,9 @@ class _Phase3PathScreenState extends State<Phase3PathScreen> {
     return _phase3Nodes
         .where(
           (candidate) =>
-              subject.prerequisites.contains(candidate.code) &&
-              !_completedCodes.contains(candidate.code),
-        )
+      subject.prerequisites.contains(candidate.code) &&
+          !_completedCodes.contains(candidate.code),
+    )
         .toList(growable: false);
   }
 
@@ -110,10 +111,12 @@ class _Phase3PathScreenState extends State<Phase3PathScreen> {
   }
 
   Future<void> _completeNodeFromLongPress(Subject subject) async {
+    final l10n = AppLocalizations.of(context)!;
+
     if (_isCompleted(subject)) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('${subject.name} is already completed.'),
+          content: Text(l10n.phase3_already_completed(subject.name)),
         ),
       );
       return;
@@ -123,7 +126,7 @@ class _Phase3PathScreenState extends State<Phase3PathScreen> {
       final names = _missingPrerequisites(subject).map((e) => e.name).join(', ');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('This node is locked. Complete first: $names'),
+          content: Text(l10n.phase3_locked_first(names)),
         ),
       );
       return;
@@ -134,8 +137,10 @@ class _Phase3PathScreenState extends State<Phase3PathScreen> {
 
     if (!result.passed) {
       final failureMessage = result.integrityPassed
-          ? 'Quiz score ${result.scorePercent.toStringAsFixed(1)}%. You need 60% to complete ${subject.name}.'
-          : 'Integrity violation detected during the quiz for ${subject.name}.';
+          ? l10n.phase3_quiz_failed_score(
+          result.scorePercent.toStringAsFixed(1), subject.name)
+          : l10n.phase3_quiz_integrity(subject.name);
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(failureMessage)),
       );
@@ -148,11 +153,15 @@ class _Phase3PathScreenState extends State<Phase3PathScreen> {
     if (!mounted) return;
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('${subject.name} marked as completed.')),
+      SnackBar(
+        content: Text(l10n.phase3_marked_completed(subject.name)),
+      ),
     );
   }
 
   Future<QuizAttemptResult?> _attemptCompletionQuiz(Subject subject) async {
+    final l10n = AppLocalizations.of(context)!;
+
     final canStart = await _attemptLimitService.canStartAttempt(
       specialization: widget.specialization,
       subjectCode: subject.code,
@@ -162,9 +171,7 @@ class _Phase3PathScreenState extends State<Phase3PathScreen> {
       if (!mounted) return null;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            'Daily attempt limit reached for ${subject.name}. You can try again tomorrow.',
-          ),
+          content: Text(l10n.phase3_attempt_limit(subject.name)),
         ),
       );
       return null;
@@ -194,6 +201,8 @@ class _Phase3PathScreenState extends State<Phase3PathScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     if (_isLoading) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
@@ -202,7 +211,7 @@ class _Phase3PathScreenState extends State<Phase3PathScreen> {
 
     if (_errorMessage != null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Phase 3 Path')),
+        appBar: AppBar(title: Text(l10n.phase3_title)),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(20),
@@ -214,12 +223,12 @@ class _Phase3PathScreenState extends State<Phase3PathScreen> {
 
     if (_phase3Nodes.isEmpty) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Phase 3 Path')),
-        body: const Center(
+        appBar: AppBar(title: Text(l10n.phase3_title)),
+        body: Center(
           child: Padding(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Text(
-              'No Phase 3 nodes were found yet. Generate the final phase first.',
+              l10n.phase3_empty,
               textAlign: TextAlign.center,
             ),
           ),
@@ -229,7 +238,7 @@ class _Phase3PathScreenState extends State<Phase3PathScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Phase 3 Path'),
+        title: Text(l10n.phase3_title),
         actions: [
           if (_allCompleted)
             IconButton(
@@ -258,18 +267,15 @@ class _Phase3PathScreenState extends State<Phase3PathScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Final career-readiness path',
-                      style: TextStyle(
+                    Text(
+                      l10n.phase3_header,
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text(
-                      'Tap any node to open details, resources, and skills. '
-                      'Long press an unlocked node to attempt the quiz and complete it.',
-                    ),
+                    Text(l10n.phase3_description),
                   ],
                 ),
               ),
@@ -299,8 +305,8 @@ class _Phase3PathScreenState extends State<Phase3PathScreen> {
                           color: isCompleted
                               ? Colors.green
                               : isUnlocked
-                                  ? Theme.of(context).colorScheme.primary
-                                  : Colors.orange,
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.orange,
                         ),
                       ),
                       child: Column(
@@ -325,8 +331,8 @@ class _Phase3PathScreenState extends State<Phase3PathScreen> {
                                 isCompleted
                                     ? Icons.check_circle
                                     : isUnlocked
-                                        ? Icons.lock_open
-                                        : Icons.lock,
+                                    ? Icons.lock_open
+                                    : Icons.lock,
                               ),
                             ],
                           ),
@@ -347,7 +353,7 @@ class _Phase3PathScreenState extends State<Phase3PathScreen> {
                           if (relatedJobs.isNotEmpty) ...[
                             const SizedBox(height: 12),
                             Text(
-                              'Related jobs: ${relatedJobs.join(', ')}',
+                              l10n.phase3_related_jobs(relatedJobs.join(', ')),
                               style: TextStyle(
                                 color: Theme.of(context).colorScheme.primary,
                                 fontWeight: FontWeight.w600,
@@ -357,10 +363,10 @@ class _Phase3PathScreenState extends State<Phase3PathScreen> {
                           const SizedBox(height: 8),
                           Text(
                             isCompleted
-                                ? 'Completed'
+                                ? l10n.phase3_status_completed
                                 : isUnlocked
-                                    ? 'Unlocked • Long press to attempt quiz'
-                                    : 'Locked until previous Phase 3 node is completed',
+                                ? l10n.phase3_status_unlocked
+                                : l10n.phase3_status_locked,
                           ),
                         ],
                       ),
@@ -388,7 +394,7 @@ class _Phase3PathScreenState extends State<Phase3PathScreen> {
                       ),
                     );
                   },
-                  child: const Text('Open Final Career Summary'),
+                  child: Text(l10n.phase3_open_summary),
                 ),
               ),
             ),

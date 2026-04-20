@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
 
 import '../../core/services/career_llm_service.dart';
 import '../../core/services/career_phase3_builder.dart';
 import '../../core/services/career_storage_service.dart';
 import '../../data/models/subject_model.dart';
+import '../../core/widgets/app_drawer.dart';
 import 'phase3_path_screen.dart';
 
 class JobSelectionScreen extends StatefulWidget {
@@ -37,6 +39,8 @@ class _JobSelectionScreenState extends State<JobSelectionScreen> {
       .toList(growable: false);
 
   void _toggleSelection(int index) {
+    final l10n = AppLocalizations.of(context)!;
+
     if (_isGenerating) return;
 
     if (_selectedIndexes.contains(index)) {
@@ -48,8 +52,8 @@ class _JobSelectionScreenState extends State<JobSelectionScreen> {
 
     if (_selectedIndexes.length >= 3) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('You can select up to 3 jobs only.'),
+        SnackBar(
+          content: Text(l10n.jobs_max_selection),
         ),
       );
       return;
@@ -61,6 +65,8 @@ class _JobSelectionScreenState extends State<JobSelectionScreen> {
   }
 
   Future<void> _showJobDetails(CareerJobSuggestion job) async {
+    final l10n = AppLocalizations.of(context)!;
+
     await showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
@@ -80,9 +86,9 @@ class _JobSelectionScreenState extends State<JobSelectionScreen> {
             const SizedBox(height: 12),
             Text(job.fullDescription),
             const SizedBox(height: 16),
-            const Text(
-              'Why it fits you',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            Text(
+              l10n.jobs_fit_title,
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(job.fitReason),
@@ -94,10 +100,12 @@ class _JobSelectionScreenState extends State<JobSelectionScreen> {
   }
 
   Future<void> _generatePhase3() async {
+    final l10n = AppLocalizations.of(context)!;
+
     if (_selectedJobs.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Select at least 1 job to continue.'),
+        SnackBar(
+          content: Text(l10n.jobs_select_at_least_one),
         ),
       );
       return;
@@ -161,13 +169,13 @@ class _JobSelectionScreenState extends State<JobSelectionScreen> {
             specialization: widget.specialization,
           ),
         ),
-        (route) => route.isFirst,
+            (route) => route.isFirst,
       );
     } catch (error) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Phase 3 generation failed: $error'),
+          content: Text(l10n.jobs_generation_failed(error.toString())),
         ),
       );
     } finally {
@@ -181,9 +189,12 @@ class _JobSelectionScreenState extends State<JobSelectionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
+      drawer: const AppDrawer(),
       appBar: AppBar(
-        title: const Text('Choose Your Jobs'),
+        title: Text(l10n.jobs_screen_title),
       ),
       body: Column(
         children: [
@@ -195,17 +206,16 @@ class _JobSelectionScreenState extends State<JobSelectionScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Select up to 3 target jobs',
-                      style: TextStyle(
+                    Text(
+                      l10n.jobs_select_title,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Tap to select. Long press to view the full description. '
-                      'Selected: ${_selectedJobs.length} / 3',
+                      l10n.jobs_select_subtitle(_selectedJobs.length),
                     ),
                   ],
                 ),
@@ -263,7 +273,7 @@ class _JobSelectionScreenState extends State<JobSelectionScreen> {
                           Text(job.shortDescription),
                           const SizedBox(height: 10),
                           Text(
-                            'Fit reason: ${job.fitReason}',
+                            l10n.jobs_fit_reason(job.fitReason),
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.w600,
@@ -286,7 +296,7 @@ class _JobSelectionScreenState extends State<JobSelectionScreen> {
                 onPressed: _isGenerating ? null : _generatePhase3,
                 child: _isGenerating
                     ? const CircularProgressIndicator()
-                    : const Text('Generate Final Path'),
+                    : Text(l10n.jobs_generate_button),
               ),
             ),
           ),

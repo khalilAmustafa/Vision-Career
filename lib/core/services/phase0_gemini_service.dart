@@ -58,6 +58,7 @@ class Phase0GeminiService {
     return recommendFromDescription(
       userDescription: userDescription,
       allowedSpecialties: allowedSpecialties,
+
     );
   }
 
@@ -84,10 +85,13 @@ class Phase0GeminiService {
   Future<List<String>> buildGuidedChatQuestions({
     required Map<String, dynamic> interestProfile,
     required List<Phase0SpecialtyOption> allowedSpecialties,
+    required String language,
   }) async {
     final prompt = _buildGuidedChatQuestionsPrompt(
       interestProfile: interestProfile,
       allowedSpecialties: allowedSpecialties,
+      language: language,
+
     );
 
     final text = await _sendPrompt(prompt);
@@ -111,8 +115,12 @@ class Phase0GeminiService {
 
   Future<String> summarizeDiscoveryChat({
     required List<Map<String, dynamic>> transcript,
+    required String language,
   }) async {
-    final prompt = _buildChatSummaryPrompt(transcript: transcript);
+    final prompt = _buildChatSummaryPrompt(
+      transcript: transcript,
+       language: language,
+    );
 
     final text = await _sendPrompt(prompt);
     final decoded = jsonDecode(_normalizeJson(text)) as Map<String, dynamic>;
@@ -130,12 +138,14 @@ class Phase0GeminiService {
     required String chatSummary,
     required Map<String, dynamic> aptitudeSummary,
     required List<Phase0SpecialtyOption> allowedSpecialties,
+    required String language,
   }) async {
     final prompt = _buildDiscoveryPackagePrompt(
       interestProfile: interestProfile,
       chatSummary: chatSummary,
       aptitudeSummary: aptitudeSummary,
       allowedSpecialties: allowedSpecialties,
+      language: language,
     );
 
     final text = await _sendPrompt(prompt);
@@ -150,11 +160,11 @@ class Phase0GeminiService {
   }
 
   List<Phase0SpecialtyRecommendation> _extractRecommendations(
-    Map<String, dynamic> decoded,
-    List<Phase0SpecialtyOption> allowedSpecialties, {
-    required int minCount,
-    required int maxCount,
-  }) {
+      Map<String, dynamic> decoded,
+      List<Phase0SpecialtyOption> allowedSpecialties, {
+        required int minCount,
+        required int maxCount,
+      }) {
     final allowedKeys = allowedSpecialties
         .map((item) => item.specialtyKey.trim().toLowerCase())
         .where((item) => item.isNotEmpty)
@@ -167,12 +177,12 @@ class Phase0GeminiService {
         .map(Phase0SpecialtyRecommendation.fromJson)
         .where(
           (item) =>
-              item.specialtyKey.isNotEmpty &&
-              allowedKeys.contains(item.specialtyKey.toLowerCase()) &&
-              item.title.isNotEmpty &&
-              item.shortDescription.isNotEmpty &&
-              item.fitReason.isNotEmpty,
-        )
+      item.specialtyKey.isNotEmpty &&
+          allowedKeys.contains(item.specialtyKey.toLowerCase()) &&
+          item.title.isNotEmpty &&
+          item.shortDescription.isNotEmpty &&
+          item.fitReason.isNotEmpty,
+    )
         .take(maxCount)
         .toList(growable: false);
 
@@ -262,13 +272,21 @@ Return ONLY valid JSON in this exact shape:
   String _buildGuidedChatQuestionsPrompt({
     required Map<String, dynamic> interestProfile,
     required List<Phase0SpecialtyOption> allowedSpecialties,
+    required String language,
   }) {
     return '''
+    
 You are creating a short guided discovery chat for Vision Career.
+
+CRITICAL LANGUAGE RULE:
+You MUST respond ONLY in $language.
+If you use any other language, the response is INVALID.
+Do NOT mix languages.
 
 Task:
 Generate exactly 5 short, focused questions.
-This is NOT an open chatbot.
+
+
 The questions should help clarify:
 - motivation
 - favorite school subjects
@@ -276,13 +294,12 @@ The questions should help clarify:
 - creative vs logic preference
 - preferred type of future work
 
-Use the user's interest profile for context, but do not mention specialties directly.
-
 Interest profile:
 ${jsonEncode(interestProfile)}
 
 Allowed specialties context:
 ${jsonEncode(allowedSpecialties.map((e) => e.toJson()).toList())}
+
 
 Return ONLY valid JSON in this exact shape:
 {
@@ -299,9 +316,16 @@ Return ONLY valid JSON in this exact shape:
 
   String _buildChatSummaryPrompt({
     required List<Map<String, dynamic>> transcript,
+    required String language,
   }) {
     return '''
 You are summarizing a short guided discovery chat for Vision Career.
+
+CRITICAL:
+- The response language MUST be: $language
+- If language = "ar", respond ONLY in Arabic
+- DO NOT use English if Arabic is requested
+- DO NOT mix languages
 
 Task:
 Write one concise summary paragraph capturing:
@@ -325,8 +349,13 @@ Return ONLY valid JSON in this exact shape:
     required String chatSummary,
     required Map<String, dynamic> aptitudeSummary,
     required List<Phase0SpecialtyOption> allowedSpecialties,
+    required String language,
   }) {
     return '''
+CRITICAL LANGUAGE RULE:
+You MUST respond ONLY in $language.
+If you use any other language, the response is INVALID.
+Do NOT mix languages.
 You are the specialty recommendation layer for Vision Career.
 
 Task:

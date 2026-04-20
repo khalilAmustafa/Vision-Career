@@ -1,321 +1,324 @@
 import 'package:flutter/material.dart';
-
+import '../../l10n/app_localizations.dart';
 import '../../core/widgets/app_drawer.dart';
+import '../../core/widgets/app_text_field.dart';
+import '../../core/widgets/app_button.dart';
+
+import '../../core/services/phase0_gemini_service.dart';
+import '../../core/services/phase0_mapping_service.dart';
+import 'specialty_recommendation_screen.dart';
 import 'fit_questions_screen.dart';
-import 'know_what_i_want_screen.dart';
 
 class Phase0HomeScreen extends StatelessWidget {
   const Phase0HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+    final isRTL = Directionality.of(context) == TextDirection.rtl;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF08111F),
       drawer: const AppDrawer(),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFF091321),
-              Color(0xFF0D1A2D),
-              Color(0xFF06101B),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: SafeArea(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: constraints.maxHeight - 40,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Builder(
-                        builder: (context) => IconButton(
-                          onPressed: () {
-                            Scaffold.of(context).openDrawer();
-                          },
-                          icon: const Icon(
-                            Icons.menu,
-                            color: Colors.white,
-                            size: 28,
+      body: SafeArea(
+        child: Column(
+          children: [
+            const _TopBar(),
+
+            Expanded(
+              child: SingleChildScrollView(
+                padding:
+                const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 24),
+                child: Column(
+                  crossAxisAlignment:
+                  isRTL ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                  children: [
+                    _HeroSection(l10n: l10n),
+
+                    const SizedBox(height: 24),
+
+                    _DividerText(text: l10n.notSureYet),
+
+                    const SizedBox(height: 16),
+
+                    _QuizCard(
+                      l10n: l10n,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const FitQuestionsScreen(),
                           ),
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      const _HeaderSection(),
-                      const SizedBox(height: 18),
-                      _FlowCard(
-                        icon: Icons.ads_click_rounded,
-                        title: 'I Know What I Want',
-                        subtitle:
-                        'Describe what you want to study, build, or become. The AI will suggest specialties that already exist in the app.',
-                        accentColor: const Color(0xFF57D6FF),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const KnowWhatIWantScreen(),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 14),
-                      _FlowCard(
-                        icon: Icons.psychology_alt_rounded,
-                        title: "I Don't Know Where I Fit",
-                        subtitle:
-                        'Interest questions, guided AI chat, and a soft aptitude quiz to help you choose the right specialty.',
-                        accentColor: const Color(0xFFFFD98A),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const FitQuestionsScreen(),
-                            ),
-                          );
-                        },
-                        isComingSoon: true,
-                      ),
-                      const SizedBox(height: 18),
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.04),
-                          borderRadius: BorderRadius.circular(22),
-                          border: Border.all(
-                            color: colorScheme.primary.withOpacity(0.16),
-                          ),
-                        ),
-                        child: const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'How Phase 0 works',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              'The AI only recommends specialties that already exist in Vision Career. '
-                                  'The app still controls the real path, mapping, and tree opening.',
-                              style: TextStyle(
-                                color: Colors.white70,
-                                height: 1.45,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
-              );
-            },
-          ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-class _HeaderSection extends StatelessWidget {
-  const _HeaderSection();
+class _TopBar extends StatelessWidget {
+  const _TopBar();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(28),
-        gradient: const LinearGradient(
-          colors: [
-            Color(0xFF162338),
-            Color(0xFF0E1C2F),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        border: Border.all(
-          color: const Color(0xFF57D6FF).withOpacity(0.18),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.28),
-            blurRadius: 18,
-            offset: const Offset(0, 10),
-          ),
-        ],
-      ),
-      child: const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
+      child: Row(
         children: [
-          Text(
-            'Vision Career',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 28,
-              fontWeight: FontWeight.w800,
+          Builder(
+            builder: (context) => IconButton(
+              onPressed: () => Scaffold.of(context).openDrawer(),
+              icon: const Icon(Icons.menu),
             ),
           ),
-          SizedBox(height: 10),
-          Text(
-            'Phase 0 helps the user choose the right specialty before opening the learning tree.',
-            style: TextStyle(
-              color: Colors.white70,
-              fontSize: 15,
-              height: 1.45,
+          Expanded(
+            child: Center(
+              child: Text(
+                'Vision Career',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
             ),
           ),
+          const SizedBox(width: 48),
         ],
       ),
     );
   }
 }
 
-class _FlowCard extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final Color accentColor;
-  final VoidCallback onTap;
-  final bool isComingSoon;
+class _HeroSection extends StatefulWidget {
+  final AppLocalizations l10n;
 
-  const _FlowCard({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.accentColor,
+  const _HeroSection({required this.l10n});
+
+  @override
+  State<_HeroSection> createState() => _HeroSectionState();
+}
+
+class _HeroSectionState extends State<_HeroSection> {
+  final TextEditingController controller = TextEditingController();
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submit(BuildContext context) async {
+    final text = controller.text.trim();
+    if (text.isEmpty || _isLoading) return;
+
+    setState(() => _isLoading = true);
+
+    final geminiService = const Phase0GeminiService();
+    final mappingService = Phase0MappingService();
+
+    try {
+      final allowedSpecialties =
+      await mappingService.getAllowedSpecialties();
+
+      if (allowedSpecialties.isEmpty) {
+        throw Exception("No specialties available");
+      }
+
+      final results = await geminiService.recommendFromFreeText(
+        userDescription: text,
+        allowedSpecialties: allowedSpecialties,
+      );
+
+      if (!mounted) return;
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => SpecialtyRecommendationScreen(
+            title: widget.l10n.suggestedSpecialties,
+            subtitle: widget.l10n.choosePathSubtitle,
+            recommendations: results,
+          ),
+        ),
+      );
+    } catch (e) {
+      debugPrint("🔥 GEMINI ERROR: $e");
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isRTL = Directionality.of(context) == TextDirection.rtl;
+
+    return Column(
+      crossAxisAlignment:
+      isRTL ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      children: [
+        Text(
+          widget.l10n.whatDoYouWantToBecome,
+          style: theme.textTheme.headlineSmall?.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          widget.l10n.weGuideYou,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.hintColor,
+          ),
+        ),
+        const SizedBox(height: 18),
+
+        /// INPUT
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          decoration: BoxDecoration(
+            color: theme.cardColor,
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: theme.colorScheme.primary.withOpacity(0.25),
+            ),
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.auto_awesome_rounded,
+                  color: theme.colorScheme.primary),
+              const SizedBox(width: 8),
+
+              Expanded(
+                child: AppTextField(
+                  controller: controller,
+                  hint: widget.l10n.aiInputHint,
+                ),
+              ),
+
+              _isLoading
+                  ? const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: 18,
+                  height: 18,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              )
+                  : IconButton(
+                onPressed: () => _submit(context),
+                icon: Icon(
+                  isRTL
+                      ? Icons.arrow_back_rounded
+                      : Icons.arrow_forward_rounded,
+                  color: theme.colorScheme.primary,
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 10),
+
+        Text(
+          widget.l10n.aiInputHint,
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: theme.hintColor,
+          ),
+        ),
+
+        const SizedBox(height: 16),
+
+        AppButton(
+          text: widget.l10n.startWithAI,
+          isLoading: _isLoading,
+          onPressed: () => _submit(context),
+        ),
+      ],
+    );
+  }
+}
+
+class _DividerText extends StatelessWidget {
+  final String text;
+
+  const _DividerText({required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const Expanded(child: Divider()),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Text(text),
+        ),
+        const Expanded(child: Divider()),
+      ],
+    );
+  }
+}
+
+class _QuizCard extends StatelessWidget {
+  final AppLocalizations l10n;
+  final VoidCallback onTap;
+
+  const _QuizCard({
+    required this.l10n,
     required this.onTap,
-    this.isComingSoon = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(24),
-        child: Ink(
-          width: double.infinity,
-          padding: const EdgeInsets.all(18),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            gradient: const LinearGradient(
-              colors: [
-                Color(0xFF142038),
-                Color(0xFF081E2D),
-                Color(0xFF032031),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+    final theme = Theme.of(context);
+    final isRTL = Directionality.of(context) == TextDirection.rtl;
+
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Ink(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: theme.cardColor,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: theme.dividerColor),
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.psychology_alt_rounded,
+                color: theme.colorScheme.primary),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment:
+                isRTL ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                children: [
+                  Text(l10n.quickQuiz,
+                      style: theme.textTheme.titleMedium),
+                  const SizedBox(height: 4),
+                  Text(l10n.quizDescription,
+                      style: theme.textTheme.bodySmall),
+                ],
+              ),
             ),
-            border: Border.all(
-              color: accentColor.withOpacity(0.28),
+            Icon(
+              isRTL
+                  ? Icons.arrow_back_ios_new_rounded
+                  : Icons.arrow_forward_ios_rounded,
+              size: 16,
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.22),
-                blurRadius: 16,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 54,
-                height: 54,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: accentColor.withOpacity(0.14),
-                  border: Border.all(
-                    color: accentColor.withOpacity(0.6),
-                  ),
-                ),
-                child: Icon(
-                  icon,
-                  color: accentColor,
-                  size: 28,
-                ),
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      subtitle,
-                      maxLines: 4,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: 14,
-                        height: 1.45,
-                      ),
-                    ),
-                    if (isComingSoon) ...[
-                      const SizedBox(height: 10),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.08),
-                          borderRadius: BorderRadius.circular(999),
-                          border: Border.all(
-                            color: Colors.white.withOpacity(0.10),
-                          ),
-                        ),
-                        child: const Text(
-                          'Coming next',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-              const SizedBox(width: 8),
-              Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 18,
-                color: accentColor.withOpacity(0.9),
-              ),
-            ],
-          ),
+          ],
         ),
       ),
     );

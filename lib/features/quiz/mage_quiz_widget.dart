@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../l10n/app_localizations.dart';
 
 class ImageQuizWidget extends StatelessWidget {
   final String task;
@@ -16,29 +17,47 @@ class ImageQuizWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    final isArabic =
+        Localizations.localeOf(context).languageCode == 'ar';
+
     return SingleChildScrollView(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment:
+        isArabic ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Text(
             task,
+            textAlign: isArabic ? TextAlign.right : TextAlign.left,
             style: Theme.of(context).textTheme.titleMedium,
           ),
+
           const SizedBox(height: 16),
+
           CheckboxListTile(
             value: isMarkedComplete,
             contentPadding: EdgeInsets.zero,
-            title: const Text('I completed the required image task'),
-            onChanged: (value) => onMarkedCompleteChanged?.call(value ?? false),
+            controlAffinity: isArabic
+                ? ListTileControlAffinity.trailing
+                : ListTileControlAffinity.leading,
+            title: Text(
+              l.imageTaskCompleted,
+              textAlign: isArabic ? TextAlign.right : TextAlign.left,
+            ),
+            onChanged: (value) =>
+                onMarkedCompleteChanged?.call(value ?? false),
           ),
+
           const SizedBox(height: 12),
+
           TextField(
             controller: explanationController,
             minLines: 4,
             maxLines: 8,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Explain what your image contains and why it matches the task...',
+            textAlign: isArabic ? TextAlign.right : TextAlign.left,
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(),
+              hintText: l.imageExplainHint,
             ),
           ),
         ],

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
 
 import '../../core/services/career_llm_service.dart';
 import '../../core/services/career_storage_service.dart';
 import '../../data/models/subject_model.dart';
+import '../../core/widgets/app_drawer.dart';
 import 'job_selection_screen.dart';
 import 'phase3_path_screen.dart';
 
@@ -29,6 +31,8 @@ class _CareerSelectionScreenState extends State<CareerSelectionScreen> {
   bool _isLoading = false;
 
   Future<void> _startFinalPhase() async {
+    final l10n = AppLocalizations.of(context)!;
+
     final alreadyGenerated = await _careerStorageService.isPhase3Generated(
       college: widget.college,
       specialization: widget.specialization,
@@ -82,7 +86,7 @@ class _CareerSelectionScreenState extends State<CareerSelectionScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Could not load job suggestions: $error'),
+          content: Text(l10n.career_error_loading_jobs(error.toString())),
         ),
       );
     } finally {
@@ -96,9 +100,12 @@ class _CareerSelectionScreenState extends State<CareerSelectionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
+      drawer: const AppDrawer(),
       appBar: AppBar(
-        title: const Text('Final Phase'),
+        title: Text(l10n.career_phase3_title),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -108,10 +115,10 @@ class _CareerSelectionScreenState extends State<CareerSelectionScreen> {
             const SizedBox(height: 20),
             const Icon(Icons.workspace_premium, size: 78),
             const SizedBox(height: 20),
-            const Text(
-              'FINAL PHASE',
+            Text(
+              l10n.career_phase3_header,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w900,
                 letterSpacing: 1,
@@ -119,8 +126,10 @@ class _CareerSelectionScreenState extends State<CareerSelectionScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              'You completed the academic path for ${widget.specialization} in ${widget.college}. '
-              'This phase turns your finished subjects into a career-readiness mini path.',
+              l10n.career_phase3_description(
+                widget.specialization,
+                widget.college,
+              ),
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 16, height: 1.5),
             ),
@@ -130,24 +139,24 @@ class _CareerSelectionScreenState extends State<CareerSelectionScreen> {
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
-                      'What happens next?',
-                      style: TextStyle(
+                      l10n.career_phase3_what_next,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 12),
-                    Text('1. The AI suggests matching jobs.'),
-                    SizedBox(height: 8),
-                    Text('2. You choose up to 3 jobs.'),
-                    SizedBox(height: 8),
-                    Text('3. The app builds your final 3–5 employability nodes.'),
-                    SizedBox(height: 8),
-                    Text('4. Each node uses the same quiz and resources system.'),
-                    SizedBox(height: 8),
-                    Text('5. Generation is locked permanently after creation.'),
+                    const SizedBox(height: 12),
+                    Text(l10n.career_phase3_step1),
+                    const SizedBox(height: 8),
+                    Text(l10n.career_phase3_step2),
+                    const SizedBox(height: 8),
+                    Text(l10n.career_phase3_step3),
+                    const SizedBox(height: 8),
+                    Text(l10n.career_phase3_step4),
+                    const SizedBox(height: 8),
+                    Text(l10n.career_phase3_step5),
                   ],
                 ),
               ),
@@ -159,13 +168,13 @@ class _CareerSelectionScreenState extends State<CareerSelectionScreen> {
                 onPressed: _isLoading ? null : _startFinalPhase,
                 child: _isLoading
                     ? const CircularProgressIndicator()
-                    : const Text(
-                        'FINAL PHASE',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                    : Text(
+                  l10n.career_phase3_button,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ],
