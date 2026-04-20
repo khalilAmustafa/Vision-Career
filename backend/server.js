@@ -15,33 +15,56 @@ if (!GEMINI_KEY) {
   console.error("❌ GEMINI_API_KEY is missing");
 }
 
-// ✅ Helper to build request safely
+// ─────────────────────────────────────────────
+// Helper: Build Gemini Request
+// ─────────────────────────────────────────────
 function buildGeminiBody(input) {
-  // Case 1: direct prompt
-  if (input.prompt) {
-    return {
-      contents: [
-        {
-          parts: [{ text: input.prompt }],
-        },
-      ],
-    };
-  }
+  const promptText = input.prompt
+    ? input.prompt
+    : JSON.stringify(input);
 
-  // Case 2: structured input (future-safe)
   return {
     contents: [
       {
-        parts: [
-          {
-            text: JSON.stringify(input),
-          },
-        ],
+        parts: [{ text: promptText }],
       },
     ],
+    generationConfig: {
+      responseMimeType: "application/json", // 🔥 FORCE JSON OUTPUT
+      temperature: 0.4,
+      topP: 0.9,
+    },
   };
 }
 
+// ─────────────────────────────────────────────
+// Helper: Extract JSON safely
+// ─────────────────────────────────────────────
+function extractJson(text) {
+  if (!text) return null;
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    // fallback: try to extract JSON block
+    const start = text.indexOf("{");
+    const end = text.lastIndexOf("}");
+
+    if (start !== -1 && end !== -1) {
+      try {
+        return JSON.parse(text.substring(start, end + 1));
+      } catch {
+        return null;
+      }
+    }
+
+    return null;
+  }
+}
+
+// ─────────────────────────────────────────────
+// MAIN ROUTE
+// ─────────────────────────────────────────────
 app.post("/recommend", async (req, res) => {
   try {
     const body = buildGeminiBody(req.body);
@@ -59,40 +82,22 @@ app.post("/recommend", async (req, res) => {
 
     const data = await response.json();
 
-    // ❌ Gemini failed
     if (!response.ok) {
-      console.error("Gemini error:", data);
+      console.error("❌ Gemini error:", data);
       return res.status(500).json({
         success: false,
-        error: data,
+        error: "Gemini API error",
+        details: data,
       });
     }
 
-    // ✅ Extract text
-    let text =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    const text =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
 
-    if (!text) {
-      return res.status(500).json({
-        success: false,
-        error: "Empty response from AI",
-      });
-    }
+    const parsed = extractJson(text);
 
-    // 🔥 Remove markdown ```json blocks
-    text = text
-      .replace(/```json/gi, "")
-      .replace(/```/g, "")
-      .trim();
-
-    let parsed;
-
-    try {
-      parsed = JSON.parse(text);
-    } catch (e) {
-      console.error("❌ JSON parse failed");
-      console.error("RAW TEXT:", text);
-
+    if (!parsed) {
+      console.error("❌ Invalid JSON from AI:", text);
       return res.status(500).json({
         success: false,
         error: "Invalid JSON from AI",
@@ -100,26 +105,34 @@ app.post("/recommend", async (req, res) => {
       });
     }
 
-    // ✅ FINAL CLEAN RESPONSE
+    // ✅ FINAL RESPONSE (what your Flutter expects)
     res.json({
       success: true,
       data: parsed,
     });
 
   } catch (error) {
-    console.error("Server error:", error);
+    console.error("❌ Server error:", error);
+
     res.status(500).json({
       success: false,
       error: error.message,
     });
   }
 });
+
+// ─────────────────────────────────────────────
+// HEALTH CHECK
+// ─────────────────────────────────────────────
 app.get("/", (req, res) => {
   res.send("Backend is running 🚀");
 });
 
+// ─────────────────────────────────────────────
+// START SERVER
+// ─────────────────────────────────────────────
 const PORT = process.env.PORT || 10000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
