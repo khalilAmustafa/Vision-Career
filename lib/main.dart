@@ -21,3 +21,4 @@ void main() async {
 
   runApp(VisionCareerApp(settingsService: settingsService));
 }
+

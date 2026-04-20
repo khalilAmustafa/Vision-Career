@@ -39,8 +39,10 @@ class Phase0MappedSpecialty {
   final String title;
   final String collegeKey;
   final String collegeTitle;
+  final String? collegeTitleAr;
   final String specializationKey;
   final String datasetSpecialization;
+  final String? datasetSpecializationAr;
   final List<String> aliases;
 
   const Phase0MappedSpecialty({
@@ -48,8 +50,10 @@ class Phase0MappedSpecialty {
     required this.title,
     required this.collegeKey,
     required this.collegeTitle,
+    this.collegeTitleAr,
     required this.specializationKey,
     required this.datasetSpecialization,
+    this.datasetSpecializationAr,
     this.aliases = const [],
   });
 
@@ -102,13 +106,22 @@ class Phase0MappingService {
       final specializationKey = _slugify(specializationTitle);
       final specialtyKey = '${collegeKey}__$specializationKey';
 
+      final collegeTitleAr = entry.value
+          .map((s) => s.collegeAr?.trim())
+          .firstWhere((v) => v != null && v.isNotEmpty, orElse: () => null);
+      final specializationAr = entry.value
+          .map((s) => s.specializationAr?.trim())
+          .firstWhere((v) => v != null && v.isNotEmpty, orElse: () => null);
+
       return Phase0MappedSpecialty(
         specialtyKey: specialtyKey,
         title: specializationTitle,
         collegeKey: collegeKey,
         collegeTitle: collegeTitle,
+        collegeTitleAr: collegeTitleAr,
         specializationKey: specializationKey,
         datasetSpecialization: specializationTitle,
+        datasetSpecializationAr: specializationAr,
         aliases: _buildAliases(
           collegeTitle: collegeTitle,
           specializationTitle: specializationTitle,

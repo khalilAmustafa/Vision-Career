@@ -366,13 +366,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get specialtyEmptyFallback => 'لم يتم العثور على تخصصات مناسبة. حاول العودة وإعادة المحاولة.';
 
   @override
-  String get specialtyOpenError => 'لا يمكن فتح هذا التخصص محليًا.';
+  String get specialtyOpenError => 'لا يمكن فتح هذا التخصص.';
 
   @override
   String get college => 'الكلية';
 
   @override
-  String get openTree => 'عرض المسار';
+  String get openTree => 'فتح المسار';
 
   @override
   String get id_imageQuizTitle => 'Image Quiz';
@@ -480,7 +480,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get college_science => 'العلوم';
 
   @override
-  String get browseTracks => 'تصفح المسارات المهنية';
+  String get browseTracks => 'تصفح التخصصات';
 
   @override
   String get allSpecialties => 'جميع التخصصات';
@@ -511,4 +511,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get yourProgress => 'تقدمك';
+
+  @override
+  String get specialtyEmpty => 'لم يتم العثور على تخصصات. حاول مرة أخرى.';
+
+  @override
+  String get specialtyTitle => 'اختر تخصصك';
 }

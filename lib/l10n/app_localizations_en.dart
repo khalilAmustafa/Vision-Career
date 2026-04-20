@@ -366,7 +366,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get specialtyEmptyFallback => 'No valid specialties were found. Go back and try again.';
 
   @override
-  String get specialtyOpenError => 'This specialty could not be opened locally.';
+  String get specialtyOpenError => 'This specialty could not be opened.';
 
   @override
   String get college => 'College';
@@ -480,13 +480,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get college_science => 'Science';
 
   @override
-  String get browseTracks => 'Browse Career Tracks';
+  String get browseTracks => 'Browse Tracks';
 
   @override
   String get allSpecialties => 'All Specializations';
 
   @override
-  String get searchSpecialty => 'Search specializations...';
+  String get searchSpecialty => 'Search specialty...';
 
   @override
   String get profileTitle => 'Profile';
@@ -511,4 +511,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get yourProgress => 'Your Progress';
+
+  @override
+  String get specialtyEmpty => 'No specialties found. Try again.';
+
+  @override
+  String get specialtyTitle => 'Choose Your Specialty';
 }

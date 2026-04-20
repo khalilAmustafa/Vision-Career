@@ -740,7 +740,7 @@ abstract class AppLocalizations {
   /// No description provided for @specialtyOpenError.
   ///
   /// In en, this message translates to:
-  /// **'This specialty could not be opened locally.'**
+  /// **'This specialty could not be opened.'**
   String get specialtyOpenError;
 
   /// No description provided for @college.
@@ -956,7 +956,7 @@ abstract class AppLocalizations {
   /// No description provided for @browseTracks.
   ///
   /// In en, this message translates to:
-  /// **'Browse Career Tracks'**
+  /// **'Browse Tracks'**
   String get browseTracks;
 
   /// No description provided for @allSpecialties.
@@ -968,7 +968,7 @@ abstract class AppLocalizations {
   /// No description provided for @searchSpecialty.
   ///
   /// In en, this message translates to:
-  /// **'Search specializations...'**
+  /// **'Search specialty...'**
   String get searchSpecialty;
 
   /// No description provided for @profileTitle.
@@ -1018,6 +1018,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your Progress'**
   String get yourProgress;
+
+  /// No description provided for @specialtyEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No specialties found. Try again.'**
+  String get specialtyEmpty;
+
+  /// No description provided for @specialtyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Your Specialty'**
+  String get specialtyTitle;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

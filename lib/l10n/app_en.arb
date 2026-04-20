@@ -159,5 +159,16 @@
     "noTrackSelected": "No track selected yet",
     "progressLabel": "Progress",
     "continueLearning": "Continue Learning",
-    "yourProgress": "Your Progress"
+    "yourProgress": "Your Progress",
+      "specialtyEmpty": "No specialties found. Try again.",
+       "specialtyTitle": "Choose Your Specialty",
+        "specialtyEmpty": "No specialties found. Try again.",
+        "specialtyOpenError": "This specialty could not be opened.",
+        "openTree": "Open Tree",
+        "collegeLabel": "College",
+
+        "browseTracks": "Browse Tracks",
+        "searchSpecialty": "Search specialty...",
+
+        "retry": "Retry"
 }

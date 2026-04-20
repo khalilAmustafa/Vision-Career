@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../core/theme/app_theme.dart';
 import '../features/auth/auth_gate.dart';
+import '../features/phase0/specialty_recommendation_screen.dart';
+
 import '../core/services/settings_service.dart';
 import 'routes.dart';
 

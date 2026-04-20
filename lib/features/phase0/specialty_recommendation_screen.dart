@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
 
 import '../../core/services/phase0_gemini_service.dart';
 import '../../core/services/phase0_mapping_service.dart';
 import '../../core/services/progress_service.dart';
+import '../../core/theme/app_colors.dart';
 import '../path_view/path_view_screen.dart';
 
 class SpecialtyRecommendationScreen extends StatefulWidget {
@@ -28,8 +30,7 @@ class _SpecialtyRecommendationScreenState
     extends State<SpecialtyRecommendationScreen> {
   final Phase0MappingService _mappingService = Phase0MappingService();
   final Map<String, Phase0MappedSpecialty> _mappingCache = {};
-
-  bool _isOpening = false;
+  final Set<String> _openingKeys = {};
 
   @override
   void initState() {
@@ -38,30 +39,30 @@ class _SpecialtyRecommendationScreenState
   }
 
   Future<void> _primeMappings() async {
-    for (final recommendation in widget.recommendations) {
-      final mapping = await _mappingService.mapSpecialtyKey(
-        recommendation.specialtyKey,
-      );
-      if (mapping != null) {
-        _mappingCache[recommendation.specialtyKey] = mapping;
+    final futures = widget.recommendations.map((r) async {
+      final mapping = await _mappingService.mapSpecialtyKey(r.specialtyKey);
+      return MapEntry(r.specialtyKey, mapping);
+    });
+
+    final results = await Future.wait(futures);
+
+    for (final entry in results) {
+      if (entry.value != null) {
+        _mappingCache[entry.key] = entry.value!;
       }
     }
-    if (mounted) {
-      setState(() {});
-    }
+
+    if (mounted) setState(() {});
   }
 
   Future<void> _openTree(Phase0SpecialtyRecommendation recommendation) async {
-    if (_isOpening) return;
+    final key = recommendation.specialtyKey;
+    if (_openingKeys.contains(key)) return;
 
-    setState(() {
-      _isOpening = true;
-    });
+    setState(() => _openingKeys.add(key));
 
     try {
-      final mapping = await _mappingService.requireMapping(
-        recommendation.specialtyKey,
-      );
+      final mapping = await _mappingService.requireMapping(key);
 
       await ProgressService().selectTrack(
         mapping.collegeTitle,
@@ -79,114 +80,90 @@ class _SpecialtyRecommendationScreenState
           ),
         ),
       );
-    } catch (_) {
+    } catch (e) {
+      debugPrint('Open tree error: $e');
       if (!mounted) return;
+
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('This specialty could not be opened locally.'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.specialtyOpenError),
         ),
       );
     } finally {
-      if (mounted) {
-        setState(() {
-          _isOpening = false;
-        });
-      }
+      if (mounted) setState(() => _openingKeys.remove(key));
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
-      backgroundColor: const Color(0xFF08111F),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: const Text('Choose Your Specialty'),
+        title: Text(l10n.specialtyTitle),
+        centerTitle: true,
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFF091321),
-              Color(0xFF0D1A2D),
-              Color(0xFF06101B),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: SafeArea(
-          top: false,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(18, 12, 18, 12),
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.05),
-                    borderRadius: BorderRadius.circular(26),
-                    border: Border.all(color: Colors.white.withOpacity(0.08)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.title,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w900,
-                          height: 1.15,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        widget.subtitle,
-                        style: const TextStyle(
-                          color: Colors.white70,
-                          height: 1.5,
-                        ),
-                      ),
-                    ],
-                  ),
+      body: SafeArea(
+        top: false,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: theme.cardColor,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: theme.dividerColor),
                 ),
-              ),
-              Expanded(
-                child: widget.recommendations.isEmpty
-                    ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Text(
-                      widget.emptyMessage ??
-                          'No valid specialties were found. Go back and try again.',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        height: 1.5,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.title,
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w900,
                       ),
                     ),
-                  ),
-                )
-                    : ListView.separated(
-                  padding: const EdgeInsets.fromLTRB(18, 0, 18, 24),
-                  itemCount: widget.recommendations.length,
-                  separatorBuilder: (_, _) => const SizedBox(height: 12),
-                  itemBuilder: (context, index) {
-                    final item = widget.recommendations[index];
-                    return _RecommendationCard(
-                      recommendation: item,
-                      mapping: _mappingCache[item.specialtyKey],
-                      isBusy: _isOpening,
-                      onTap: () => _openTree(item),
-                    );
-                  },
+                    const SizedBox(height: 8),
+                    Text(
+                      widget.subtitle,
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+            Expanded(
+              child: widget.recommendations.isEmpty
+                  ? Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Text(
+                          widget.emptyMessage ?? l10n.specialtyEmpty,
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.bodyMedium,
+                        ),
+                      ),
+                    )
+                  : ListView.separated(
+                      padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
+                      itemCount: widget.recommendations.length,
+                      separatorBuilder: (_, _) => const SizedBox(height: 12),
+                      itemBuilder: (context, index) {
+                        final item = widget.recommendations[index];
+                        return _RecommendationCard(
+                          recommendation: item,
+                          mapping: _mappingCache[item.specialtyKey],
+                          isBusy: _openingKeys.contains(item.specialtyKey),
+                          onTap: () => _openTree(item),
+                        );
+                      },
+                    ),
+            ),
+          ],
         ),
       ),
     );
@@ -208,98 +185,105 @@ class _RecommendationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    final isDark = theme.brightness == Brightness.dark;
+
     final percent = (recommendation.confidence * 100).round();
+
+    final displayTitle = isArabic
+        ? (mapping?.datasetSpecializationAr ??
+            mapping?.datasetSpecialization ??
+            recommendation.title)
+        : (mapping?.datasetSpecialization ?? recommendation.title);
+
+    final displayCollege = isArabic
+        ? (mapping?.collegeTitleAr ?? mapping?.collegeTitle ?? '')
+        : (mapping?.collegeTitle ?? '');
 
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: isBusy ? null : onTap,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(20),
         child: Ink(
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            color: const Color(0xFF111E34),
-            border: Border.all(color: Colors.white.withOpacity(0.08)),
+            borderRadius: BorderRadius.circular(20),
+            color: theme.cardColor,
+            border: Border.all(color: theme.dividerColor),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     child: Text(
-                      recommendation.title,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
+                      displayTitle,
+                      style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w800,
                       ),
                     ),
                   ),
+                  const SizedBox(width: 8),
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 10,
-                      vertical: 6,
+                      vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF5EE7FF).withOpacity(0.14),
-                      borderRadius: BorderRadius.circular(999),
-                      border: Border.all(
-                        color: const Color(0xFF5EE7FF).withOpacity(0.26),
-                      ),
+                      color: AppColors.primary
+                          .withValues(alpha: isDark ? 0.2 : 0.1),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
                       '$percent%',
-                      style: const TextStyle(
-                        color: Color(0xFF5EE7FF),
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: AppColors.primary,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
-              if (mapping != null) ...[
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.05),
-                    borderRadius: BorderRadius.circular(999),
-                    border: Border.all(color: Colors.white.withOpacity(0.08)),
-                  ),
-                  child: Text(
-                    'College: ${mapping!.collegeTitle}',
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontWeight: FontWeight.w600,
-                    ),
+              if (mapping != null && displayCollege.isNotEmpty) ...[
+                const SizedBox(height: 6),
+                Text(
+                  '${l10n.collegeLabel}: $displayCollege',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: isDark
+                        ? AppColors.darkTextSecondary
+                        : AppColors.lightTextSecondary,
                   ),
                 ),
-                const SizedBox(height: 12),
               ],
+              const SizedBox(height: 10),
               Text(
                 recommendation.shortDescription,
-                style: const TextStyle(color: Colors.white70, height: 1.5),
+                style: theme.textTheme.bodyMedium,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 8),
               Text(
                 recommendation.fitReason,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: theme.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w600,
-                  height: 1.45,
                 ),
               ),
               const SizedBox(height: 14),
               Align(
-                alignment: Alignment.centerRight,
+                alignment: AlignmentDirectional.centerEnd,
                 child: FilledButton(
                   onPressed: isBusy ? null : onTap,
-                  child: const Text('Open Tree'),
+                  child: isBusy
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : Text(l10n.openTree),
                 ),
               ),
             ],
