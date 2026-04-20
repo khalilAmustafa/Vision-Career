@@ -10,6 +10,12 @@ class Subject {
   final List<String> resources;
   final List<String> skills;
 
+  // Added localization fields
+  final String? collegeAr;
+  final String? specializationAr;
+  final String? nameAr;
+  final String? descriptionAr;
+
   Subject({
     this.college = '',
     required this.specialization,
@@ -21,6 +27,10 @@ class Subject {
     this.description = '',
     this.resources = const [],
     this.skills = const [],
+    this.collegeAr,
+    this.specializationAr,
+    this.nameAr,
+    this.descriptionAr,
   });
 
   factory Subject.fromJson(Map<String, dynamic> json) {
@@ -44,6 +54,10 @@ class Subject {
           .map((item) => item.toString().trim())
           .where((item) => item.isNotEmpty)
           .toList(growable: false),
+      collegeAr: json['college_ar']?.toString(),
+      specializationAr: json['specialization_ar']?.toString(),
+      nameAr: json['name_ar']?.toString(),
+      descriptionAr: json['description_ar']?.toString(),
     );
   }
 
@@ -59,6 +73,10 @@ class Subject {
       'description': description,
       'resources': resources,
       'skills': skills,
+      'college_ar': collegeAr,
+      'specialization_ar': specializationAr,
+      'name_ar': nameAr,
+      'description_ar': descriptionAr,
     };
   }
 
@@ -73,6 +91,10 @@ class Subject {
     String? description,
     List<String>? resources,
     List<String>? skills,
+    String? collegeAr,
+    String? specializationAr,
+    String? nameAr,
+    String? descriptionAr,
   }) {
     return Subject(
       college: college ?? this.college,
@@ -85,6 +107,10 @@ class Subject {
       description: description ?? this.description,
       resources: resources ?? this.resources,
       skills: skills ?? this.skills,
+      collegeAr: collegeAr ?? this.collegeAr,
+      specializationAr: specializationAr ?? this.specializationAr,
+      nameAr: nameAr ?? this.nameAr,
+      descriptionAr: descriptionAr ?? this.descriptionAr,
     );
   }
 }

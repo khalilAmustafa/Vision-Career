@@ -330,22 +330,24 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
 
   String getLockedReason() {
     final missing = getMissingPrerequisiteSubjects();
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
 
     if (missing.isEmpty) {
-      return 'All prerequisites completed.';
+      return isArabic ? 'تم إكمال جميع المتطلبات السابقة.' : 'All prerequisites completed.';
     }
 
-    final names = missing.map((e) => e.name).join(', ');
-    return 'Complete these first: $names';
+    final names = missing.map((e) => (isArabic && e.nameAr != null) ? e.nameAr : e.name).join(', ');
+    return isArabic ? 'أكمل هذه أولاً: $names' : 'Complete these first: $names';
   }
 
   String getStatusDescription() {
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
     if (isCompleted) {
-      return 'You already completed this subject.';
+      return isArabic ? 'لقد أكملت هذه المادة بالفعل.' : 'You already completed this subject.';
     }
 
     if (isUnlocked()) {
-      return 'You can now take the completion quiz.';
+      return isArabic ? 'يمكنك الآن التقدم لاختبار الإكمال.' : 'You can now take the completion quiz.';
     }
 
     return getLockedReason();
@@ -457,9 +459,18 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final subject = widget.subject;
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    final displayName = (isArabic && subject.nameAr != null && subject.nameAr!.isNotEmpty)
+        ? subject.nameAr!
+        : subject.name;
+    final displayDescription = (isArabic && subject.descriptionAr != null && subject.descriptionAr!.isNotEmpty)
+        ? subject.descriptionAr!
+        : subject.description;
+        
     final prereqSubjects = getPrerequisiteSubjects();
     final missingPrereqs = getMissingPrerequisiteSubjects();
     final unlocked = isUnlocked();
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -473,11 +484,8 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    subject.name,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    displayName,
+                    style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
                   Row(
@@ -506,7 +514,7 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
                           const SizedBox(height: 8),
                           Text('Phase: ${subject.phase}'),
                           const SizedBox(height: 8),
-                          Text('Specialization: ${subject.specialization}'),
+                          Text('Specialization: ${isArabic && subject.specializationAr != null ? subject.specializationAr : subject.specialization}'),
                         ],
                       ),
                     ),
@@ -608,6 +616,7 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
                         child: Column(
                           children: prereqSubjects.map((prereq) {
                             final done = completedSubjects.contains(prereq.code);
+                            final pName = (isArabic && prereq.nameAr != null) ? prereq.nameAr! : prereq.name;
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 8),
                               child: Row(
@@ -620,7 +629,7 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
                                     size: 18,
                                   ),
                                   const SizedBox(width: 8),
-                                  Expanded(child: Text(prereq.name)),
+                                  Expanded(child: Text(pName)),
                                 ],
                               ),
                             );
@@ -642,10 +651,13 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: missingPrereqs
-                              .map((s) => Padding(
+                              .map((s) {
+                                final mName = (isArabic && s.nameAr != null) ? s.nameAr! : s.name;
+                                return Padding(
                                     padding: const EdgeInsets.only(bottom: 8),
-                                    child: Text('• ${s.name} (${s.code})'),
-                                  ))
+                                    child: Text('• $mName (${s.code})'),
+                                  );
+                              })
                               .toList(),
                         ),
                       ),
@@ -661,9 +673,9 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Text(
-                        subject.description.trim().isEmpty
+                        displayDescription.trim().isEmpty
                             ? 'No description available yet.'
-                            : subject.description,
+                            : displayDescription,
                       ),
                     ),
                   ),
@@ -695,14 +707,3 @@ class _SubjectDetailsScreenState extends State<SubjectDetailsScreen> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-

@@ -1,31 +1,101 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../core/services/progress_service.dart';
 import '../../core/services/user_profile_service.dart';
 import '../../core/widgets/app_drawer.dart';
+import '../../l10n/app_localizations.dart';
 
-class ProfileScreen extends StatelessWidget {
+import '../path_view/path_view_controller.dart';
+import '../path_view/path_view_screen.dart';
+
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  final ProgressService _progressService = ProgressService();
+
+  String? _college;
+  String? _specialization;
+  double _progress = 0;
+
+  bool _loadingProgress = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProgress();
+  }
+
+  Future<void> _loadProgress() async {
+    final track = await _progressService.getSelectedTrack();
+
+    if (track == null) {
+      setState(() => _loadingProgress = false);
+      return;
+    }
+
+    final controller = PathViewController(
+      college: track.college,
+      specialization: track.specialization,
+    );
+
+    await controller.loadPath();
+
+    setState(() {
+      _college = track.college;
+      _specialization = track.specialization;
+      _progress = controller.progressPercent * 100;
+      _loadingProgress = false;
+    });
+  }
+
+  Future<void> _openContinueLearning() async {
+    if (_college == null || _specialization == null) return;
+
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PathViewScreen(
+          college: _college!,
+          specialization: _specialization!,
+        ),
+      ),
+    );
+
+    await _loadProgress();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
-      backgroundColor: const Color(0xFF08111F),
+      backgroundColor: theme.colorScheme.surface,
       drawer: const AppDrawer(),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text('Profile'),
+        title: Text(l10n.profileTitle ?? 'Profile'),
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Color(0xFF091321),
-              Color(0xFF0D1A2D),
-              Color(0xFF06101B),
+            colors: theme.brightness == Brightness.dark
+                ? [
+              const Color(0xFF091321),
+              const Color(0xFF0D1A2D),
+              const Color(0xFF06101B),
+            ]
+                : [
+              theme.colorScheme.surface,
+              theme.colorScheme.surfaceVariant.withOpacity(0.5),
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -36,9 +106,7 @@ class ProfileScreen extends StatelessWidget {
             future: UserProfileService().getCurrentUserProfile(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                return const Center(child: CircularProgressIndicator());
               }
 
               final data = snapshot.data;
@@ -47,98 +115,34 @@ class ProfileScreen extends StatelessWidget {
               final email = user?.email ?? data?['email'] ?? 'No email';
 
               return SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(24),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(28),
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color(0xFF162338),
-                            Color(0xFF0E1C2F),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        border: Border.all(
-                          color: Colors.white.withOpacity(0.08),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.25),
-                            blurRadius: 18,
-                            offset: const Offset(0, 8),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 120,
-                            height: 120,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: const LinearGradient(
-                                colors: [
-                                  Color(0xFF57D6FF),
-                                  Color(0xFF2D7FFF),
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              border: Border.all(
-                                color: Colors.white.withOpacity(0.25),
-                                width: 3,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.25),
-                                  blurRadius: 14,
-                                  offset: const Offset(0, 6),
-                                ),
-                              ],
-                            ),
-                            child: const Icon(
-                              Icons.person,
-                              size: 64,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          Text(
-                            username,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 28,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            email,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 22),
+                    _profileCard(username, email, theme),
+                    const SizedBox(height: 20),
+
+                    _buildProgressCard(theme, l10n),
+
+                    const SizedBox(height: 12),
+
+                    _buildContinueLearningButton(theme, l10n),
+
+                    const SizedBox(height: 20),
+
                     _InfoCard(
-                      title: 'Age',
+                      title: l10n.age ?? 'Age',
                       value: age,
                       icon: Icons.cake_outlined,
+                      theme: theme,
                     ),
+
                     const SizedBox(height: 14),
+
                     _InfoCard(
-                      title: 'Account Status',
-                      value: 'Active',
+                      title: l10n.accountStatus ?? 'Account Status',
+                      value: l10n.active ?? 'Active',
                       icon: Icons.verified_user_outlined,
+                      theme: theme,
                     ),
                   ],
                 ),
@@ -149,17 +153,122 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
   }
+
+  Widget _profileCard(String username, String email, ThemeData theme) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(28),
+        color: theme.colorScheme.surfaceVariant.withOpacity(0.2),
+        border: Border.all(color: theme.dividerColor.withOpacity(0.1)),
+      ),
+      child: Column(
+        children: [
+          Icon(Icons.person,
+              size: 80, color: theme.colorScheme.onSurface),
+          const SizedBox(height: 16),
+          Text(
+            username,
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            email,
+            style: theme.textTheme.bodyMedium
+                ?.copyWith(color: theme.hintColor),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProgressCard(ThemeData theme, AppLocalizations l10n) {
+    if (_loadingProgress) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_college == null) {
+      return Text(
+        l10n.noTrackSelected ?? 'No track selected yet.',
+        style: theme.textTheme.bodyMedium,
+      );
+    }
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceVariant.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(22),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            _specialization!,
+            style: theme.textTheme.titleMedium
+                ?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          Text(
+            _college!,
+            style: theme.textTheme.bodyMedium
+                ?.copyWith(color: theme.hintColor),
+          ),
+          const SizedBox(height: 12),
+
+          LinearProgressIndicator(
+            value: (_progress / 100).clamp(0.0, 1.0),
+          ),
+
+          const SizedBox(height: 8),
+
+          Text(
+            '${l10n.progress ?? "Progress"}: ${_progress.toStringAsFixed(1)}%',
+            style: theme.textTheme.bodySmall,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContinueLearningButton(
+      ThemeData theme, AppLocalizations l10n) {
+    if (_college == null || _specialization == null) {
+      return const SizedBox.shrink();
+    }
+
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: _openContinueLearning,
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+        child: Text(
+          l10n.continueLearning ?? 'Continue Learning',
+        ),
+      ),
+    );
+  }
 }
 
 class _InfoCard extends StatelessWidget {
   final String title;
   final String value;
   final IconData icon;
+  final ThemeData theme;
 
   const _InfoCard({
     required this.title,
     required this.value,
     required this.icon,
+    required this.theme,
   });
 
   @override
@@ -168,49 +277,23 @@ class _InfoCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.05),
+        color: theme.colorScheme.surfaceVariant.withOpacity(0.2),
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.08),
-        ),
       ),
       child: Row(
         children: [
-          Container(
-            width: 52,
-            height: 52,
-            decoration: BoxDecoration(
-              color: const Color(0xFF57D6FF).withOpacity(0.12),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              icon,
-              color: const Color(0xFF57D6FF),
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 14,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  value,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
-            ),
+          Icon(icon, color: theme.iconTheme.color),
+          const SizedBox(width: 12),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title, style: theme.textTheme.bodySmall),
+              Text(
+                value,
+                style: theme.textTheme.titleMedium
+                    ?.copyWith(fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
         ],
       ),

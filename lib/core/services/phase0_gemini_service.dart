@@ -211,26 +211,51 @@ class Phase0GeminiService {
       },
     };
 
-    final response = await http.post(
-      Uri.parse(GeminiQuizConfig.endpoint),
-      headers: const {'Content-Type': 'application/json'},
-      body: jsonEncode(payload),
-    );
+    int attempts = 0;
 
-    if (response.statusCode != 200) {
-      throw Exception(
-        'Phase 0 Gemini request failed (${response.statusCode}): ${response.body}',
-      );
+    while (attempts < 3) {
+      try {
+        final response = await http.post(
+          Uri.parse(GeminiQuizConfig.endpoint),
+          headers: const {'Content-Type': 'application/json'},
+          body: jsonEncode(payload),
+        );
+
+        // 🔥 HANDLE OVERLOAD / RATE LIMIT
+        if (response.statusCode == 429 || response.statusCode == 503) {
+          attempts++;
+          if (attempts >= 3) {
+            throw Exception('SERVICE_UNAVAILABLE');
+          }
+
+          await Future.delayed(Duration(seconds: 2 * attempts));
+          continue;
+        }
+
+        if (response.statusCode != 200) {
+          throw Exception(
+            'Phase 0 Gemini request failed (${response.statusCode}): ${response.body}',
+          );
+        }
+
+        final body = jsonDecode(response.body) as Map<String, dynamic>;
+        final text = _extractText(body);
+
+        if (text.isEmpty) {
+          throw const FormatException(
+              'Phase 0 Gemini returned an empty payload.');
+        }
+
+        return text;
+      } catch (e) {
+        attempts++;
+        if (attempts >= 3) rethrow;
+
+        await Future.delayed(Duration(seconds: 2 * attempts));
+      }
     }
 
-    final body = jsonDecode(response.body) as Map<String, dynamic>;
-    final text = _extractText(body);
-
-    if (text.isEmpty) {
-      throw const FormatException('Phase 0 Gemini returned an empty payload.');
-    }
-
-    return text;
+    throw Exception('Retry failed');
   }
 
   String _buildDescriptionPrompt({

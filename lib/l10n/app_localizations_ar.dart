@@ -478,4 +478,37 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get college_science => 'العلوم';
+
+  @override
+  String get browseTracks => 'تصفح المسارات المهنية';
+
+  @override
+  String get allSpecialties => 'جميع التخصصات';
+
+  @override
+  String get searchSpecialty => 'ابحث عن تخصص...';
+
+  @override
+  String get profileTitle => 'الملف الشخصي';
+
+  @override
+  String get continueLearning => 'متابعة التعلم';
+
+  @override
+  String get progress => 'التقدم';
+
+  @override
+  String get noTrackSelected => 'لم يتم اختيار مسار بعد';
+
+  @override
+  String get accountStatus => 'حالة الحساب';
+
+  @override
+  String get active => 'نشط';
+
+  @override
+  String get progressLabel => 'التقدم';
+
+  @override
+  String get yourProgress => 'تقدمك';
 }

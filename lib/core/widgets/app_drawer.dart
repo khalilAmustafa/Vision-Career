@@ -5,6 +5,7 @@ import '../../../core/services/user_profile_service.dart';
 import '../../../core/services/settings_service.dart';
 import '../../features/profile/profile_screen.dart';
 import '../../features/settings/settings_screen.dart';
+import '../../features/career/browse_tracks_screen.dart';
 import '../../l10n/app_localizations.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -16,8 +17,8 @@ class AppDrawer extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Drawer(
-      backgroundColor: Theme.of(context).brightness == Brightness.dark 
-          ? const Color(0xFF0D1A2D) 
+      backgroundColor: Theme.of(context).brightness == Brightness.dark
+          ? const Color(0xFF0D1A2D)
           : Colors.white,
       child: SafeArea(
         child: FutureBuilder<Map<String, dynamic>?>(
@@ -87,6 +88,26 @@ class AppDrawer extends StatelessWidget {
                   accountEmail: Text(
                     user?.email ?? 'No email',
                   ),
+                ),
+
+                ListTile(
+                  leading: Icon(
+                    Icons.explore_outlined,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
+                  title: Text(
+                    l10n.browseTracks,
+                    style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const BrowseTracksScreen(),
+                      ),
+                    );
+                  },
                 ),
 
                 ListTile(

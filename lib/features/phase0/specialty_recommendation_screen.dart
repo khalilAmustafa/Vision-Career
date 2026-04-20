@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/services/phase0_gemini_service.dart';
 import '../../core/services/phase0_mapping_service.dart';
+import '../../core/services/progress_service.dart';
 import '../path_view/path_view_screen.dart';
 
 class SpecialtyRecommendationScreen extends StatefulWidget {
@@ -60,6 +61,11 @@ class _SpecialtyRecommendationScreenState
     try {
       final mapping = await _mappingService.requireMapping(
         recommendation.specialtyKey,
+      );
+
+      await ProgressService().selectTrack(
+        mapping.collegeTitle,
+        mapping.datasetSpecialization,
       );
 
       if (!mounted) return;

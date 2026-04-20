@@ -135,7 +135,6 @@
     "collegeLabel": "College",
     "noSpecializations": "No specializations were found for this college.",
     "loadSpecializationsError": "Could not load colleges and specializations.",
-
     "settings": "Settings",
     "theme": "Theme",
     "lightMode": "Light Mode",
@@ -144,7 +143,21 @@
     "arabic": "Arabic",
     "english": "English",
     "college_it": "IT",
-        "college_engineering": "Engineering",
-        "college_business": "Business",
-        "college_science": "Science"
+    "college_engineering": "Engineering",
+    "college_business": "Business",
+    "college_science": "Science",
+    "browseTracks": "Browse Career Tracks",
+    "allSpecialties": "All Specializations",
+    "searchSpecialty": "Search specializations...",
+    "profileTitle": "Profile",
+    "continueLearning": "Continue Learning",
+    "progress": "Progress",
+    "noTrackSelected": "No track selected yet.",
+    "age": "Age",
+    "accountStatus": "Account Status",
+    "active": "Active",
+    "noTrackSelected": "No track selected yet",
+    "progressLabel": "Progress",
+    "continueLearning": "Continue Learning",
+    "yourProgress": "Your Progress"
 }

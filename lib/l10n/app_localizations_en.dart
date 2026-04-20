@@ -478,4 +478,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get college_science => 'Science';
+
+  @override
+  String get browseTracks => 'Browse Career Tracks';
+
+  @override
+  String get allSpecialties => 'All Specializations';
+
+  @override
+  String get searchSpecialty => 'Search specializations...';
+
+  @override
+  String get profileTitle => 'Profile';
+
+  @override
+  String get continueLearning => 'Continue Learning';
+
+  @override
+  String get progress => 'Progress';
+
+  @override
+  String get noTrackSelected => 'No track selected yet';
+
+  @override
+  String get accountStatus => 'Account Status';
+
+  @override
+  String get active => 'Active';
+
+  @override
+  String get progressLabel => 'Progress';
+
+  @override
+  String get yourProgress => 'Your Progress';
 }

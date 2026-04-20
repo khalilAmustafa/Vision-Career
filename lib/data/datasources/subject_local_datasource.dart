@@ -7,7 +7,7 @@ class SubjectLocalDataSource {
   static const String _datasetPath =
       'assets/data/vision_career_phase1_phase2_master_dataset_rebuilt.json';
 
-  List<Subject>? _cache;
+  static List<Subject>? _cache;
 
   Future<List<Subject>> loadAllSubjects() async {
     if (_cache != null) {
@@ -15,10 +15,10 @@ class SubjectLocalDataSource {
     }
 
     final raw = await rootBundle.loadString(_datasetPath);
-    final decoded = json.decode(raw) as Map<String, dynamic>;
-    final subjectsJson = decoded['subjects'] as List<dynamic>? ?? const [];
+    // JSON root is a flat array — not a Map with a 'subjects' key
+    final decoded = json.decode(raw) as List<dynamic>;
 
-    _cache = subjectsJson
+    _cache = decoded
         .whereType<Map<String, dynamic>>()
         .map((item) => Subject.fromJson(item))
         .toList(growable: false);

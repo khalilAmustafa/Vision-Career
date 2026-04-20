@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import '../../data/models/learning_resource_model.dart';
@@ -64,75 +65,84 @@ class VertexLearningResourceService {
       }
     }
 
-    return [];
+    return _fallbackResources(subject);
   }
 
   Future<void> clearCacheForSubject(Subject subject) {
     return _cacheService.clearCachedResources(subject.code);
   }
-
   Future<List<LearningResource>> _runSearch(String query) async {
-    final payload = {
-      "query": query,
-      "pageSize": 10,
-      "boostSpec": {
-        "conditionBoostSpecs": [
-          {
-            "condition": 'uri: ANY("coursera.org")',
-            "boost": 1.0,
-          },
-          {
-            "condition": 'uri: ANY("udemy.com")',
-            "boost": 0.6,
-          },
-          {
-            "condition": 'uri: ANY("youtube.com")',
-            "boost": 0.2,
-          },
-        ],
-      },
-    };
+    try {
+      final payload = {
+        "query": query,
+        "pageSize": 10,
+        "boostSpec": {
+          "conditionBoostSpecs": [
+            {
+              "condition": 'uri: ANY("coursera.org")',
+              "boost": 1.0,
+            },
+            {
+              "condition": 'uri: ANY("udemy.com")',
+              "boost": 0.6,
+            },
+            {
+              "condition": 'uri: ANY("youtube.com")',
+              "boost": 0.2,
+            },
+          ],
+        },
+      };
 
-    final response = await http.post(
-      Uri.parse(_url),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: jsonEncode(payload),
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception(
-        'Vertex search failed (${response.statusCode}): ${response.body}',
+      final response = await http.post(
+        Uri.parse(_url),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode(payload),
       );
+
+      // 🔥 HANDLE PERMISSION / RATE / SERVER FAIL
+      if (response.statusCode == 403 ||
+          response.statusCode == 429 ||
+          response.statusCode == 503) {
+        return [];
+      }
+
+      if (response.statusCode != 200) {
+        return [];
+      }
+
+      final decoded = jsonDecode(response.body) as Map<String, dynamic>;
+      final results = (decoded['results'] as List?) ?? [];
+
+      return results.map((item) {
+        final result = item as Map<String, dynamic>;
+        final document = (result['document'] as Map<String, dynamic>?) ?? {};
+        final derived =
+            (document['derivedStructData'] as Map<String, dynamic>?) ?? {};
+
+        final title = _cleanTitle(
+          (derived['title'] ?? 'Untitled Course').toString(),
+        );
+
+        final link = (derived['link'] ?? '').toString();
+        final platform = _detectPlatform(link);
+
+        return LearningResource(
+          title: title,
+          url: link,
+          platform: platform,
+        );
+      }).where((r) {
+        if (r.url.isEmpty) return false;
+        if (r.platform == 'Other') return false;
+        return true;
+      }).toList();
+    } catch (e, st) {
+      debugPrint('[VertexSearch] _runSearch failed: $e\n$st');
+      return [];
     }
-
-    final decoded = jsonDecode(response.body) as Map<String, dynamic>;
-    final results = (decoded['results'] as List?) ?? [];
-
-    return results.map((item) {
-      final result = item as Map<String, dynamic>;
-      final document = (result['document'] as Map<String, dynamic>?) ?? {};
-      final derived =
-          (document['derivedStructData'] as Map<String, dynamic>?) ?? {};
-
-      final title = _cleanTitle(
-        (derived['title'] ?? 'Untitled Course').toString(),
-      );
-
-      final link = (derived['link'] ?? '').toString();
-      final platform = _detectPlatform(link);
-
-      return LearningResource(
-        title: title,
-        url: link,
-        platform: platform,
-      );
-    }).where((r) {
-      if (r.url.isEmpty) return false;
-      if (r.platform == 'Other') return false;
-      return true;
-    }).toList();
   }
 
   String _cleanName(String name) {
@@ -187,6 +197,27 @@ class VertexLearningResourceService {
     }
 
     return output;
+  }
+
+  List<LearningResource> _fallbackResources(Subject subject) {
+    final name = Uri.encodeComponent(subject.name);
+    return [
+      LearningResource(
+        title: "YouTube: ${subject.name} full course",
+        url: "https://www.youtube.com/results?search_query=$name+full+course",
+        platform: "YouTube",
+      ),
+      LearningResource(
+        title: "Coursera: ${subject.name}",
+        url: "https://www.coursera.org/search?query=$name",
+        platform: "Coursera",
+      ),
+      LearningResource(
+        title: "Udemy: ${subject.name}",
+        url: "https://www.udemy.com/courses/search/?q=$name",
+        platform: "Udemy",
+      ),
+    ];
   }
 
   List<LearningResource> _selectPriorityResults(List<LearningResource> input) {

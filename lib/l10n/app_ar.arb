@@ -141,9 +141,22 @@
     "language": "اللغة",
     "arabic": "العربية",
     "english": "الإنجليزية",
-
-        "college_it": "تقنية المعلومات",
-        "college_engineering": "الهندسة",
-        "college_business": "الأعمال",
-        "college_science": "العلوم"
+    "college_it": "تقنية المعلومات",
+    "college_engineering": "الهندسة",
+    "college_business": "الأعمال",
+    "college_science": "العلوم",
+    "browseTracks": "تصفح المسارات المهنية",
+    "allSpecialties": "جميع التخصصات",
+    "searchSpecialty": "ابحث عن تخصص...",
+    "profileTitle": "الملف الشخصي",
+    "continueLearning": "متابعة التعلم",
+    "progress": "التقدم",
+    "noTrackSelected": "لم يتم اختيار مسار بعد",
+    "age": "العمر",
+    "accountStatus": "حالة الحساب",
+    "active": "نشط",
+    "noTrackSelected": "لم يتم اختيار مسار بعد",
+    "progressLabel": "التقدم",
+    "continueLearning": "متابعة التعلم",
+    "yourProgress": "تقدمك"
 }

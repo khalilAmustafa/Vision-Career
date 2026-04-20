@@ -952,6 +952,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Science'**
   String get college_science;
+
+  /// No description provided for @browseTracks.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse Career Tracks'**
+  String get browseTracks;
+
+  /// No description provided for @allSpecialties.
+  ///
+  /// In en, this message translates to:
+  /// **'All Specializations'**
+  String get allSpecialties;
+
+  /// No description provided for @searchSpecialty.
+  ///
+  /// In en, this message translates to:
+  /// **'Search specializations...'**
+  String get searchSpecialty;
+
+  /// No description provided for @profileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileTitle;
+
+  /// No description provided for @continueLearning.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Learning'**
+  String get continueLearning;
+
+  /// No description provided for @progress.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get progress;
+
+  /// No description provided for @noTrackSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No track selected yet'**
+  String get noTrackSelected;
+
+  /// No description provided for @accountStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Status'**
+  String get accountStatus;
+
+  /// No description provided for @active.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get active;
+
+  /// No description provided for @progressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get progressLabel;
+
+  /// No description provided for @yourProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Progress'**
+  String get yourProgress;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
