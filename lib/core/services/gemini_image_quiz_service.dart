@@ -98,7 +98,7 @@ class GeminiImageQuizService {
     final safeRubric = rubric.where((e) => e.trim().isNotEmpty).toList(growable: false);
 
     return '''
-You are the image-submission evaluator for Vision Career.
+You are the image-submission evaluator for Masar.
 
 You are grading a student's uploaded image for a subject completion quiz.
 

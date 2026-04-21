@@ -19,6 +19,6 @@ void main() async {
     await UserProfileService().getCurrentUserProfile();
   }
 
-  runApp(VisionCareerApp(settingsService: settingsService));
+  runApp(MasarApp(settingsService: settingsService));
 }
 

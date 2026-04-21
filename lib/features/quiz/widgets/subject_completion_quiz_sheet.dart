@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../l10n/app_localizations.dart';
 
 import '../../../core/services/gemini_quiz_service.dart';
+import '../../../core/services/quiz_screen_security_service.dart';
 import '../../../data/models/quiz_attempt_result_model.dart';
 import '../../../data/models/quiz_models.dart';
 import '../../../data/models/quiz_question_model.dart';
@@ -56,6 +57,7 @@ class SubjectCompletionQuizSheet extends StatefulWidget {
 class _SubjectCompletionQuizSheetState
     extends State<SubjectCompletionQuizSheet> {
   final GeminiQuizService _service = const GeminiQuizService();
+  final QuizScreenSecurityService _security = QuizScreenSecurityService();
 
   GeneratedQuiz? _quiz;
   bool _loading = true;
@@ -69,11 +71,13 @@ class _SubjectCompletionQuizSheetState
   @override
   void initState() {
     super.initState();
+    _security.startProtectedQuizSession();
     _loadQuiz();
   }
 
   @override
   void dispose() {
+    _security.stopProtectedQuizSession();
     _writingController.dispose();
     super.dispose();
   }

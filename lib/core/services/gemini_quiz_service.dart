@@ -91,7 +91,7 @@ College-level assessment tendency:
     }
 
     return '''
-You are the assessment generation engine for Vision Career.
+You are the assessment generation engine for Masar.
 
 Your job is to generate ONE academically suitable quiz for ONE university subject.
 

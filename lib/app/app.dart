@@ -9,10 +9,10 @@ import 'routes.dart';
 import '../l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-class VisionCareerApp extends StatelessWidget {
+class MasarApp extends StatelessWidget {
   final SettingsService settingsService;
 
-  const VisionCareerApp({super.key, required this.settingsService});
+  const MasarApp({super.key, required this.settingsService});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class VisionCareerApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Vision Career',
+          title: 'Masar',
           locale: settingsService.locale,
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,

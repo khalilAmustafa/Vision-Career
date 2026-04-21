@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../l10n/app_localizations.dart';
 
 import '../../core/services/phase0_gemini_service.dart';
 import '../../core/services/phase0_mapping_service.dart';
 import '../../core/services/progress_service.dart';
 import '../../core/theme/app_colors.dart';
+import '../../l10n/app_localizations.dart';
 import '../path_view/path_view_screen.dart';
 
 class SpecialtyRecommendationScreen extends StatefulWidget {
@@ -39,9 +39,10 @@ class _SpecialtyRecommendationScreenState
   }
 
   Future<void> _primeMappings() async {
-    final futures = widget.recommendations.map((r) async {
-      final mapping = await _mappingService.mapSpecialtyKey(r.specialtyKey);
-      return MapEntry(r.specialtyKey, mapping);
+    final futures = widget.recommendations.map((recommendation) async {
+      final mapping =
+      await _mappingService.mapSpecialtyKey(recommendation.specialtyKey);
+      return MapEntry(recommendation.specialtyKey, mapping);
     });
 
     final results = await Future.wait(futures);
@@ -52,7 +53,9 @@ class _SpecialtyRecommendationScreenState
       }
     }
 
-    if (mounted) setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   Future<void> _openTree(Phase0SpecialtyRecommendation recommendation) async {
@@ -80,8 +83,8 @@ class _SpecialtyRecommendationScreenState
           ),
         ),
       );
-    } catch (e) {
-      debugPrint('Open tree error: $e');
+    } catch (error) {
+      debugPrint('Open tree error: $error');
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -90,7 +93,9 @@ class _SpecialtyRecommendationScreenState
         ),
       );
     } finally {
-      if (mounted) setState(() => _openingKeys.remove(key));
+      if (mounted) {
+        setState(() => _openingKeys.remove(key));
+      }
     }
   }
 
@@ -139,29 +144,29 @@ class _SpecialtyRecommendationScreenState
             Expanded(
               child: widget.recommendations.isEmpty
                   ? Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Text(
-                          widget.emptyMessage ?? l10n.specialtyEmpty,
-                          textAlign: TextAlign.center,
-                          style: theme.textTheme.bodyMedium,
-                        ),
-                      ),
-                    )
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Text(
+                    widget.emptyMessage ?? l10n.specialtyEmpty,
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                ),
+              )
                   : ListView.separated(
-                      padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
-                      itemCount: widget.recommendations.length,
-                      separatorBuilder: (_, _) => const SizedBox(height: 12),
-                      itemBuilder: (context, index) {
-                        final item = widget.recommendations[index];
-                        return _RecommendationCard(
-                          recommendation: item,
-                          mapping: _mappingCache[item.specialtyKey],
-                          isBusy: _openingKeys.contains(item.specialtyKey),
-                          onTap: () => _openTree(item),
-                        );
-                      },
-                    ),
+                padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
+                itemCount: widget.recommendations.length,
+                separatorBuilder: (_, _) => const SizedBox(height: 12),
+                itemBuilder: (context, index) {
+                  final item = widget.recommendations[index];
+                  return _RecommendationCard(
+                    recommendation: item,
+                    mapping: _mappingCache[item.specialtyKey],
+                    isBusy: _openingKeys.contains(item.specialtyKey),
+                    onTap: () => _openTree(item),
+                  );
+                },
+              ),
             ),
           ],
         ),
@@ -189,18 +194,23 @@ class _RecommendationCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final isArabic = Localizations.localeOf(context).languageCode == 'ar';
     final isDark = theme.brightness == Brightness.dark;
-
     final percent = (recommendation.confidence * 100).round();
 
     final displayTitle = isArabic
         ? (mapping?.datasetSpecializationAr ??
-            mapping?.datasetSpecialization ??
-            recommendation.title)
+        mapping?.datasetSpecialization ??
+        recommendation.title)
         : (mapping?.datasetSpecialization ?? recommendation.title);
 
     final displayCollege = isArabic
         ? (mapping?.collegeTitleAr ?? mapping?.collegeTitle ?? '')
         : (mapping?.collegeTitle ?? '');
+
+    final sectionTitle = isArabic ? 'المسارات الوظيفية المتوقعة' : 'Top career roles';
+    final salaryTitle = isArabic ? 'متوسط الرواتب' : 'Average salary';
+    final jordanLabel = isArabic ? 'الأردن' : 'Jordan';
+    final gulfLabel = isArabic ? 'الخليج' : 'Gulf';
+    final worldLabel = isArabic ? 'عالميًا' : 'Worldwide';
 
     return Material(
       color: Colors.transparent,
@@ -272,6 +282,28 @@ class _RecommendationCard extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
+              if (recommendation.jobs.isNotEmpty) ...[
+                const SizedBox(height: 18),
+                Text(
+                  sectionTitle,
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                ...recommendation.jobs.map(
+                      (job) => Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: _JobInsightCard(
+                      job: job,
+                      salaryTitle: salaryTitle,
+                      jordanLabel: jordanLabel,
+                      gulfLabel: gulfLabel,
+                      worldLabel: worldLabel,
+                    ),
+                  ),
+                ),
+              ],
               const SizedBox(height: 14),
               Align(
                 alignment: AlignmentDirectional.centerEnd,
@@ -279,10 +311,10 @@ class _RecommendationCard extends StatelessWidget {
                   onPressed: isBusy ? null : onTap,
                   child: isBusy
                       ? const SizedBox(
-                          width: 18,
-                          height: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
                       : Text(l10n.openTree),
                 ),
               ),
@@ -290,6 +322,97 @@ class _RecommendationCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _JobInsightCard extends StatelessWidget {
+  final Phase0JobInsight job;
+  final String salaryTitle;
+  final String jordanLabel;
+  final String gulfLabel;
+  final String worldLabel;
+
+  const _JobInsightCard({
+    required this.job,
+    required this.salaryTitle,
+    required this.jordanLabel,
+    required this.gulfLabel,
+    required this.worldLabel,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: AppColors.primary.withValues(alpha: isDark ? 0.08 : 0.05),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: AppColors.primary.withValues(alpha: isDark ? 0.18 : 0.12),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            job.title,
+            style: theme.textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            salaryTitle,
+            style: theme.textTheme.labelLarge?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 8),
+          _SalaryLine(label: jordanLabel, value: job.averageSalary.jordan),
+          const SizedBox(height: 4),
+          _SalaryLine(label: gulfLabel, value: job.averageSalary.gulf),
+          const SizedBox(height: 4),
+          _SalaryLine(label: worldLabel, value: job.averageSalary.worldwide),
+        ],
+      ),
+    );
+  }
+}
+
+class _SalaryLine extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const _SalaryLine({
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '$label: ',
+          style: theme.textTheme.bodySmall?.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            value,
+            style: theme.textTheme.bodySmall,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -200,11 +200,11 @@ abstract class AppLocalizations {
   /// **'Register failed: {error}'**
   String registerFailed(Object error);
 
-  /// No description provided for @joinVisionCareer.
+  /// No description provided for @joinMasar.
   ///
   /// In en, this message translates to:
-  /// **'Join Vision Career'**
-  String get joinVisionCareer;
+  /// **'Join Masar'**
+  String get joinMasar;
 
   /// No description provided for @loginSubtitle.
   ///

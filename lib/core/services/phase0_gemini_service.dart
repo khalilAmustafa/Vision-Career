@@ -5,12 +5,74 @@ import 'package:http/http.dart' as http;
 import '../constants/gemini_quiz_config.dart';
 import 'phase0_mapping_service.dart';
 
+class Phase0JobSalarySnapshot {
+  final String jordan;
+  final String gulf;
+  final String worldwide;
+
+  const Phase0JobSalarySnapshot({
+    required this.jordan,
+    required this.gulf,
+    required this.worldwide,
+  });
+
+  factory Phase0JobSalarySnapshot.fromJson(Map<String, dynamic> json) {
+    return Phase0JobSalarySnapshot(
+      jordan: (json['jordan'] ?? '').toString().trim(),
+      gulf: (json['gulf'] ?? '').toString().trim(),
+      worldwide: (json['worldwide'] ?? '').toString().trim(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'jordan': jordan,
+      'gulf': gulf,
+      'worldwide': worldwide,
+    };
+  }
+
+  bool get hasAnyValue =>
+      jordan.isNotEmpty || gulf.isNotEmpty || worldwide.isNotEmpty;
+}
+
+class Phase0JobInsight {
+  final String title;
+  final Phase0JobSalarySnapshot averageSalary;
+
+  const Phase0JobInsight({
+    required this.title,
+    required this.averageSalary,
+  });
+
+  factory Phase0JobInsight.fromJson(Map<String, dynamic> json) {
+    return Phase0JobInsight(
+      title: (json['job_title'] ?? '').toString().trim(),
+      averageSalary: Phase0JobSalarySnapshot.fromJson(
+        Map<String, dynamic>.from(
+          json['average_salary'] as Map<String, dynamic>? ?? const {},
+        ),
+      ),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'job_title': title,
+      'average_salary': averageSalary.toJson(),
+    };
+  }
+
+  bool get isValid => title.isNotEmpty && averageSalary.hasAnyValue;
+}
+
 class Phase0SpecialtyRecommendation {
   final String specialtyKey;
   final String title;
   final String shortDescription;
   final String fitReason;
   final double confidence;
+  final List<Phase0JobInsight> jobs;
 
   const Phase0SpecialtyRecommendation({
     required this.specialtyKey,
@@ -18,17 +80,27 @@ class Phase0SpecialtyRecommendation {
     required this.shortDescription,
     required this.fitReason,
     required this.confidence,
+    this.jobs = const [],
   });
 
   factory Phase0SpecialtyRecommendation.fromJson(Map<String, dynamic> json) {
+    final rawJobs = json['jobs'] as List<dynamic>? ?? const [];
+
     return Phase0SpecialtyRecommendation(
       specialtyKey: (json['specialty_key'] ?? '').toString().trim(),
       title: (json['title'] ?? '').toString().trim(),
       shortDescription: (json['short_description'] ?? '').toString().trim(),
       fitReason: (json['fit_reason'] ?? '').toString().trim(),
       confidence: _parseConfidence(json['confidence']),
+      jobs: rawJobs
+          .whereType<Map<String, dynamic>>()
+          .map(Phase0JobInsight.fromJson)
+          .where((item) => item.isValid)
+          .take(5)
+          .toList(growable: false),
     );
   }
+
   Map<String, dynamic> toJson() {
     return {
       'specialty_key': specialtyKey,
@@ -36,8 +108,10 @@ class Phase0SpecialtyRecommendation {
       'short_description': shortDescription,
       'fit_reason': fitReason,
       'confidence': confidence,
+      'jobs': jobs.map((item) => item.toJson()).toList(growable: false),
     };
   }
+
   static double _parseConfidence(dynamic value) {
     if (value is num) {
       return value.toDouble().clamp(0.0, 1.0);
@@ -48,10 +122,6 @@ class Phase0SpecialtyRecommendation {
 
 class Phase0GeminiService {
   const Phase0GeminiService();
-
-  // ─────────────────────────────────────────────
-  // PUBLIC METHODS
-  // ─────────────────────────────────────────────
 
   Future<List<Phase0SpecialtyRecommendation>> recommendFromFreeText({
     required String userDescription,
@@ -161,15 +231,11 @@ class Phase0GeminiService {
     );
   }
 
-  // ─────────────────────────────────────────────
-  // CORE NETWORK LAYER
-  // ─────────────────────────────────────────────
-
   Future<Map<String, dynamic>> _requestJson(String prompt) async {
     final response = await http.post(
       Uri.parse(GeminiQuizConfig.backendUrl),
       headers: const {'Content-Type': 'application/json'},
-      body: jsonEncode({"prompt": prompt}),
+      body: jsonEncode({'prompt': prompt}),
     );
 
     if (response.statusCode != 200) {
@@ -190,14 +256,10 @@ class Phase0GeminiService {
       throw const FormatException('Backend returned empty data.');
     }
 
-    debugPrint("AI RAW RESPONSE: $data");
+    debugPrint('AI RAW RESPONSE: $data');
 
     return Map<String, dynamic>.from(data);
   }
-
-  // ─────────────────────────────────────────────
-  // DATA PROCESSING
-  // ─────────────────────────────────────────────
 
   List<Phase0SpecialtyRecommendation> _extractRecommendations(
       Map<String, dynamic> decoded,
@@ -216,12 +278,14 @@ class Phase0GeminiService {
     final recommendations = rawItems
         .whereType<Map<String, dynamic>>()
         .map(Phase0SpecialtyRecommendation.fromJson)
-        .where((item) =>
-    item.specialtyKey.isNotEmpty &&
-        allowedKeys.contains(item.specialtyKey.toLowerCase()) &&
-        item.title.isNotEmpty &&
-        item.shortDescription.isNotEmpty &&
-        item.fitReason.isNotEmpty)
+        .where(
+          (item) =>
+      item.specialtyKey.isNotEmpty &&
+          allowedKeys.contains(item.specialtyKey.toLowerCase()) &&
+          item.title.isNotEmpty &&
+          item.shortDescription.isNotEmpty &&
+          item.fitReason.isNotEmpty,
+    )
         .take(maxCount)
         .toList(growable: false);
 
@@ -233,10 +297,6 @@ class Phase0GeminiService {
 
     return recommendations;
   }
-
-  // ─────────────────────────────────────────────
-  // PROMPTS (UNCHANGED)
-  // ─────────────────────────────────────────────
 
   String _buildDescriptionPrompt({
     required String userDescription,
@@ -253,6 +313,13 @@ Do NOT invent colleges.
 Do NOT invent specialties.
 Do NOT generate subjects, nodes, or courses.
 Do NOT control navigation.
+Keep the SAME OLD specialty recommendation logic, but enrich each specialty with career outlook.
+For each recommended specialty, also return exactly 5 jobs the student can work in after joining that major.
+For every returned job, also return average salary estimates in this exact order of markets:
+1) Jordan
+2) Gulf countries
+3) Worldwide
+Salary estimates may be approximate, but they must be realistic, concise, and useful.
 Write all user-facing text fields in $responseLanguage.
 Never translate or alter specialty_key values.
 
@@ -270,7 +337,17 @@ Return ONLY valid JSON in this exact shape:
       "title": "string",
       "short_description": "string",
       "fit_reason": "string",
-      "confidence": 0.0
+      "confidence": 0.0,
+      "jobs": [
+        {
+          "job_title": "string",
+          "average_salary": {
+            "jordan": "string",
+            "gulf": "string",
+            "worldwide": "string"
+          }
+        }
+      ]
     }
   ]
 }
@@ -358,6 +435,13 @@ You may ONLY use specialties from the allowed list below.
 Do NOT invent colleges.
 Do NOT invent specialties.
 Do NOT generate subjects, nodes, or courses.
+Keep the SAME OLD specialty recommendation logic, but enrich each specialty with career outlook.
+For each recommended specialty, also return exactly 5 jobs the student can work in after joining that major.
+For every returned job, also return average salary estimates in this exact order of markets:
+1) Jordan
+2) Gulf countries
+3) Worldwide
+Salary estimates may be approximate, but they must be realistic, concise, and useful.
 Write all user-facing text fields in $responseLanguage.
 Never translate or alter specialty_key values.
 
@@ -381,16 +465,22 @@ Return ONLY valid JSON in this exact shape:
       "title": "string",
       "short_description": "string",
       "fit_reason": "string",
-      "confidence": 0.0
+      "confidence": 0.0,
+      "jobs": [
+        {
+          "job_title": "string",
+          "average_salary": {
+            "jordan": "string",
+            "gulf": "string",
+            "worldwide": "string"
+          }
+        }
+      ]
     }
   ]
 }
 ''';
   }
-
-  // ─────────────────────────────────────────────
-  // HELPERS
-  // ─────────────────────────────────────────────
 
   String _normalizeResponseLanguage(String language) {
     final normalized = language.trim().toLowerCase();

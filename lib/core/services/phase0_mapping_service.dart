@@ -73,7 +73,7 @@ class Phase0MappedSpecialty {
 class Phase0MappingService {
   Phase0MappingService({SubjectRepository? repository})
       : _repository = repository ??
-            SubjectRepository(localDataSource: SubjectLocalDataSource());
+      SubjectRepository(localDataSource: SubjectLocalDataSource());
 
   final SubjectRepository _repository;
 
@@ -131,7 +131,7 @@ class Phase0MappingService {
 
     registry.sort((a, b) {
       final collegeCompare =
-          a.collegeTitle.toLowerCase().compareTo(b.collegeTitle.toLowerCase());
+      a.collegeTitle.toLowerCase().compareTo(b.collegeTitle.toLowerCase());
       if (collegeCompare != 0) {
         return collegeCompare;
       }

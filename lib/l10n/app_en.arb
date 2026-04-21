@@ -17,7 +17,7 @@
   "passwordsDoNotMatch": "Passwords do not match.",
   "accountCreated": "Account created successfully.",
   "registerFailed": "Register failed: {error}",
-  "joinVisionCareer": "Join Vision Career",
+  "joinMasar": "Join Masar",
   "loginSubtitle": "Log in to continue",
   "logout": "Logout",
   "or": "or",

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../l10n/app_localizations.dart';
 
 import '../../core/services/phase0_gemini_service.dart';
 import '../../core/services/phase0_mapping_service.dart';
 import '../../core/services/phase0_session_service.dart';
+import '../../l10n/app_localizations.dart';
 import 'specialty_recommendation_screen.dart';
 
 class FitResultScreen extends StatefulWidget {
@@ -39,12 +39,13 @@ class _FitResultScreenState extends State<FitResultScreen> {
       final summary = await _sessionService.getChatSummary();
       final aptitude = await _sessionService.getAptitudeSummary();
       final allowed = await _mappingService.getAllowedSpecialties();
+
       if (!mounted) return;
 
       final locale = Localizations.localeOf(context).languageCode;
       final language = locale == 'ar' ? 'Arabic' : 'English';
-      final recommendations =
-      await _geminiService.recommendFromDiscoveryPackage(
+
+      final recommendations = await _geminiService.recommendFromDiscoveryPackage(
         interestProfile: profile ?? const {},
         chatSummary: summary ?? '',
         aptitudeSummary: aptitude ?? const {},
@@ -121,4 +122,3 @@ class _FitResultScreenState extends State<FitResultScreen> {
     );
   }
 }
-

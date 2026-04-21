@@ -17,7 +17,7 @@
   "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
   "accountCreated": "تم إنشاء الحساب بنجاح",
   "registerFailed": "فشل التسجيل: {error}",
-  "joinVisionCareer": "انضم إلى Vision Career",
+  "joinMasar": "انضم إلى مسار",
   "loginSubtitle": "سجل الدخول للمتابعة",
   "logout": "تسجيل الخروج",
   "or": "أو",

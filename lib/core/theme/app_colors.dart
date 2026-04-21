@@ -27,3 +27,4 @@ class AppColors {
   static const Color nodeUnlocked = gold;
   static const Color nodeCompleted = Color(0xFFFFD700);
 }
+

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 import '../../core/services/phase0_session_service.dart';
+import '../../core/services/quiz_screen_security_service.dart';
 import 'fit_result_screen.dart';
 
 class FitQuizScreen extends StatefulWidget {
@@ -12,6 +13,7 @@ class FitQuizScreen extends StatefulWidget {
 
 class _FitQuizScreenState extends State<FitQuizScreen> {
   final Phase0SessionService _sessionService = Phase0SessionService();
+  final QuizScreenSecurityService _security = QuizScreenSecurityService();
 
   static const List<_AptitudeQuestion> _questions = [
     _AptitudeQuestion(
@@ -156,6 +158,18 @@ class _FitQuizScreenState extends State<FitQuizScreen> {
 
   final Map<int, int> _selectedAnswers = {};
   bool _isSaving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _security.startProtectedQuizSession();
+  }
+
+  @override
+  void dispose() {
+    _security.stopProtectedQuizSession();
+    super.dispose();
+  }
 
   Future<void> _finishQuiz() async {
     final l10n = AppLocalizations.of(context)!;

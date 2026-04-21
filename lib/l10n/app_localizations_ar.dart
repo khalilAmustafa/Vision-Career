@@ -67,7 +67,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get joinVisionCareer => 'انضم إلى Vision Career';
+  String get joinMasar => 'انضم إلى مسار';
 
   @override
   String get loginSubtitle => 'سجل الدخول للمتابعة';

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:screen_protector/screen_protector.dart';
 
@@ -63,8 +64,7 @@ class QuizScreenSecurityService with WidgetsBindingObserver {
       await ScreenProtector.protectDataLeakageOn();
     } catch (_) {}
 
-    try {
-      await ScreenProtector.protectDataLeakageOn();    } catch (_) {}
+    debugPrint('🔒 Screenshot protection enabled');
   }
 
   Future<void> disableExamProtection() async {
@@ -76,8 +76,6 @@ class QuizScreenSecurityService with WidgetsBindingObserver {
       await ScreenProtector.protectDataLeakageOff();
     } catch (_) {}
 
-    try {
-      await ScreenProtector.protectDataLeakageWithColorOff();
-    } catch (_) {}
+    debugPrint('🔓 Screenshot protection disabled');
   }
 }

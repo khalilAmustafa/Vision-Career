@@ -136,7 +136,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 // 🔥 Header (NO BRAND)
                 AppSectionTitle(
                   title: loc.createAccount,
-                  subtitle: loc.joinVisionCareer,
+                  subtitle: loc.joinMasar,
                   showBrand: false, // 🔥 removed Masar
                 ),
 
