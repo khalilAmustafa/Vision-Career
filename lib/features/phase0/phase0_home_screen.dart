@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import '../../l10n/app_localizations.dart';
 import '../../core/widgets/app_drawer.dart';
 import '../../core/widgets/app_logo.dart';
 import '../../core/widgets/app_text_field.dart';
 import '../../core/widgets/app_button.dart';
+import '../../core/services/user_profile_service.dart';
+import '../profile/profile_screen.dart';
 
 import '../../core/services/phase0_gemini_service.dart';
 import '../../core/services/phase0_mapping_service.dart';
@@ -91,7 +95,6 @@ class _Phase0HomeScreenState extends State<Phase0HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isRTL = Directionality.of(context) == TextDirection.rtl;
 
     return Scaffold(
       drawer: const AppDrawer(),
@@ -106,7 +109,7 @@ class _Phase0HomeScreenState extends State<Phase0HomeScreen> {
                 const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 24),
                 child: Column(
                   crossAxisAlignment:
-                  isRTL ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                  CrossAxisAlignment.start,
                   children: [
 
                     /// 🔥 PROGRESS BLOCK
@@ -183,7 +186,6 @@ class _HomeProgressCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isRTL = Directionality.of(context) == TextDirection.rtl;
     final isArabic = Localizations.localeOf(context).languageCode == 'ar';
 
     if (isLoading) {
@@ -200,7 +202,7 @@ class _HomeProgressCard extends StatelessWidget {
         child: Text(
           l10n.noTrackSelected,
           style: theme.textTheme.bodyMedium,
-          textAlign: isRTL ? TextAlign.right : TextAlign.left,
+          textAlign: TextAlign.start,
         ),
       );
     }
@@ -219,18 +221,18 @@ class _HomeProgressCard extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment:
-            isRTL ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            CrossAxisAlignment.start,
         children: [
           Text(
             displaySpecialization,
             style: theme.textTheme.titleMedium,
-            textAlign: isRTL ? TextAlign.right : TextAlign.left,
+            textAlign: TextAlign.start,
           ),
           const SizedBox(height: 4),
           Text(
             displayCollege,
             style: theme.textTheme.bodySmall,
-            textAlign: isRTL ? TextAlign.right : TextAlign.left,
+            textAlign: TextAlign.start,
           ),
           const SizedBox(height: 12),
           LinearProgressIndicator(
@@ -239,7 +241,7 @@ class _HomeProgressCard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             '${l10n.progressLabel}: ${progress.toStringAsFixed(1)}%',
-            textAlign: isRTL ? TextAlign.right : TextAlign.left,
+            textAlign: TextAlign.start,
           ),
           const SizedBox(height: 12),
           SizedBox(
@@ -305,7 +307,7 @@ class _QuizCard extends StatelessWidget {
             Expanded(
               child: Column(
                 crossAxisAlignment:
-                isRTL ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                CrossAxisAlignment.start,
                 children: [
                   Text(l10n.quickQuiz,
                       style: theme.textTheme.titleMedium),
@@ -394,7 +396,7 @@ class _HeroSectionState extends State<_HeroSection> {
 
     return Column(
       crossAxisAlignment:
-      isRTL ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      CrossAxisAlignment.start,
       children: [
         Text(
           widget.l10n.whatDoYouWantToBecome,
@@ -437,24 +439,81 @@ class _HeroSectionState extends State<_HeroSection> {
 class _TopBar extends StatelessWidget {
   const _TopBar();
 
+  String _initials(String? username, String? email) {
+    final src = (username != null && username.isNotEmpty)
+        ? username
+        : (email ?? '');
+    if (src.isEmpty) return '?';
+    final parts = src.trim().split(RegExp(r'[\s@._]+'));
+    if (parts.length >= 2) {
+      return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
+    }
+    return src[0].toUpperCase();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final email = FirebaseAuth.instance.currentUser?.email;
+
     return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
+      padding: const EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
       child: Row(
         children: [
           Builder(
-            builder: (context) => IconButton(
-              onPressed: () => Scaffold.of(context).openDrawer(),
+            builder: (ctx) => IconButton(
+              onPressed: () => Scaffold.of(ctx).openDrawer(),
               icon: const Icon(Icons.menu),
             ),
           ),
           const Expanded(
-            child: Center(
-              child: AppLogo(height: 100),
-            ),
+            child: Center(child: AppLogo(height: 100)),
           ),
-          const SizedBox(width: 48),
+          // Profile avatar
+          FutureBuilder<Map<String, dynamic>?>(
+            future: UserProfileService().getCurrentUserProfile(),
+            builder: (context, snapshot) {
+              final username =
+                  snapshot.data?['username'] as String? ?? '';
+              final initials = _initials(username, email);
+              return InkWell(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const ProfileScreen()),
+                ),
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: theme.colorScheme.primaryContainer,
+                  ),
+                  child: Center(
+                    child: snapshot.connectionState ==
+                            ConnectionState.waiting
+                        ? SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color:
+                                  theme.colorScheme.onPrimaryContainer,
+                            ),
+                          )
+                        : Text(
+                            initials,
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              color: theme.colorScheme.onPrimaryContainer,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                  ),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

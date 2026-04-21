@@ -41,6 +41,8 @@ class PathMapView extends StatelessWidget {
       );
     }
 
+    final edges = _buildEdges();
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 18),
       child: LayoutBuilder(
@@ -69,6 +71,7 @@ class PathMapView extends StatelessWidget {
                       nodeCenters: positions,
                       nodeHalfHeight: PathNodeWidget.nodeHeight / 2,
                       nodeStates: states,
+                      edges: edges,
                       theme: Theme.of(context),
                       repaintKey: repaintKey,
                     ),
@@ -93,6 +96,28 @@ class PathMapView extends StatelessWidget {
         },
       ),
     );
+  }
+
+  /// Builds edges from prerequisite relationships.
+  /// Each edge is (parentIndex, childIndex) where parentIndex is the
+  /// position of the prerequisite course and childIndex is the course
+  /// that depends on it. Only includes edges where both courses are
+  /// present in this phase's subject list.
+  List<(int, int)> _buildEdges() {
+    final codeToIndex = <String, int>{
+      for (var i = 0; i < subjects.length; i++) subjects[i].code: i,
+    };
+
+    final edges = <(int, int)>[];
+    for (var i = 0; i < subjects.length; i++) {
+      for (final prereqCode in subjects[i].prerequisites) {
+        final fromIndex = codeToIndex[prereqCode];
+        if (fromIndex != null) {
+          edges.add((fromIndex, i));
+        }
+      }
+    }
+    return edges;
   }
 
   // Alternating left / right zig-zag positions

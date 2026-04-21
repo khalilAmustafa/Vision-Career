@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../core/services/app_data_service.dart';
 import '../../core/services/progress_service.dart';
 import '../../core/widgets/app_drawer.dart';
 import '../../l10n/app_localizations.dart';
@@ -62,13 +63,26 @@ class _BrowseTracksScreenState extends State<BrowseTracksScreen> {
     super.dispose();
   }
 
-  // Load JSON from assets and extract unique college+specialization pairs
+  // Load JSON from backend (with local asset fallback) and extract unique college+specialization pairs
   Future<void> _loadTracks() async {
     try {
-      final raw = await rootBundle.loadString(
-        'assets/data/vision_career_phase1_phase2_master_dataset_rebuilt.json',
-      );
-      final List<dynamic> items = jsonDecode(raw) as List<dynamic>;
+      List<dynamic> items;
+      try {
+        items = await AppDataService().fetchSubjects();
+      } catch (networkError) {
+        print('BrowseTracksScreen: backend failed ($networkError), trying local asset');
+        final raw = await rootBundle.loadString(
+          'assets/data/vision_career_phase1_phase2_master_dataset_rebuilt.json',
+        );
+        if (raw.isEmpty) {
+          throw Exception('Local asset is empty and backend is unavailable');
+        }
+        try {
+          items = jsonDecode(raw) as List<dynamic>;
+        } catch (e) {
+          throw Exception('Failed to parse local asset: $e');
+        }
+      }
 
       final seen = <_Track>{};
       final tracks = <_Track>[];

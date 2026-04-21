@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 
+import '../../core/services/app_data_service.dart';
 import '../models/subject_model.dart';
 
 class SubjectLocalDataSource {
@@ -14,11 +15,18 @@ class SubjectLocalDataSource {
       return List<Subject>.unmodifiable(_cache!);
     }
 
-    final raw = await rootBundle.loadString(_datasetPath);
-    // JSON root is a flat array — not a Map with a 'subjects' key
-    final decoded = json.decode(raw) as List<dynamic>;
+    List<dynamic> raw;
 
-    _cache = decoded
+    try {
+      // Primary: fetch from backend
+      raw = await AppDataService().fetchSubjects();
+    } catch (_) {
+      // Fallback: local asset bundle (offline / backend unavailable)
+      final jsonStr = await rootBundle.loadString(_datasetPath);
+      raw = json.decode(jsonStr) as List<dynamic>;
+    }
+
+    _cache = raw
         .whereType<Map<String, dynamic>>()
         .map((item) => Subject.fromJson(item))
         .toList(growable: false);

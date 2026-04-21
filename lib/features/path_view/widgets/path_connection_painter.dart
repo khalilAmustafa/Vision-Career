@@ -6,6 +6,8 @@ class PathConnectionPainter extends CustomPainter {
   final List<Offset> nodeCenters;
   final double nodeHalfHeight;
   final List<NodeVisualState> nodeStates;
+  // Each record is (fromIndex, toIndex) derived from prerequisite relationships.
+  final List<(int, int)> edges;
   final ThemeData theme;
   final String repaintKey;
 
@@ -13,13 +15,14 @@ class PathConnectionPainter extends CustomPainter {
     required this.nodeCenters,
     required this.nodeHalfHeight,
     required this.nodeStates,
+    required this.edges,
     required this.theme,
     required this.repaintKey,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (nodeCenters.length < 2) return;
+    if (nodeCenters.length < 2 || edges.isEmpty) return;
 
     final isDark = theme.brightness == Brightness.dark;
 
@@ -43,11 +46,13 @@ class PathConnectionPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
-    for (var i = 0; i < nodeCenters.length - 1; i++) {
-      final fromCenter = nodeCenters[i];
-      final toCenter = nodeCenters[i + 1];
+    for (final (fromIdx, toIdx) in edges) {
+      if (fromIdx >= nodeCenters.length || toIdx >= nodeCenters.length) continue;
 
-      // Exit bottom-center of current node, enter top-center of next node
+      final fromCenter = nodeCenters[fromIdx];
+      final toCenter = nodeCenters[toIdx];
+
+      // Exit bottom-center of parent node, enter top-center of child node
       final from = Offset(fromCenter.dx, fromCenter.dy + nodeHalfHeight);
       final to = Offset(toCenter.dx, toCenter.dy - nodeHalfHeight);
       final midY = (from.dy + to.dy) / 2;
@@ -56,10 +61,11 @@ class PathConnectionPainter extends CustomPainter {
         ..moveTo(from.dx, from.dy)
         ..cubicTo(from.dx, midY, to.dx, midY, to.dx, to.dy);
 
-      final fromState =
-          i < nodeStates.length ? nodeStates[i] : NodeVisualState.locked;
-      final toState = (i + 1) < nodeStates.length
-          ? nodeStates[i + 1]
+      final fromState = fromIdx < nodeStates.length
+          ? nodeStates[fromIdx]
+          : NodeVisualState.locked;
+      final toState = toIdx < nodeStates.length
+          ? nodeStates[toIdx]
           : NodeVisualState.locked;
 
       final Paint paint;

@@ -97,6 +97,9 @@ abstract class AppLocalizations {
 
   /// No description provided for @welcomeBack.
   ///
+  /// No description provided for @home.
+  String get home;
+
   /// In en, this message translates to:
   /// **'Welcome Back'**
   String get welcomeBack;

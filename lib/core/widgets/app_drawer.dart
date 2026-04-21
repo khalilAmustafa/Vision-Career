@@ -4,9 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../services/settings_service.dart';
 import '../services/user_profile_service.dart';
 import '../theme/app_colors.dart';
+import '../widgets/app_logo.dart';
 import '../../features/career/browse_tracks_screen.dart';
+import '../../features/phase0/phase0_home_screen.dart';
 import '../../features/profile/profile_screen.dart';
-import '../../features/settings/settings_screen.dart';
 import '../../l10n/app_localizations.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -44,6 +45,20 @@ class AppDrawer extends StatelessWidget {
 
             // ── MAIN NAVIGATION ──────────────────────────────────────
             DrawerItem(
+              icon: Icons.home_outlined,
+              label: l10n.home,
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const Phase0HomeScreen(),
+                  ),
+                  (route) => false,
+                );
+              },
+            ),
+            DrawerItem(
               icon: Icons.explore_outlined,
               label: l10n.browseTracks,
               onTap: () {
@@ -52,31 +67,6 @@ class AppDrawer extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (_) => const BrowseTracksScreen(),
-                  ),
-                );
-              },
-            ),
-            DrawerItem(
-              icon: Icons.person_outline_rounded,
-              label: l10n.profileTitle,
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const ProfileScreen()),
-                );
-              },
-            ),
-            DrawerItem(
-              icon: Icons.settings_outlined,
-              label: l10n.settings,
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) =>
-                        SettingsScreen(settingsService: settings),
                   ),
                 );
               },
@@ -130,6 +120,18 @@ class AppDrawer extends StatelessWidget {
 class _DrawerHeader extends StatelessWidget {
   const _DrawerHeader();
 
+  String _initials(String? username, String? email) {
+    final src = (username != null && username.isNotEmpty && username != '—')
+        ? username
+        : (email ?? '');
+    if (src.isEmpty) return '?';
+    final parts = src.trim().split(RegExp(r'[\s@._]+'));
+    if (parts.length >= 2) {
+      return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
+    }
+    return src[0].toUpperCase();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -139,100 +141,70 @@ class _DrawerHeader extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 24, 20, 20),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: isDark
-              ? const [Color(0xFF0F1E30), Color(0xFF162338)]
-              : [
-                  AppColors.primary.withOpacity(0.06),
-                  AppColors.lightBackground,
-                ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+        color: isDark
+            ? const Color(0xFF0F1E30)
+            : theme.colorScheme.surfaceContainerLow,
+        border: Border(
+          bottom: BorderSide(
+            color: isDark
+                ? Colors.white.withOpacity(0.07)
+                : Colors.black.withOpacity(0.07),
+          ),
         ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Brand mark
-          Row(
-            children: [
-              Container(
-                width: 34,
-                height: 34,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFFD4AF37), Color(0xFFFFD54F)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.gold.withOpacity(0.35),
-                      blurRadius: 8,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: const Icon(
-                  Icons.route_rounded,
-                  color: Colors.white,
-                  size: 17,
-                ),
-              ),
-              const SizedBox(width: 10),
-              Text(
-                AppLocalizations.of(context)!.appName,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: isDark
-                      ? AppColors.darkTextPrimary
-                      : AppColors.lightTextPrimary,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.4,
-                ),
-              ),
-            ],
+          // ── Logo ────────────────────────────────────────────────────
+          Center(
+            child: AppLogo(height: 68),
           ),
 
           const SizedBox(height: 20),
 
-          // User info — loading skeleton while profile loads
+          // ── User row ─────────────────────────────────────────────────
           FutureBuilder<Map<String, dynamic>?>(
             future: UserProfileService().getCurrentUserProfile(),
             builder: (context, snapshot) {
               final isLoading =
                   snapshot.connectionState == ConnectionState.waiting;
-              final username = snapshot.data?['username'] ?? '—';
+              final username = snapshot.data?['username'] as String? ?? '';
+              final email = user?.email ?? '';
+              final initials = _initials(username, email);
 
               return Row(
                 children: [
-                  // Avatar
-                  Container(
-                    width: 46,
-                    height: 46,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFF57D6FF), Color(0xFF2D7FFF)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      border: Border.all(
-                        color: Colors.white.withOpacity(0.2),
-                        width: 1.5,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.18),
-                          blurRadius: 8,
-                          offset: const Offset(0, 3),
+                  // Initials avatar — taps to open profile
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const ProfileScreen(),
                         ),
-                      ],
-                    ),
-                    child: const Icon(
-                      Icons.person_rounded,
-                      color: Colors.white,
-                      size: 24,
+                      );
+                    },
+                    borderRadius: BorderRadius.circular(23),
+                    child: Container(
+                      width: 46,
+                      height: 46,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: theme.colorScheme.primaryContainer,
+                      ),
+                      child: Center(
+                        child: isLoading
+                            ? _Skeleton(width: 20, height: 20, isDark: isDark)
+                            : Text(
+                                initials,
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  color:
+                                      theme.colorScheme.onPrimaryContainer,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                      ),
                     ),
                   ),
 
@@ -244,30 +216,24 @@ class _DrawerHeader extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (isLoading)
-                          _Skeleton(
-                            width: 88,
-                            height: 13,
-                            isDark: isDark,
-                          )
+                          _Skeleton(width: 88, height: 13, isDark: isDark)
                         else
                           Text(
-                            username,
+                            username.isNotEmpty ? username : email,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: theme.textTheme.bodyLarge?.copyWith(
-                              color: isDark
-                                  ? AppColors.darkTextPrimary
-                                  : AppColors.lightTextPrimary,
+                              color: theme.colorScheme.onSurface,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 3),
                         Text(
-                          user?.email ?? '—',
+                          email,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: isDark
-                                ? AppColors.darkTextSecondary
-                                : AppColors.lightTextSecondary,
+                            color: theme.colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ],
