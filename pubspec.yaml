@@ -46,8 +46,6 @@ flutter:
     - assets/data/vision_career_phase1_phase2_master_dataset_rebuilt.json
     - assets/images/icon.png
     - assets/icons/
-    - assets/json/
-    - assets/json/it_subject_graph.xlsx
     - .env
 
 
