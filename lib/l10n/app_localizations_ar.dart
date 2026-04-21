@@ -70,6 +70,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get loginSubtitle => 'سجل الدخول للمتابعة';
 
   @override
+  String get logout => 'تسجيل الخروج';
+
+  @override
   String get or => 'أو';
 
   @override

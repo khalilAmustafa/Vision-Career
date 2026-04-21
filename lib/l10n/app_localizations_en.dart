@@ -70,6 +70,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginSubtitle => 'Log in to continue';
 
   @override
+  String get logout => 'Logout';
+
+  @override
   String get or => 'or';
 
   @override

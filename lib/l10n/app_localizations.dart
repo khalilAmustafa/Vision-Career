@@ -209,6 +209,12 @@ abstract class AppLocalizations {
   /// **'Log in to continue'**
   String get loginSubtitle;
 
+  /// No description provided for @logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logout;
+
   /// No description provided for @or.
   ///
   /// In en, this message translates to:

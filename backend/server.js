@@ -2,6 +2,12 @@ import express from "express";
 import fetch from "node-fetch";
 import cors from "cors";
 import dotenv from "dotenv";
+import fs from "fs/promises";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const DATA_PATH = path.join(__dirname, "data", "vision_career_phase1_phase2_master_dataset_rebuilt.json");
 
 dotenv.config();
 
@@ -106,6 +112,27 @@ app.post("/recommend", async (req, res) => {
   } catch (error) {
     console.error("❌ Server error:", error);
     return res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ─────────────────────────────────────────────
+// Helper: load app data from disk
+// ─────────────────────────────────────────────
+async function loadAppData() {
+  const raw = await fs.readFile(DATA_PATH, "utf-8");
+  return JSON.parse(raw);
+}
+
+// ─────────────────────────────────────────────
+// GET /data
+// ─────────────────────────────────────────────
+app.get("/data", async (_req, res) => {
+  try {
+    const data = await loadAppData();
+    return res.json({ success: true, data });
+  } catch (error) {
+    console.error("❌ Failed to load data:", error);
+    return res.status(500).json({ success: false, error: "Failed to load data" });
   }
 });
 

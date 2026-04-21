@@ -2,63 +2,49 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 import 'app_text_theme.dart';
 
-class LightTheme {
-  static final ThemeData theme = ThemeData(
-    brightness: Brightness.light,
+final ThemeData lightTheme = ThemeData(
+  useMaterial3: true,
+  brightness: Brightness.light,
 
-    scaffoldBackgroundColor: AppColors.lightBackground,
+  scaffoldBackgroundColor: AppColors.lightBackground,
 
-    fontFamily: 'Cairo',
+  colorScheme: ColorScheme.light(
+    primary: AppColors.gold,
+    secondary: AppColors.gold,
+    surface: AppColors.lightSurface,
+    background: AppColors.lightBackground,
+    onPrimary: Colors.white,
+    onSurface: AppColors.lightTextPrimary,
+  ),
 
-    // 🔥 Color scheme
-    colorScheme: const ColorScheme.light(
-      primary: AppColors.primary,
+  textTheme: AppTextTheme.lightTextTheme,
+
+  appBarTheme: const AppBarTheme(
+    backgroundColor: AppColors.lightBackground,
+    elevation: 0,
+    iconTheme: IconThemeData(color: AppColors.lightTextPrimary),
+    titleTextStyle: TextStyle(
+      color: AppColors.lightTextPrimary,
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
     ),
+  ),
 
-    // 🔤 Text
-    textTheme: AppTextTheme.light,
-
-    // 🧱 Cards / surfaces
-    cardColor: AppColors.lightSurface,
-
-    // 📝 Input fields
-    inputDecorationTheme: InputDecorationTheme(
-      filled: true,
-      fillColor: AppColors.lightSurface,
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 16,
-      ),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide.none,
-      ),
-      hintStyle: const TextStyle(
-        color: AppColors.lightTextSecondary,
-      ),
+  cardTheme: CardThemeData(
+    color: AppColors.lightSurface,
+    elevation: 2,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16),
     ),
+  ),
 
-    // 🔘 Buttons
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 16),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: AppColors.gold,
+      foregroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
       ),
     ),
-
-    // 📏 Divider
-    dividerColor: AppColors.dividerLight,
-
-    // 🧭 AppBar
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      foregroundColor: AppColors.lightTextPrimary,
-    ),
-  );
-}
+  ),
+);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 import '../../core/widgets/app_drawer.dart';
+import '../../core/widgets/app_logo.dart';
 import '../../core/widgets/app_text_field.dart';
 import '../../core/widgets/app_button.dart';
 
@@ -438,8 +439,6 @@ class _TopBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 16, 8),
       child: Row(
@@ -450,14 +449,9 @@ class _TopBar extends StatelessWidget {
               icon: const Icon(Icons.menu),
             ),
           ),
-          Expanded(
+          const Expanded(
             child: Center(
-              child: Text(
-                'Vision Career',
-                style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              child: AppLogo(height: 100),
             ),
           ),
           const SizedBox(width: 48),

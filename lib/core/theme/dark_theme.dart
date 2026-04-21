@@ -2,63 +2,49 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 import 'app_text_theme.dart';
 
-class DarkTheme {
-  static final ThemeData theme = ThemeData(
-    brightness: Brightness.dark,
+final ThemeData darkTheme = ThemeData(
+  useMaterial3: true,
+  brightness: Brightness.dark,
 
-    scaffoldBackgroundColor: AppColors.darkBackground,
+  scaffoldBackgroundColor: AppColors.darkBackground,
 
-    fontFamily: 'Cairo',
+  colorScheme: ColorScheme.dark(
+    primary: AppColors.gold,
+    secondary: AppColors.gold,
+    surface: AppColors.darkSurface,
+    background: AppColors.darkBackground,
+    onPrimary: Colors.black,
+    onSurface: AppColors.darkTextPrimary,
+  ),
 
-    // 🔥 Color scheme
-    colorScheme: const ColorScheme.dark(
-      primary: AppColors.primary,
+  textTheme: AppTextTheme.darkTextTheme,
+
+  appBarTheme: const AppBarTheme(
+    backgroundColor: AppColors.darkBackground,
+    elevation: 0,
+    iconTheme: IconThemeData(color: AppColors.darkTextPrimary),
+    titleTextStyle: TextStyle(
+      color: AppColors.darkTextPrimary,
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
     ),
+  ),
 
-    // 🔤 Text
-    textTheme: AppTextTheme.dark,
-
-    // 🧱 Cards / surfaces
-    cardColor: AppColors.darkSurface,
-
-    // 📝 Input fields
-    inputDecorationTheme: InputDecorationTheme(
-      filled: true,
-      fillColor: AppColors.darkSurfaceSoft,
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 16,
-      ),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide.none,
-      ),
-      hintStyle: const TextStyle(
-        color: AppColors.darkTextSecondary,
-      ),
+  cardTheme: CardThemeData(
+    color: AppColors.darkSurface,
+    elevation: 3,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16),
     ),
+  ),
 
-    // 🔘 Buttons
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 16),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: AppColors.gold,
+      foregroundColor: Colors.black,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
       ),
     ),
-
-    // 📏 Divider
-    dividerColor: AppColors.dividerDark,
-
-    // 🧭 AppBar (optional but good)
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      foregroundColor: AppColors.darkTextPrimary,
-    ),
-  );
-}
+  ),
+);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/services/auth_service.dart';
+import '../../core/widgets/app_logo.dart';
 import '../../l10n/app_localizations.dart';
 import '../../core/widgets/app_text_field.dart';
 import '../../core/widgets/app_button.dart';
@@ -61,105 +62,95 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-    final isRTL = Directionality.of(context) == TextDirection.rtl;
+
+    // Responsive logo height: 18% of screen, clamped to 100–160 px
+    final logoHeight =
+        (MediaQuery.of(context).size.height * 0.18).clamp(100.0, 160.0);
 
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: SizedBox(
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment:
-              isRTL ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-              children: [
-                const Spacer(),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 40),
 
-                // 🔹 Title
-                Align(
-                  alignment:
-                  isRTL ? Alignment.centerRight : Alignment.centerLeft,
-                  child: Column(
-                    crossAxisAlignment:
-                    isRTL ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        loc.welcomeBack,
-                        textAlign:
-                        isRTL ? TextAlign.right : TextAlign.left,
-                        style: theme.textTheme.titleLarge?.copyWith(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        loc.loginSubtitle,
-                        textAlign:
-                        isRTL ? TextAlign.right : TextAlign.left,
-                        style: theme.textTheme.bodyMedium,
-                      ),
-                    ],
+              // 🔹 Login logo — prominent, top-center
+              Center(
+                child: AppLogo(isLogin: true, height: logoHeight),
+              ),
+
+              const SizedBox(height: 36),
+
+              // 🔹 Title
+              Text(
+                loc.welcomeBack,
+                textAlign: TextAlign.start,
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                loc.loginSubtitle,
+                textAlign: TextAlign.start,
+                style: theme.textTheme.bodyMedium,
+              ),
+
+              const SizedBox(height: 32),
+
+              // 🔹 Email
+              AppTextField(
+                controller: emailController,
+                hint: loc.email,
+                keyboardType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.next,
+              ),
+
+              const SizedBox(height: 16),
+
+              // 🔹 Password
+              AppTextField(
+                controller: passwordController,
+                hint: loc.password,
+                obscureText: obscurePassword,
+                textInputAction: TextInputAction.done,
+                onSubmitted: (_) => login(),
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    setState(() => obscurePassword = !obscurePassword);
+                  },
+                  icon: Icon(
+                    obscurePassword
+                        ? Icons.visibility_off
+                        : Icons.visibility,
                   ),
                 ),
+              ),
 
-                const SizedBox(height: 32),
+              const SizedBox(height: 24),
 
-                // 🔹 Email
-                AppTextField(
-                  controller: emailController,
-                  hint: loc.email,
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
+              // 🔹 Login Button
+              AppButton(
+                text: loc.login,
+                onPressed: login,
+                isLoading: isLoading,
+              ),
+
+              const SizedBox(height: 20),
+
+              // 🔹 Register
+              Center(
+                child: TextButton(
+                  onPressed: () => Navigator.pushNamed(context, '/register'),
+                  child: Text(loc.createAccount),
                 ),
+              ),
 
-                const SizedBox(height: 16),
-
-                // 🔹 Password
-                AppTextField(
-                  controller: passwordController,
-                  hint: loc.password,
-                  obscureText: obscurePassword,
-                  textInputAction: TextInputAction.done,
-                  onSubmitted: (_) => login(),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        obscurePassword = !obscurePassword;
-                      });
-                    },
-                    icon: Icon(
-                      obscurePassword
-                          ? Icons.visibility_off
-                          : Icons.visibility,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                // 🔹 Login Button
-                AppButton(
-                  text: loc.login,
-                  onPressed: login,
-                  isLoading: isLoading,
-                ),
-
-                const SizedBox(height: 20),
-
-                // 🔹 Register
-                Center(
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/register');
-                    },
-                    child: Text(loc.createAccount),
-                  ),
-                ),
-
-                const Spacer(),
-              ],
-            ),
+              const SizedBox(height: 36),
+            ],
           ),
         ),
       ),

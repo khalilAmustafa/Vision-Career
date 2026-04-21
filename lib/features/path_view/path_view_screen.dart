@@ -16,7 +16,7 @@ import 'widgets/final_phase_gate_card.dart';
 import 'widgets/path_header.dart';
 import 'widgets/phase_section_label.dart';
 import 'widgets/selected_subject_panel.dart';
-import 'widgets/skill_tree_section.dart';
+import 'widgets/path_map_view.dart';
 
 class PathViewScreen extends StatefulWidget {
   final String college;
@@ -282,7 +282,7 @@ class _PathViewScreenState extends State<PathViewScreen> {
                       ),
                     ),
                     SliverToBoxAdapter(
-                      child: SkillTreeSection(
+                      child: PathMapView(
                         subjects: _controller.phase1Subjects,
                         selectedSubject: _controller.selectedSubject,
                         getNodeState: _controller.nodeStateFor,
@@ -300,7 +300,7 @@ class _PathViewScreenState extends State<PathViewScreen> {
                       ),
                     ),
                     SliverToBoxAdapter(
-                      child: SkillTreeSection(
+                      child: PathMapView(
                         subjects: _controller.phase2Subjects,
                         selectedSubject: _controller.selectedSubject,
                         getNodeState: _controller.nodeStateFor,

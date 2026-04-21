@@ -18,6 +18,7 @@
   "registerFailed": "فشل التسجيل: {error}",
   "joinVisionCareer": "انضم إلى Vision Career",
   "loginSubtitle": "سجل الدخول للمتابعة",
+  "logout": "تسجيل الخروج",
   "or": "أو",
   "appName": "مسار",
   "whatDoYouWantToBecome": "ماذا تريد أن تصبح؟",
