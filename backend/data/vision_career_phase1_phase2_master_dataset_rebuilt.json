@@ -1955,7 +1955,7 @@
     "phase": 1,
     "code": "1401142",
     "name": "Introduction to Economic Sciences",
-    "name_ar": "مدخل إلى العلوم الاقتصادية",
+    "name_ar": "مقدمة في العلوم الاقتصادية",
     "credits": 3,
     "prerequisites": [],
     "description": "Introduces the main concepts, methods, and practical applications of introduction to economic sciences.",
@@ -2079,7 +2079,7 @@
     "phase": 1,
     "code": "408105",
     "name": "Introduction to Management Information Systems",
-    "name_ar": "مدخل إلى نظم المعلومات الإدارية",
+    "name_ar": "مقدمة في نظم المعلومات الإدارية",
     "credits": 3,
     "prerequisites": [],
     "description": "Explores the principles, tools, and applied practices of introduction to management information systems in modern organizational environments.",
@@ -2186,7 +2186,7 @@
     "phase": 1,
     "code": "410305",
     "name": "Product Planning and Development",
-    "name_ar": "تخطيط المنتجات وتطويرها",
+    "name_ar": "تخطيط وتطوير المنتجات",
     "credits": 3,
     "prerequisites": [
       "410101"
@@ -2208,7 +2208,7 @@
     "phase": 1,
     "code": "414101",
     "name": "Introduction to Digital Marketing",
-    "name_ar": "مدخل إلى التسويق الرقمي",
+    "name_ar": "مقدمة في التسويق الرقمي",
     "credits": 3,
     "prerequisites": [
       "410101"
@@ -2665,7 +2665,7 @@
     "phase": 1,
     "code": "403113",
     "name": "Introduction to Economic Sciences",
-    "name_ar": "مدخل إلى العلوم الاقتصادية",
+    "name_ar": "مقدمة في العلوم الاقتصادية",
     "credits": 3,
     "prerequisites": [],
     "description": "Introduces the main concepts, methods, and practical applications of introduction to economic sciences.",
@@ -2685,7 +2685,7 @@
     "phase": 1,
     "code": "408105",
     "name": "Introduction to Management Information Systems",
-    "name_ar": "مدخل إلى نظم المعلومات الإدارية",
+    "name_ar": "مقدمة في نظم المعلومات الإدارية",
     "credits": 3,
     "prerequisites": [],
     "description": "Explores the principles, tools, and applied practices of introduction to management information systems in modern organizational environments.",
@@ -3371,7 +3371,7 @@
     "phase": 1,
     "code": "408100",
     "name": "Introduction to Management Information Systems",
-    "name_ar": "مدخل إلى نظم المعلومات الإدارية",
+    "name_ar": "مقدمة في نظم المعلومات الإدارية",
     "credits": 3,
     "prerequisites": [],
     "description": "Explores the principles, tools, and applied practices of introduction to management information systems in modern organizational environments.",
@@ -4018,7 +4018,7 @@
     "phase": 1,
     "code": "407305",
     "name": "Product Planning and Development",
-    "name_ar": "تخطيط المنتجات وتطويرها",
+    "name_ar": "تخطيط وتطوير المنتجات",
     "credits": 3,
     "prerequisites": [
       "407101"
@@ -4128,7 +4128,7 @@
     "phase": 1,
     "code": "414101",
     "name": "Introduction to Digital Marketing",
-    "name_ar": "مدخل إلى التسويق الرقمي",
+    "name_ar": "مقدمة في التسويق الرقمي",
     "credits": 3,
     "prerequisites": [
       "407101"
@@ -4435,7 +4435,7 @@
     "phase": 1,
     "code": "1301106",
     "name": "Structured Programming",
-    "name_ar": "البرمجة المنظمة",
+    "name_ar": "البرمجة الهيكلية",
     "credits": 3,
     "prerequisites": [],
     "description": "Introduces programming fundamentals such as variables, conditions, loops, functions, and step-by-step problem solving using a structured approach.",
@@ -4455,7 +4455,7 @@
     "phase": 1,
     "code": "1301108",
     "name": "Object-Oriented Programming (1)",
-    "name_ar": "البرمجة الكائنية التوجه (1)",
+    "name_ar": "البرمجة الكينونية (1)",
     "credits": 3,
     "prerequisites": [
       "1301106"
@@ -4499,7 +4499,7 @@
     "phase": 1,
     "code": "1301203",
     "name": "Data Structures and Algorithms",
-    "name_ar": "هياكل البيانات والخوارزميات",
+    "name_ar": "تراكيب البيانات والخوارزميات",
     "credits": 3,
     "prerequisites": [
       "1301108",
@@ -4522,7 +4522,7 @@
     "phase": 1,
     "code": "1301222",
     "name": "Computer Organization and Architecture",
-    "name_ar": "تنظيم الحاسوب ومعماريته",
+    "name_ar": "تنظيم ومعمارية الحاسوب",
     "credits": 3,
     "prerequisites": [
       "1301120"
@@ -4544,7 +4544,7 @@
     "phase": 1,
     "code": "1301224",
     "name": "Microcomputer Systems and Assembly Language",
-    "name_ar": "أنظمة الحاسوب الصغير ولغة التجميع",
+    "name_ar": "أنظمة الحواسيب الدقيقة ولغة اسيمبلي",
     "credits": 3,
     "prerequisites": [
       "1301120"
@@ -4632,7 +4632,7 @@
     "phase": 1,
     "code": "1301310",
     "name": "Design and Analysis of Algorithms",
-    "name_ar": "تصميم الخوارزميات وتحليلها",
+    "name_ar": "تصميم وتحليل الخوارزميات",
     "credits": 3,
     "prerequisites": [
       "1301203"
@@ -4654,7 +4654,7 @@
     "phase": 1,
     "code": "1301315",
     "name": "Theory of Computation",
-    "name_ar": "نظرية الحوسبة",
+    "name_ar": "النظرية الحوسبية",
     "credits": 3,
     "prerequisites": [
       "1301203"
@@ -4738,7 +4738,7 @@
     "phase": 1,
     "code": "1501167",
     "name": "Discrete Structures (1)",
-    "name_ar": "الهياكل المتقطعة (1)",
+    "name_ar": "التراكيب المتقطعة (1)",
     "credits": 3,
     "prerequisites": [],
     "description": "Builds the mathematical foundation for computing through logic, sets, relations, functions, counting, and proof techniques.",
@@ -4935,7 +4935,7 @@
     "phase": 2,
     "code": "1305130",
     "name": "Data Communications and Computer Networks",
-    "name_ar": "اتصالات البيانات وشبكات الحاسوب",
+    "name_ar": "تراسل البيانات وشبكات الحاسوب",
     "credits": 3,
     "prerequisites": [
       "1301326"
@@ -5023,7 +5023,7 @@
     "phase": 1,
     "code": "1301106",
     "name": "Structured Programming",
-    "name_ar": "البرمجة المنظمة",
+    "name_ar": "البرمجة الهيكلية",
     "credits": 3,
     "prerequisites": [],
     "description": "Introduces programming fundamentals such as variables, conditions, loops, functions, and step-by-step problem solving using a structured approach.",
@@ -5043,7 +5043,7 @@
     "phase": 1,
     "code": "1301108",
     "name": "Object-Oriented Programming (1)",
-    "name_ar": "البرمجة الكائنية التوجه (1)",
+    "name_ar": "البرمجة الكينونية (1)",
     "credits": 3,
     "prerequisites": [
       "1301106"
@@ -5065,7 +5065,7 @@
     "phase": 1,
     "code": "1301203",
     "name": "Data Structures and Algorithms",
-    "name_ar": "هياكل البيانات والخوارزميات",
+    "name_ar": "تراكيب البيانات والخوارزميات",
     "credits": 3,
     "prerequisites": [
       "1301108",
@@ -5132,7 +5132,7 @@
     "phase": 1,
     "code": "1305101",
     "name": "Introduction to Cybersecurity",
-    "name_ar": "مدخل إلى الأمن السيبراني",
+    "name_ar": "مقدمة في الأمن السيبراني",
     "credits": 3,
     "prerequisites": [],
     "description": "Introduces the cybersecurity field, common threats, attack surfaces, defense strategies, and secure computing practices.",
@@ -5152,7 +5152,7 @@
     "phase": 1,
     "code": "1305130",
     "name": "Data Communications and Computer Networks",
-    "name_ar": "اتصالات البيانات وشبكات الحاسوب",
+    "name_ar": "تراسل البيانات وشبكات الحاسوب",
     "credits": 3,
     "prerequisites": [
       "1305101"
@@ -5324,7 +5324,7 @@
     "phase": 1,
     "code": "1501167",
     "name": "Discrete Structures (1)",
-    "name_ar": "الهياكل المتقطعة (1)",
+    "name_ar": "التراكيب المتقطعة (1)",
     "credits": 3,
     "prerequisites": [],
     "description": "Builds the mathematical foundation for computing through logic, sets, relations, functions, counting, and proof techniques.",
@@ -5566,7 +5566,7 @@
     "phase": 2,
     "code": "1305404",
     "name": "Digital Forensic",
-    "name_ar": "الطب الشرعي الرقمي",
+    "name_ar": "الأدلة الجنائية الرقمية",
     "credits": 3,
     "prerequisites": [
       "1305311"
@@ -5588,7 +5588,7 @@
     "phase": 2,
     "code": "1305417",
     "name": "Cloud Computing and Virtualization Technology",
-    "name_ar": "الحوسبة السحابية وتقنية الافتراضية",
+    "name_ar": "الحوسبة السحابية وتكنولوجيا الأنظمة الوهمية",
     "credits": 3,
     "prerequisites": [
       "1305211"
@@ -5654,7 +5654,7 @@
     "phase": 1,
     "code": "1301106",
     "name": "Structured Programming",
-    "name_ar": "البرمجة المنظمة",
+    "name_ar": "البرمجة الهيكلية",
     "credits": 3,
     "prerequisites": [],
     "description": "Introduces programming fundamentals such as variables, conditions, loops, functions, and step-by-step problem solving using a structured approach.",
@@ -5674,7 +5674,7 @@
     "phase": 1,
     "code": "1301108",
     "name": "Object-Oriented Programming (1)",
-    "name_ar": "البرمجة الكائنية التوجه (1)",
+    "name_ar": "البرمجة الكينونية (1)",
     "credits": 3,
     "prerequisites": [
       "1301106"
@@ -5696,7 +5696,7 @@
     "phase": 1,
     "code": "1301203",
     "name": "Data Structures and Algorithms",
-    "name_ar": "هياكل البيانات والخوارزميات",
+    "name_ar": "تراكيب البيانات والخوارزميات",
     "credits": 3,
     "prerequisites": [
       "1301108",
@@ -5785,7 +5785,7 @@
     "phase": 1,
     "code": "1301310",
     "name": "Design and Analysis of Algorithms",
-    "name_ar": "تصميم الخوارزميات وتحليلها",
+    "name_ar": "تصميم وتحليل الخوارزميات",
     "credits": 3,
     "prerequisites": [
       "1301203"
@@ -5829,7 +5829,7 @@
     "phase": 1,
     "code": "1306102",
     "name": "Fundamentals of Data Science and AI",
-    "name_ar": "أسس علوم البيانات والذكاء الاصطناعي",
+    "name_ar": "أساسيات علم البيانات والذكاء الاصطناعي",
     "credits": 3,
     "prerequisites": [
       "1301106"
@@ -5851,7 +5851,7 @@
     "phase": 1,
     "code": "1306207",
     "name": "Data Engineering and Analytics",
-    "name_ar": "هندسة البيانات وتحليلاتها",
+    "name_ar": "هندسة وتحليل البيانات",
     "credits": 3,
     "prerequisites": [
       "1306102"
@@ -5873,7 +5873,7 @@
     "phase": 1,
     "code": "1306290",
     "name": "Programming for Data Science",
-    "name_ar": "البرمجة لعلوم البيانات",
+    "name_ar": "البرمجة لعلم البيانات",
     "credits": 3,
     "prerequisites": [
       "1306207"
@@ -5895,7 +5895,7 @@
     "phase": 1,
     "code": "1306291",
     "name": "AI Programming",
-    "name_ar": "البرمجة بالذكاء الاصطناعي",
+    "name_ar": "برمجة الذكاء الاصطناعي",
     "credits": 3,
     "prerequisites": [
       "1306102"
@@ -5917,7 +5917,7 @@
     "phase": 1,
     "code": "1306292",
     "name": "Data Modeling and Simulation",
-    "name_ar": "نمذجة البيانات ومحاكاتها",
+    "name_ar": "نمذجة ومحاكاة البيانات",
     "credits": 3,
     "prerequisites": [
       "1301203",
@@ -6002,7 +6002,7 @@
     "phase": 1,
     "code": "1501167",
     "name": "Discrete Structures (1)",
-    "name_ar": "الهياكل المتقطعة (1)",
+    "name_ar": "التراكيب المتقطعة (1)",
     "credits": 3,
     "prerequisites": [],
     "description": "Builds the mathematical foundation for computing through logic, sets, relations, functions, counting, and proof techniques.",
@@ -6153,7 +6153,7 @@
     "phase": 2,
     "code": "1306329",
     "name": "Big Data Analytics",
-    "name_ar": "تحليلات البيانات الضخمة",
+    "name_ar": "تحليل البيانات الضخمة",
     "credits": 3,
     "prerequisites": [
       "1306290"
@@ -6175,7 +6175,7 @@
     "phase": 2,
     "code": "1306330",
     "name": "Machine Learning",
-    "name_ar": "التعلم الآلي",
+    "name_ar": "تعلم الآلة",
     "credits": 3,
     "prerequisites": [
       "1306291",
@@ -6220,7 +6220,7 @@
     "phase": 2,
     "code": "1306404",
     "name": "Natural Language Processing",
-    "name_ar": "معالجة اللغة الطبيعية",
+    "name_ar": "معالجة اللغات الطبيعية",
     "credits": 3,
     "prerequisites": [
       "1306403"
@@ -6242,7 +6242,7 @@
     "phase": 2,
     "code": "1306406",
     "name": "Data Visualization",
-    "name_ar": "تصور البيانات",
+    "name_ar": "التمثيل المرئي للبيانات",
     "credits": 3,
     "prerequisites": [
       "1306329"
@@ -6286,7 +6286,7 @@
     "phase": 1,
     "code": "1301106",
     "name": "Structured Programming",
-    "name_ar": "البرمجة المنظمة",
+    "name_ar": "البرمجة الهيكلية",
     "credits": 3,
     "prerequisites": [],
     "description": "Introduces programming fundamentals such as variables, conditions, loops, functions, and step-by-step problem solving using a structured approach.",
@@ -6306,7 +6306,7 @@
     "phase": 1,
     "code": "1301108",
     "name": "Object-Oriented Programming (1)",
-    "name_ar": "البرمجة الكائنية التوجه (1)",
+    "name_ar": "البرمجة الكينونية (1)",
     "credits": 3,
     "prerequisites": [
       "1301106"
@@ -6350,7 +6350,7 @@
     "phase": 1,
     "code": "1301203",
     "name": "Data Structures and Algorithms",
-    "name_ar": "هياكل البيانات والخوارزميات",
+    "name_ar": "تراكيب البيانات والخوارزميات",
     "credits": 3,
     "prerequisites": [
       "1301108",
@@ -6373,7 +6373,7 @@
     "phase": 1,
     "code": "1301222",
     "name": "Computer Organization and Architecture",
-    "name_ar": "تنظيم الحاسوب ومعماريته",
+    "name_ar": "تنظيم ومعمارية الحاسوب",
     "credits": 3,
     "prerequisites": [
       "1301120"
@@ -6395,7 +6395,7 @@
     "phase": 1,
     "code": "1301224",
     "name": "Microcomputer Systems and Assembly Language",
-    "name_ar": "أنظمة الحاسوب الصغير ولغة التجميع",
+    "name_ar": "أنظمة الحواسيب الدقيقة ولغة اسيمبلي",
     "credits": 3,
     "prerequisites": [
       "1301120"
@@ -6483,7 +6483,7 @@
     "phase": 1,
     "code": "1301310",
     "name": "Design and Analysis of Algorithms",
-    "name_ar": "تصميم الخوارزميات وتحليلها",
+    "name_ar": "تصميم وتحليل الخوارزميات",
     "credits": 3,
     "prerequisites": [
       "1301203"
@@ -6697,7 +6697,7 @@
     "phase": 1,
     "code": "1501167",
     "name": "Discrete Structures (1)",
-    "name_ar": "الهياكل المتقطعة (1)",
+    "name_ar": "التراكيب المتقطعة (1)",
     "credits": 3,
     "prerequisites": [],
     "description": "Builds the mathematical foundation for computing through logic, sets, relations, functions, counting, and proof techniques.",
@@ -6895,7 +6895,7 @@
     "phase": 1,
     "code": "1301106",
     "name": "Structured Programming",
-    "name_ar": "البرمجة المنظمة",
+    "name_ar": "البرمجة الهيكلية",
     "credits": 3,
     "prerequisites": [],
     "description": "Introduces programming fundamentals such as variables, conditions, loops, functions, and step-by-step problem solving using a structured approach.",
@@ -6915,7 +6915,7 @@
     "phase": 1,
     "code": "1301108",
     "name": "Object-Oriented Programming (1)",
-    "name_ar": "البرمجة الكائنية التوجه (1)",
+    "name_ar": "البرمجة الكينونية (1)",
     "credits": 3,
     "prerequisites": [
       "1301106"
@@ -6959,7 +6959,7 @@
     "phase": 1,
     "code": "1301203",
     "name": "Data Structures and Algorithms",
-    "name_ar": "هياكل البيانات والخوارزميات",
+    "name_ar": "تراكيب البيانات والخوارزميات",
     "credits": 3,
     "prerequisites": [
       "1301108",
@@ -6982,7 +6982,7 @@
     "phase": 1,
     "code": "1301222",
     "name": "Computer Organization and Architecture",
-    "name_ar": "تنظيم الحاسوب ومعماريته",
+    "name_ar": "تنظيم ومعمارية الحاسوب",
     "credits": 3,
     "prerequisites": [
       "1301120"
@@ -7070,7 +7070,7 @@
     "phase": 1,
     "code": "1301310",
     "name": "Design and Analysis of Algorithms",
-    "name_ar": "تصميم الخوارزميات وتحليلها",
+    "name_ar": "تصميم وتحليل الخوارزميات",
     "credits": 3,
     "prerequisites": [
       "1301203"
@@ -7158,7 +7158,7 @@
     "phase": 1,
     "code": "1305130",
     "name": "Data Communications and Computer Networks",
-    "name_ar": "اتصالات البيانات وشبكات الحاسوب",
+    "name_ar": "تراسل البيانات وشبكات الحاسوب",
     "credits": 3,
     "prerequisites": [
       "1301326"
@@ -7242,7 +7242,7 @@
     "phase": 1,
     "code": "1501167",
     "name": "Discrete Structures (1)",
-    "name_ar": "الهياكل المتقطعة (1)",
+    "name_ar": "التراكيب المتقطعة (1)",
     "credits": 3,
     "prerequisites": [],
     "description": "Builds the mathematical foundation for computing through logic, sets, relations, functions, counting, and proof techniques.",
@@ -10886,7 +10886,7 @@
     "phase": 1,
     "code": "0812320",
     "name": "Data Structures & Algorithms",
-    "name_ar": "هياكل البيانات والخوارزميات",
+    "name_ar": "تراكيب البيانات والخوارزميات",
     "credits": 3,
     "prerequisites": [
       "0812250"
